@@ -30,7 +30,7 @@ export default function Home() {
       title: "AVIF Converter",
       description: "Convert images to AVIF for maximum compression.",
       badge: "AVIF",
-      href: "/",
+      href: "/jpg-to-avif",
     },
     {
       title: "Resize / Crop",

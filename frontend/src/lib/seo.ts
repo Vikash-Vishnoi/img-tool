@@ -74,7 +74,7 @@ export const TOOLS = [
     description:
       "Convert PNG to WebP free in your browser. No upload needed, works on mobile in India for faster websites and smaller files.",
     keywords: ["png to webp", "convert png", "webp converter", "india", "no upload"],
-    related: ["compress-image", "jpg-to-png", "resize-image"],
+    related: ["webp-to-png", "webp-to-jpg", "compress-image"],
   },
   {
     slug: "jpg-to-png",
@@ -83,7 +83,109 @@ export const TOOLS = [
     description:
       "Convert JPG to PNG free in your browser—no upload needed. Works on Android/iPhone and Windows/Mac in India.",
     keywords: ["jpg to png", "convert jpg", "png converter", "india", "no upload"],
+    related: ["png-to-jpg", "jpg-to-webp", "compress-image"],
+  },
+  {
+    slug: "png-to-jpg",
+    path: "/png-to-jpg",
+    title: "PNG to JPG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert PNG to JPG free in your browser. No upload needed, works on mobile in India. Includes a white-background option for transparent PNGs.",
+    keywords: [
+      "png to jpg",
+      "png to jpeg",
+      "convert png to jpg",
+      "india",
+      "no upload",
+    ],
+    related: ["jpg-to-png", "compress-image", "resize-image"],
+  },
+  {
+    slug: "jpg-to-webp",
+    path: "/jpg-to-webp",
+    title: "JPG to WebP Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert JPG to WebP free in your browser. No upload needed. Great for faster websites and smaller images in India.",
+    keywords: ["jpg to webp", "convert jpg", "webp converter", "india", "no upload"],
     related: ["png-to-webp", "compress-image", "resize-image"],
+  },
+  {
+    slug: "webp-to-jpg",
+    path: "/webp-to-jpg",
+    title: "WebP to JPG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert WebP to JPG free in your browser—no upload needed. Useful when a website/app doesn’t accept WebP.",
+    keywords: [
+      "webp to jpg",
+      "webp to jpeg",
+      "convert webp",
+      "india",
+      "no upload",
+    ],
+    related: ["jpg-to-webp", "webp-to-png", "compress-image"],
+  },
+  {
+    slug: "webp-to-png",
+    path: "/webp-to-png",
+    title: "WebP to PNG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert WebP to PNG free in your browser. No upload needed, works on mobile in India.",
+    keywords: ["webp to png", "convert webp", "png converter", "india", "no upload"],
+    related: ["png-to-webp", "jpg-to-png", "compress-image"],
+  },
+  {
+    slug: "jpg-to-avif",
+    path: "/jpg-to-avif",
+    title: "JPG to AVIF Converter — Free, No Upload, Smaller Files",
+    description:
+      "Convert JPG to AVIF free in your browser. No upload needed. AVIF often gives smaller files for the same visual quality.",
+    keywords: ["jpg to avif", "convert jpg", "avif converter", "india", "no upload"],
+    related: ["png-to-avif", "webp-to-avif", "compress-image"],
+  },
+  {
+    slug: "png-to-avif",
+    path: "/png-to-avif",
+    title: "PNG to AVIF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert PNG to AVIF free in your browser. No upload needed, works on mobile in India.",
+    keywords: ["png to avif", "convert png", "avif converter", "india", "no upload"],
+    related: ["jpg-to-avif", "webp-to-avif", "compress-image"],
+  },
+  {
+    slug: "webp-to-avif",
+    path: "/webp-to-avif",
+    title: "WebP to AVIF Converter — Free, No Upload, Smaller Files",
+    description:
+      "Convert WebP to AVIF free in your browser. No upload needed. Useful when you want maximum compression.",
+    keywords: ["webp to avif", "convert webp", "avif converter", "india", "no upload"],
+    related: ["jpg-to-avif", "png-to-avif", "compress-image"],
+  },
+  {
+    slug: "avif-to-jpg",
+    path: "/avif-to-jpg",
+    title: "AVIF to JPG Converter — Free, No Upload, Works Anywhere",
+    description:
+      "Convert AVIF to JPG free in your browser—no upload needed. Useful for compatibility with older apps and sites.",
+    keywords: ["avif to jpg", "avif to jpeg", "convert avif", "india", "no upload"],
+    related: ["avif-to-png", "avif-to-webp", "compress-image"],
+  },
+  {
+    slug: "avif-to-png",
+    path: "/avif-to-png",
+    title: "AVIF to PNG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert AVIF to PNG free in your browser. No upload needed, works on mobile in India.",
+    keywords: ["avif to png", "convert avif", "png converter", "india", "no upload"],
+    related: ["avif-to-jpg", "avif-to-webp", "compress-image"],
+  },
+  {
+    slug: "avif-to-webp",
+    path: "/avif-to-webp",
+    title: "AVIF to WebP Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert AVIF to WebP free in your browser—no upload needed. Useful when you want wide support and small files.",
+    keywords: ["avif to webp", "convert avif", "webp converter", "india", "no upload"],
+    related: ["avif-to-jpg", "avif-to-png", "compress-image"],
   },
   {
     slug: "resize-image",
@@ -94,8 +196,16 @@ export const TOOLS = [
     keywords: [
       "resize image",
       "passport size photo india",
+      "passport photo 35x45mm",
+      "413x531 passport photo",
       "aadhar photo size",
+      "aadhar photo 35x35mm",
+      "413x413 aadhar photo",
+      "whatsapp dp size 500x500",
+      "instagram post size 1080x1080",
+      "facebook cover size 820x312",
       "resize online",
+      "image resizer india",
       "no upload",
     ],
     related: ["resize-image-to-200kb", "compress-image", "image-to-pdf"],
@@ -109,6 +219,8 @@ export const TOOLS = [
     keywords: [
       "resize image to 200kb",
       "compress to 200kb",
+      "under 200kb",
+      "resize photo to 200kb",
       "government form upload",
       "india",
       "no upload",

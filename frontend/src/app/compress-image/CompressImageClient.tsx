@@ -1,7 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "@/components/FileUploader";
+import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { useConversion } from "@/hooks/useConversion";
 import { compressImage } from "@/lib/compressImage";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
@@ -18,6 +19,36 @@ type Preset = {
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024;
 const MAX_WIDTH_DEFAULT = 1920;
+const ESTIMATE_DEBOUNCE_MS = 450;
+
+function clamp(value: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, value));
+}
+
+async function getMaxDimension(file: File): Promise<number> {
+  if (typeof createImageBitmap === "function") {
+    const bmp = await createImageBitmap(file);
+    const maxDim = Math.max(bmp.width, bmp.height);
+    bmp.close();
+    return maxDim;
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("Failed to decode image"));
+    });
+
+    return Math.max(img.naturalWidth || 0, img.naturalHeight || 0);
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
 
 function toPercentReduction(beforeBytes: number, afterBytes: number): number {
   if (beforeBytes <= 0) return 0;
@@ -88,6 +119,13 @@ export function CompressImageClient() {
 
   const [presetKey, setPresetKey] = useState<PresetKey>("whatsapp");
   const [customQuality, setCustomQuality] = useState<number>(80);
+  const [keepOriginalDimensions, setKeepOriginalDimensions] = useState<boolean>(true);
+
+  const [originalMaxDimension, setOriginalMaxDimension] = useState<number | null>(null);
+  const [estimateBytes, setEstimateBytes] = useState<number | null>(null);
+  const [isEstimating, setIsEstimating] = useState<boolean>(false);
+  const estimateAbortRef = useRef<AbortController | null>(null);
+  const estimateTimerRef = useRef<number | null>(null);
 
   const accept = useMemo(
     () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
@@ -96,6 +134,11 @@ export function CompressImageClient() {
 
   const selectedPreset = presets.find((p) => p.key === presetKey) ?? presets[0];
   const quality = presetKey === "custom" ? customQuality / 100 : selectedPreset.quality;
+
+  const maxWidth = useMemo(() => {
+    if (!keepOriginalDimensions) return MAX_WIDTH_DEFAULT;
+    return originalMaxDimension ?? MAX_WIDTH_DEFAULT;
+  }, [keepOriginalDimensions, originalMaxDimension]);
 
   const beforeBytes = conversion.inputFiles[0]?.size ?? 0;
   const afterBytes =
@@ -111,6 +154,84 @@ export function CompressImageClient() {
     return new File([out.blob], out.filename, { type: out.mimeType });
   }, [conversion.outputs]);
 
+  useEffect(() => {
+    const file = conversion.inputFiles[0];
+    if (!file) {
+      setOriginalMaxDimension(null);
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      try {
+        const maxDim = await getMaxDimension(file);
+        if (!cancelled) setOriginalMaxDimension(maxDim || null);
+      } catch {
+        if (!cancelled) setOriginalMaxDimension(null);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [conversion.inputFiles]);
+
+  useEffect(() => {
+    const file = conversion.inputFiles[0];
+    if (!file) {
+      setEstimateBytes(null);
+      setIsEstimating(false);
+      estimateAbortRef.current?.abort();
+      estimateAbortRef.current = null;
+      if (estimateTimerRef.current) {
+        window.clearTimeout(estimateTimerRef.current);
+        estimateTimerRef.current = null;
+      }
+      return;
+    }
+
+    // Debounced background estimate (actual compression run).
+    if (estimateTimerRef.current) {
+      window.clearTimeout(estimateTimerRef.current);
+      estimateTimerRef.current = null;
+    }
+
+    estimateAbortRef.current?.abort();
+    const controller = new AbortController();
+    estimateAbortRef.current = controller;
+
+    setIsEstimating(true);
+
+    estimateTimerRef.current = window.setTimeout(async () => {
+      try {
+        const { default: imageCompression } = await import("browser-image-compression");
+
+        const outFile: File = await imageCompression(file, {
+          maxSizeMB: selectedPreset.targetSizeMB,
+          maxWidthOrHeight: clamp(maxWidth, 320, 30000),
+          initialQuality: clamp(quality, 0.05, 1),
+          useWebWorker: true,
+        });
+
+        if (controller.signal.aborted) return;
+        setEstimateBytes(outFile.size);
+      } catch {
+        if (controller.signal.aborted) return;
+        setEstimateBytes(null);
+      } finally {
+        if (!controller.signal.aborted) setIsEstimating(false);
+      }
+    }, ESTIMATE_DEBOUNCE_MS);
+
+    return () => {
+      controller.abort();
+      if (estimateTimerRef.current) {
+        window.clearTimeout(estimateTimerRef.current);
+        estimateTimerRef.current = null;
+      }
+    };
+  }, [conversion.inputFiles, keepOriginalDimensions, maxWidth, quality, selectedPreset.targetSizeMB]);
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="space-y-3">
@@ -123,6 +244,7 @@ export function CompressImageClient() {
       </header>
 
       <section className="mt-8 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
+        <PrivacyBadge className="mb-5" />
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
             <div className="text-sm font-medium">Presets</div>
@@ -168,6 +290,36 @@ export function CompressImageClient() {
                 </div>
               </div>
             ) : null}
+
+            <div className="mt-5 rounded-2xl border border-foreground/10 p-4">
+              <label className="flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  checked={keepOriginalDimensions}
+                  onChange={(e) => setKeepOriginalDimensions(e.currentTarget.checked)}
+                  className="mt-1"
+                />
+                <div>
+                  <div className="text-sm font-medium">Keep original dimensions</div>
+                  <div className="mt-1 text-xs text-foreground/70">
+                    When enabled, compression won’t resize the image.
+                  </div>
+                </div>
+              </label>
+
+              <div className="mt-3 text-xs text-foreground/70">
+                Estimated output:{" "}
+                {isEstimating ? (
+                  <span className="font-medium text-foreground">Estimating…</span>
+                ) : estimateBytes ? (
+                  <span className="font-medium text-foreground">
+                    {formatFileSize(estimateBytes)}
+                  </span>
+                ) : (
+                  <span>—</span>
+                )}
+              </div>
+            </div>
           </div>
 
           <div>
@@ -213,7 +365,7 @@ export function CompressImageClient() {
                           options: {
                             targetSizeMB: selectedPreset.targetSizeMB,
                             quality,
-                            maxWidth: MAX_WIDTH_DEFAULT,
+                              maxWidth,
                           },
                           signal,
                           onProgress,

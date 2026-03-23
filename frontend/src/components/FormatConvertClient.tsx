@@ -4,7 +4,12 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { FileUploader } from "@/components/FileUploader";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { useConversion } from "@/hooks/useConversion";
-import { heicFilesConvert, type HeicConvertFormat } from "@/lib/heicToJpg";
+import {
+  convertImageFiles,
+  formatExtensions,
+  formatLabel,
+  type RasterFormat,
+} from "@/lib/formatConvert";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024;
@@ -13,30 +18,28 @@ function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
 
-function formatLabel(format: HeicConvertFormat): string {
-  if (format === "png") return "PNG";
-  if (format === "webp") return "WebP";
-  return "JPG";
-}
-
 function toPercentChange(beforeBytes: number, afterBytes: number): number {
   if (beforeBytes <= 0) return 0;
   return Math.round(((beforeBytes - afterBytes) / beforeBytes) * 100);
 }
 
-export function HeicToJpgClient() {
+export type FormatConvertClientProps = {
+  from: RasterFormat;
+  to: RasterFormat;
+  title: string;
+  description: string;
+};
+
+export function FormatConvertClient({ from, to, title, description }: FormatConvertClientProps) {
   const conversion = useConversion();
 
-  const [format, setFormat] = useState<HeicConvertFormat>("jpg");
   const [qualityPercent, setQualityPercent] = useState<number>(92);
+  const [fillWhiteForJpg, setFillWhiteForJpg] = useState<boolean>(true);
   const autoDownloadKeyRef = useRef<string>("");
 
-  const accept = useMemo(
-    () => [".heic", ".heif", "image/heic", "image/heif"],
-    []
-  );
-
-  const quality = useMemo(() => clamp(qualityPercent / 100, 0.5, 1), [qualityPercent]);
+  const accept = useMemo(() => formatExtensions(from), [from]);
+  const showQuality = to !== "png";
+  const qualitySafe = useMemo(() => clamp(qualityPercent, 50, 100), [qualityPercent]);
 
   useEffect(() => {
     if (conversion.status !== "success") return;
@@ -60,11 +63,10 @@ export function HeicToJpgClient() {
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="space-y-3">
         <h1 className="text-pretty text-3xl font-semibold tracking-tight sm:text-4xl">
-          HEIC Converter (JPG, PNG, WebP)
+          {title}
         </h1>
         <p className="max-w-3xl text-pretty text-base leading-7 text-foreground/70">
-          Convert iPhone HEIC photos instantly in your browser. Zero upload—your
-          files never leave your device.
+          {description}
         </p>
       </header>
 
@@ -73,27 +75,27 @@ export function HeicToJpgClient() {
 
         <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
           <div className="rounded-2xl border border-foreground/10 p-4">
-            <div className="text-sm font-medium">Output format</div>
-            <div className="mt-2">
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.currentTarget.value as HeicConvertFormat)}
-                className="w-full rounded-xl border border-foreground/15 bg-background px-3 py-2 text-sm"
-              >
-                <option value="jpg">JPG</option>
-                <option value="png">PNG</option>
-                <option value="webp">WebP</option>
-              </select>
+            <div className="text-sm font-medium">Conversion</div>
+            <div className="mt-2 flex flex-wrap items-center gap-2 text-sm text-foreground/70">
+              <span className="rounded-full border border-foreground/10 px-2.5 py-1 text-xs">
+                {formatLabel(from)}
+              </span>
+              <span className="text-foreground/40">→</span>
+              <span className="rounded-full border border-foreground/10 px-2.5 py-1 text-xs">
+                {formatLabel(to)}
+              </span>
             </div>
             <div className="mt-2 text-xs text-foreground/70">
-              JPG = best compatibility · PNG = transparency · WebP = smaller files
+              Runs fully in your browser (no upload).
             </div>
           </div>
 
           <div className="rounded-2xl border border-foreground/10 p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="text-sm font-medium">Quality</div>
-              <div className="text-sm text-foreground/70">{qualityPercent}%</div>
+              <div className="text-sm text-foreground/70">
+                {showQuality ? `${qualitySafe}%` : "—"}
+              </div>
             </div>
 
             <input
@@ -101,20 +103,36 @@ export function HeicToJpgClient() {
               min={50}
               max={100}
               step={1}
-              value={qualityPercent}
-              disabled={format === "png"}
+              value={qualitySafe}
+              disabled={!showQuality}
               onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
               className="mt-3 w-full"
             />
 
             <div className="mt-2 text-xs text-foreground/70">
-              {format === "png" ? "Quality is not used for PNG." : "Higher quality = larger file."}
+              {showQuality
+                ? "Higher quality = larger file."
+                : "Quality is not used for PNG."}
             </div>
+
+            {to === "jpg" && from !== "jpg" ? (
+              <label className="mt-3 flex items-start gap-2 text-xs text-foreground/70">
+                <input
+                  type="checkbox"
+                  checked={fillWhiteForJpg}
+                  onChange={(e) => setFillWhiteForJpg(e.currentTarget.checked)}
+                  className="mt-0.5"
+                />
+                <span>
+                  Fill transparent background with white (recommended for JPG)
+                </span>
+              </label>
+            ) : null}
           </div>
         </div>
 
         <FileUploader
-          label="Upload HEIC photos"
+          label={`Upload ${formatLabel(from)} images`}
           helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)} each. Paste from clipboard also works.`}
           accept={accept}
           multiple
@@ -147,7 +165,7 @@ export function HeicToJpgClient() {
                       </div>
                     </div>
                     <span className="shrink-0 rounded-full border border-foreground/10 px-2.5 py-1 text-xs text-foreground/70">
-                      HEIC
+                      {formatLabel(from)}
                     </span>
                   </div>
                 </li>
@@ -160,10 +178,11 @@ export function HeicToJpgClient() {
                 disabled={!conversion.canRun}
                 onClick={async () => {
                   await conversion.run(async ({ files, signal, onProgress }) => {
-                    const outputs = await heicFilesConvert({
+                    const outputs = await convertImageFiles({
                       files,
-                      format,
-                      quality,
+                      to,
+                      qualityPercent: qualitySafe,
+                      fillJpgWhite: fillWhiteForJpg,
                       signal,
                       onProgress,
                     });
@@ -179,7 +198,7 @@ export function HeicToJpgClient() {
                 }}
                 className="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                Convert to {formatLabel(format)}
+                Convert to {formatLabel(to)}
               </button>
 
               {conversion.status === "running" ? (
@@ -235,7 +254,7 @@ export function HeicToJpgClient() {
                         <div className="min-w-0">
                           <div className="truncate text-sm font-medium">{out.filename}</div>
                           <div className="text-xs text-foreground/60">
-                            {formatLabel(format)}
+                            {formatLabel(to)}
                             {before > 0 ? (
                               <>
                                 {" · "}
@@ -267,15 +286,6 @@ export function HeicToJpgClient() {
             ) : null}
           </div>
         ) : null}
-      </section>
-
-      <section className="mt-10 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
-        <h2 className="text-lg font-semibold">Tips</h2>
-        <ul className="mt-3 space-y-2 text-sm text-foreground/70">
-          <li>• If Windows can’t open HEIC, converting to JPG fixes that.</li>
-          <li>• Large photos may take longer on low-memory devices.</li>
-          <li>• Your files stay on-device; no upload required.</li>
-        </ul>
       </section>
     </div>
   );

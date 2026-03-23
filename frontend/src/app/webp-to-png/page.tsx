@@ -4,11 +4,11 @@ import { RelatedTools } from "@/components/RelatedTools";
 import { ToolSchema } from "@/components/ToolSchema";
 import { generateToolMetadata, getTool } from "@/lib/seo";
 
-const tool = getTool("jpg-to-png");
+const tool = getTool("webp-to-png");
 
 export const metadata: Metadata = generateToolMetadata(tool);
 
-export default function JpgToPngPage() {
+export default function WebpToPngPage() {
   const faq = tool.faqs ?? [];
 
   return (
@@ -16,9 +16,9 @@ export default function JpgToPngPage() {
       <ToolSchema tool={tool} />
 
       <FormatConvertClient
-        from="jpg"
+        from="webp"
         to="png"
-        title="JPG to PNG Converter"
+        title="WebP to PNG Converter"
         description={tool.description}
       />
 
@@ -39,7 +39,7 @@ export default function JpgToPngPage() {
           </section>
         ) : null}
 
-        <RelatedTools currentSlug="jpg-to-png" />
+        <RelatedTools currentSlug="webp-to-png" />
       </div>
     </>
   );

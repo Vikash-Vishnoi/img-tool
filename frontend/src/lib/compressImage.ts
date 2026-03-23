@@ -28,7 +28,7 @@ export async function compressImage(args: {
 
   const quality = clamp(options.quality, 0.05, 1);
   const targetSizeMB = clamp(options.targetSizeMB, 0.05, 50);
-  const maxWidthOrHeight = clamp(options.maxWidth, 320, 8000);
+  const maxWidthOrHeight = clamp(options.maxWidth, 320, 30000);
 
   try {
     const outFile: File = await imageCompression(file, {

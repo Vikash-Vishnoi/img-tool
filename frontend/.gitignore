@@ -17,6 +17,9 @@
 /.next/
 /out/
 
+# sitemap (generated in postbuild)
+public/sitemap*.xml
+
 # production
 /build
 
@@ -29,6 +32,7 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
+build.log
 
 # env files (can opt-in for committing if needed)
 .env*

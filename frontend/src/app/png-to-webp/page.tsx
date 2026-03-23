@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FormatConvertClient } from "@/components/FormatConvertClient";
 import { RelatedTools } from "@/components/RelatedTools";
 import { ToolSchema } from "@/components/ToolSchema";
 import { generateToolMetadata, getTool } from "@/lib/seo";
@@ -8,31 +9,38 @@ const tool = getTool("png-to-webp");
 export const metadata: Metadata = generateToolMetadata(tool);
 
 export default function PngToWebpPage() {
+  const faq = tool.faqs ?? [];
+
   return (
     <>
       <ToolSchema tool={tool} />
-      <main className="flex-1">
-        <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-          <header className="space-y-3">
-            <h1 className="text-pretty text-3xl font-semibold tracking-tight sm:text-4xl">
-              PNG to WebP Converter
-            </h1>
-            <p className="max-w-3xl text-pretty text-base leading-7 text-foreground/70">
-              Coming soon. This tool will convert PNG to WebP in your browser—free,
-              no upload, works on mobile.
-            </p>
-          </header>
 
-          <div className="mt-8 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
-            <div className="text-sm font-medium">Status</div>
-            <div className="mt-2 text-sm text-foreground/70">
-              Tool UI will be added next.
+      <FormatConvertClient
+        from="png"
+        to="webp"
+        title="PNG to WebP Converter"
+        description={tool.description}
+      />
+
+      <div className="mx-auto w-full max-w-5xl px-4 pb-14 sm:px-6 lg:px-8">
+        {faq.length > 0 ? (
+          <section className="mt-10 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
+            <h2 className="text-lg font-semibold">FAQ</h2>
+            <div className="mt-4 space-y-5">
+              {faq.map((item) => (
+                <div key={item.question} className="space-y-1">
+                  <h3 className="text-sm font-semibold">{item.question}</h3>
+                  <p className="text-sm leading-6 text-foreground/70">
+                    {item.answer}
+                  </p>
+                </div>
+              ))}
             </div>
-          </div>
+          </section>
+        ) : null}
 
-          <RelatedTools currentSlug="png-to-webp" />
-        </div>
-      </main>
+        <RelatedTools currentSlug="png-to-webp" />
+      </div>
     </>
   );
 }

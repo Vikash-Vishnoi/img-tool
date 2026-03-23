@@ -6,6 +6,8 @@ export type ConversionOutput = {
   blob: Blob;
   filename: string;
   mimeType: string;
+  originalBytes?: number;
+  originalName?: string;
 };
 
 export type ConverterFn = (args: {

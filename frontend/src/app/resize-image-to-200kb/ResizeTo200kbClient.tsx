@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FileUploader } from "@/components/FileUploader";
 import { useConversion } from "@/hooks/useConversion";
 import { resizeImageToTargetBytes } from "@/lib/resizeImage";
@@ -8,12 +8,45 @@ import { downloadBlob, formatFileSize } from "@/lib/utils";
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024;
 
+async function getImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bmp = await createImageBitmap(file);
+      const dims = { width: bmp.width, height: bmp.height };
+      bmp.close();
+      return dims;
+    } catch {
+      // Fall through to <img> decode.
+    }
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("Failed to decode image"));
+    });
+
+    const width = img.naturalWidth || 0;
+    const height = img.naturalHeight || 0;
+    if (width <= 0 || height <= 0) return null;
+    return { width, height };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 export function ResizeTo200kbClient() {
   const conversion = useConversion();
 
   const [targetKb, setTargetKb] = useState<number>(200);
   const [width, setWidth] = useState<number>(413);
   const [height, setHeight] = useState<number>(531);
+  const [originalDims, setOriginalDims] = useState<{ width: number; height: number } | null>(null);
 
   const accept = useMemo(
     () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
@@ -22,6 +55,27 @@ export function ResizeTo200kbClient() {
 
   const beforeBytes = conversion.inputFiles[0]?.size ?? 0;
   const afterBytes = conversion.outputs[0]?.blob.size ?? 0;
+
+  useEffect(() => {
+    const file = conversion.inputFiles[0];
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!file) {
+          if (!cancelled) setOriginalDims(null);
+          return;
+        }
+        const dims = await getImageDimensions(file);
+        if (!cancelled) setOriginalDims(dims);
+      } catch {
+        if (!cancelled) setOriginalDims(null);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [conversion.inputFiles]);
 
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
@@ -100,6 +154,11 @@ export function ResizeTo200kbClient() {
                     <div className="text-xs text-foreground/60">
                       {formatFileSize(conversion.inputFiles[0]!.size)}
                     </div>
+                    {originalDims ? (
+                      <div className="mt-1 text-xs text-foreground/60">
+                        Original: {originalDims.width}×{originalDims.height}px
+                      </div>
+                    ) : null}
                   </div>
                   <button
                     type="button"
@@ -180,6 +239,15 @@ export function ResizeTo200kbClient() {
                       <div className="text-sm font-medium">Result</div>
                       <div className="mt-2 text-sm text-foreground/70">
                         {formatFileSize(beforeBytes)} → {formatFileSize(afterBytes)}
+                      </div>
+                      <div className="mt-1 text-sm text-foreground/70">
+                        {originalDims ? (
+                          <>
+                            Dimensions: {originalDims.width}×{originalDims.height}px → {width}×{height}px
+                          </>
+                        ) : (
+                          <>Output dimensions: {width}×{height}px</>
+                        )}
                       </div>
                       <div className="mt-1 text-xs text-foreground/70">
                         Target: {formatFileSize(Math.round(targetKb * 1024))}

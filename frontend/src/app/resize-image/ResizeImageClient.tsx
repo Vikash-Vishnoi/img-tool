@@ -1,9 +1,9 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FileUploader } from "@/components/FileUploader";
 import { useConversion } from "@/hooks/useConversion";
-import { resizeImage } from "@/lib/resizeImage";
+import { resizeImage, resizeImageToTargetBytes } from "@/lib/resizeImage";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
 
 type PresetKey =
@@ -23,6 +23,38 @@ type Preset = {
 };
 
 const MAX_SIZE_BYTES = 30 * 1024 * 1024;
+
+async function getImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bmp = await createImageBitmap(file);
+      const dims = { width: bmp.width, height: bmp.height };
+      bmp.close();
+      return dims;
+    } catch {
+      // Fall through to <img> decode.
+    }
+  }
+
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+
+    await new Promise<void>((resolve, reject) => {
+      img.onload = () => resolve();
+      img.onerror = () => reject(new Error("Failed to decode image"));
+    });
+
+    const width = img.naturalWidth || 0;
+    const height = img.naturalHeight || 0;
+    if (width <= 0 || height <= 0) return null;
+    return { width, height };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
 
 function mmToPx(mm: number, dpi: number): number {
   return Math.round((mm * dpi) / 25.4);
@@ -87,6 +119,11 @@ export function ResizeImageClient() {
   const [customHeight, setCustomHeight] = useState<number>(preset.height);
   const [aspectRatio, setAspectRatio] = useState<number>(preset.width / preset.height);
 
+  const [originalDims, setOriginalDims] = useState<{ width: number; height: number } | null>(null);
+
+  const [enableTargetSize, setEnableTargetSize] = useState<boolean>(false);
+  const [targetKb, setTargetKb] = useState<number>(200);
+
   const accept = useMemo(
     () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
     []
@@ -103,14 +140,35 @@ export function ResizeImageClient() {
   const beforeBytes = conversion.inputFiles[0]?.size ?? 0;
   const afterBytes = conversion.outputs[0]?.blob.size ?? 0;
 
+  useEffect(() => {
+    const file = conversion.inputFiles[0];
+    let cancelled = false;
+    (async () => {
+      try {
+        if (!file) {
+          if (!cancelled) setOriginalDims(null);
+          return;
+        }
+        const dims = await getImageDimensions(file);
+        if (!cancelled) setOriginalDims(dims);
+      } catch {
+        if (!cancelled) setOriginalDims(null);
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [conversion.inputFiles]);
+
   return (
     <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
       <header className="space-y-3">
         <h1 className="text-pretty text-3xl font-semibold tracking-tight sm:text-4xl">
-          Resize Image
+          Image Resizer
         </h1>
         <p className="max-w-3xl text-pretty text-base leading-7 text-foreground/70">
-          Resize photos for passport, Aadhar, WhatsApp, Instagram, and more.
+          Resize images by pixels or pick a preset size (passport photo, Aadhaar, WhatsApp DP, Instagram, Facebook cover). Optionally target a file size like 200KB.
         </p>
       </header>
 
@@ -208,6 +266,43 @@ export function ResizeImageClient() {
                 </div>
               </div>
             ) : null}
+
+            <div className="mt-5 rounded-2xl border border-foreground/10 p-4">
+              <div className="flex items-start justify-between gap-3">
+                <div>
+                  <div className="text-sm font-medium">Resize to exact file size</div>
+                  <div className="mt-1 text-xs text-foreground/70">
+                    Uses a JPEG quality binary search to get under the target.
+                  </div>
+                </div>
+                <label className="inline-flex items-center gap-2 text-sm text-foreground/70">
+                  <input
+                    type="checkbox"
+                    checked={enableTargetSize}
+                    onChange={(e) => setEnableTargetSize(e.currentTarget.checked)}
+                  />
+                  Enable
+                </label>
+              </div>
+
+              <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <label className="block">
+                  <div className="text-xs text-foreground/70">Target (KB)</div>
+                  <input
+                    type="number"
+                    min={20}
+                    value={targetKb}
+                    disabled={!enableTargetSize}
+                    onChange={(e) => setTargetKb(Number(e.currentTarget.value))}
+                    className="mt-1 w-full rounded-xl border border-foreground/15 bg-background px-3 py-2 text-sm disabled:opacity-60"
+                  />
+                </label>
+
+                <div className="text-xs text-foreground/70 sm:pt-6">
+                  Output: JPEG
+                </div>
+              </div>
+            </div>
           </div>
 
           <div>
@@ -232,6 +327,11 @@ export function ResizeImageClient() {
                     <div className="text-xs text-foreground/60">
                       {formatFileSize(conversion.inputFiles[0]!.size)}
                     </div>
+                    {originalDims ? (
+                      <div className="mt-1 text-xs text-foreground/60">
+                        Original: {originalDims.width}×{originalDims.height}px
+                      </div>
+                    ) : null}
                   </div>
                   <button
                     type="button"
@@ -248,8 +348,32 @@ export function ResizeImageClient() {
                     disabled={!conversion.canRun}
                     onClick={async () => {
                       await conversion.run(async ({ files, signal, onProgress }) => {
+                        const file = files[0]!;
+
+                        if (enableTargetSize) {
+                          const result = await resizeImageToTargetBytes({
+                            file,
+                            width: target.width,
+                            height: target.height,
+                            targetBytes: Math.round(Math.max(20, targetKb) * 1024),
+                            signal,
+                            maxIterations: 12,
+                            onProgress,
+                          });
+
+                          return [
+                            {
+                              blob: result.blob,
+                              filename: result.filename,
+                              mimeType: result.mimeType,
+                              originalBytes: result.originalBytes,
+                              originalName: file.name,
+                            },
+                          ];
+                        }
+
                         const result = await resizeImage({
-                          file: files[0]!,
+                          file,
                           options: {
                             width: target.width,
                             height: target.height,
@@ -265,6 +389,8 @@ export function ResizeImageClient() {
                             blob: result.blob,
                             filename: result.filename,
                             mimeType: result.mimeType,
+                            originalBytes: result.originalBytes,
+                            originalName: file.name,
                           },
                         ];
                       });
@@ -316,8 +442,19 @@ export function ResizeImageClient() {
                         {formatFileSize(beforeBytes)} → {formatFileSize(afterBytes)}
                       </div>
                       <div className="mt-1 text-sm text-foreground/70">
-                        Output size: {target.width}×{target.height}px
+                        {originalDims ? (
+                          <>
+                            Dimensions: {originalDims.width}×{originalDims.height}px → {target.width}×{target.height}px
+                          </>
+                        ) : (
+                          <>Output dimensions: {target.width}×{target.height}px</>
+                        )}
                       </div>
+                      {enableTargetSize ? (
+                        <div className="mt-1 text-xs text-foreground/70">
+                          Target: {formatFileSize(Math.round(Math.max(20, targetKb) * 1024))} (JPEG)
+                        </div>
+                      ) : null}
                     </div>
 
                     <button
