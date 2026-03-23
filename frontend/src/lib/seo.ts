@@ -19,7 +19,7 @@ export const TOOLS = [
   {
     slug: "heic-to-jpg",
     path: "/heic-to-jpg",
-    title: "HEIC to JPG Converter — Free, Instant, No Upload Needed",
+    title: "HEIC to JPG Converter — Free, No Install, Files Stay Private",
     description:
       "Convert iPhone HEIC photos to JPG free in your browser. No upload needed. Works on mobile in India (Android/iPhone) and on Windows/Mac.",
     keywords: ["heic to jpg", "convert heic", "iphone photo converter", "india"],

@@ -2,6 +2,7 @@
 
 import { useMemo } from "react";
 import { FileUploader } from "@/components/FileUploader";
+import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { useConversion } from "@/hooks/useConversion";
 import { heicFilesToJpg } from "@/lib/heicToJpg";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
@@ -29,6 +30,7 @@ export function HeicToJpgClient() {
       </header>
 
       <section className="mt-8 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
+        <PrivacyBadge className="mb-5" />
         <FileUploader
           label="Upload HEIC photos"
           helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)} each. Paste from clipboard also works.`}
