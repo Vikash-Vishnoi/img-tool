@@ -1,7 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
+import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
 import { resizeImage, resizeImageToTargetBytes } from "@/lib/resizeImage";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
@@ -11,7 +13,13 @@ type PresetKey =
   | "aadhar"
   | "whatsapp-dp"
   | "instagram"
+  | "instagram-story"
+  | "youtube-thumbnail"
+  | "facebook-post"
   | "facebook-cover"
+  | "signature"
+  | "photo-2x2"
+  | "product-square"
   | "custom";
 
 type Preset = {
@@ -22,45 +30,95 @@ type Preset = {
   helper: string;
 };
 
-const MAX_SIZE_BYTES = 30 * 1024 * 1024;
-
-async function getImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
-  if (typeof createImageBitmap === "function") {
-    try {
-      const bmp = await createImageBitmap(file);
-      const dims = { width: bmp.width, height: bmp.height };
-      bmp.close();
-      return dims;
-    } catch {
-      // Fall through to <img> decode.
-    }
-  }
-
-  const url = URL.createObjectURL(file);
-  try {
-    const img = new Image();
-    img.decoding = "async";
-    img.src = url;
-
-    await new Promise<void>((resolve, reject) => {
-      img.onload = () => resolve();
-      img.onerror = () => reject(new Error("Failed to decode image"));
-    });
-
-    const width = img.naturalWidth || 0;
-    const height = img.naturalHeight || 0;
-    if (width <= 0 || height <= 0) return null;
-    return { width, height };
-  } finally {
-    URL.revokeObjectURL(url);
-  }
-}
+const MAX_SIZE_BYTES = 100 * 1024 * 1024;
 
 function mmToPx(mm: number, dpi: number): number {
   return Math.round((mm * dpi) / 25.4);
 }
 
-export function ResizeImageClient() {
+function outputTypeForFile(file: File): "image/jpeg" | "image/png" | "image/webp" {
+  const type = file.type.toLowerCase();
+  if (type === "image/png") return "image/png";
+  if (type === "image/webp") return "image/webp";
+  return "image/jpeg";
+}
+
+function isHeicLike(file: File): boolean {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".heic") || name.endsWith(".heif")) return true;
+
+  const type = file.type.toLowerCase();
+  return type === "image/heic" || type === "image/heif";
+}
+
+async function normalizeResizeInputFile(args: {
+  file: File;
+  signal: AbortSignal;
+}): Promise<File> {
+  const { file, signal } = args;
+  if (!isHeicLike(file)) return file;
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+  const { default: heic2any } = await import("heic2any");
+  const converted = await heic2any({
+    blob: file,
+    toType: "image/png",
+  });
+
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+  const blob = Array.isArray(converted) ? converted[0] : converted;
+  if (!(blob instanceof Blob)) {
+    throw new Error(`Could not convert HEIC file: ${file.name}`);
+  }
+
+  const baseName = file.name.replace(/\.(heic|heif)$/i, "") || "image";
+  return new File([blob], `${baseName}.png`, { type: "image/png" });
+}
+
+async function getImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
+  if (typeof createImageBitmap === "function") {
+    try {
+      const bitmap = await createImageBitmap(file);
+      const dims = { width: bitmap.width, height: bitmap.height };
+      bitmap.close();
+      if (dims.width > 0 && dims.height > 0) return dims;
+    } catch {
+      // Fall back to HTMLImageElement decoding if bitmap decode fails.
+    }
+  }
+
+  return await new Promise((resolve) => {
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+
+    img.onload = () => {
+      const width = img.naturalWidth || 0;
+      const height = img.naturalHeight || 0;
+      URL.revokeObjectURL(url);
+      resolve(width > 0 && height > 0 ? { width, height } : null);
+    };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(url);
+      resolve(null);
+    };
+
+    img.src = url;
+  });
+}
+
+type ResizeImageClientProps = {
+  fixedTargetKb?: number;
+  hideTargetSizeBox?: boolean;
+  defaultPresetKey?: PresetKey;
+};
+
+export function ResizeImageClient({
+  fixedTargetKb,
+  hideTargetSizeBox = false,
+  defaultPresetKey = "custom",
+}: ResizeImageClientProps = {}) {
   const conversion = useConversion();
 
   const presets = useMemo<Preset[]>(() => {
@@ -68,7 +126,7 @@ export function ResizeImageClient() {
     return [
       {
         key: "passport-india",
-        title: "Passport photo India",
+        title: "Passport photo",
         width: 413,
         height: 531,
         helper: "35×45mm (413×531px @ 300dpi)",
@@ -95,11 +153,53 @@ export function ResizeImageClient() {
         helper: "1080×1080px",
       },
       {
+        key: "instagram-story",
+        title: "Instagram story / reel",
+        width: 1080,
+        height: 1920,
+        helper: "1080×1920px",
+      },
+      {
+        key: "youtube-thumbnail",
+        title: "YouTube thumbnail",
+        width: 1280,
+        height: 720,
+        helper: "1280×720px",
+      },
+      {
+        key: "facebook-post",
+        title: "Facebook post",
+        width: 1200,
+        height: 630,
+        helper: "1200×630px",
+      },
+      {
         key: "facebook-cover",
         title: "Facebook cover",
         width: 820,
         height: 312,
         helper: "820×312px",
+      },
+      {
+        key: "signature",
+        title: "Signature upload",
+        width: 400,
+        height: 150,
+        helper: "400×150px",
+      },
+      {
+        key: "photo-2x2",
+        title: "2×2 inch photo",
+        width: 600,
+        height: 600,
+        helper: "600×600px @ 300dpi",
+      },
+      {
+        key: "product-square",
+        title: "Product image square",
+        width: 1000,
+        height: 1000,
+        helper: "1000×1000px",
       },
       {
         key: "custom",
@@ -111,21 +211,36 @@ export function ResizeImageClient() {
     ];
   }, []);
 
-  const [presetKey, setPresetKey] = useState<PresetKey>("passport-india");
+  const [presetKey, setPresetKey] = useState<PresetKey>(defaultPresetKey);
   const preset = presets.find((p) => p.key === presetKey) ?? presets[0];
 
-  const [lockAspect, setLockAspect] = useState(true);
+  const [lockAspect, setLockAspect] = useState(false);
   const [customWidth, setCustomWidth] = useState<number>(preset.width);
   const [customHeight, setCustomHeight] = useState<number>(preset.height);
+  const [customWidthInput, setCustomWidthInput] = useState<string>(String(preset.width));
+  const [customHeightInput, setCustomHeightInput] = useState<string>(String(preset.height));
   const [aspectRatio, setAspectRatio] = useState<number>(preset.width / preset.height);
 
-  const [originalDims, setOriginalDims] = useState<{ width: number; height: number } | null>(null);
-
-  const [enableTargetSize, setEnableTargetSize] = useState<boolean>(false);
-  const [targetKb, setTargetKb] = useState<number>(200);
+  const [targetKbInput, setTargetKbInput] = useState<string>(
+    fixedTargetKb !== undefined ? String(Math.max(20, Math.round(fixedTargetKb))) : ""
+  );
 
   const accept = useMemo(
-    () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
+    () => [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/avif",
+      "image/heic",
+      "image/heif",
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".webp",
+      ".avif",
+      ".heic",
+      ".heif",
+    ],
     []
   );
 
@@ -137,83 +252,124 @@ export function ResizeImageClient() {
     };
   }, [customHeight, customWidth, preset.height, preset.width, presetKey]);
 
-  const beforeBytes = conversion.inputFiles[0]?.size ?? 0;
-  const afterBytes = conversion.outputs[0]?.blob.size ?? 0;
+  const parsedTargetKb = useMemo(() => {
+    if (fixedTargetKb !== undefined) {
+      if (!Number.isFinite(fixedTargetKb)) return null;
+      return Math.max(20, Math.round(fixedTargetKb));
+    }
+
+    const raw = targetKbInput.trim();
+    if (!raw) return null;
+
+    const value = Number(raw);
+    if (!Number.isFinite(value)) return null;
+
+    return Math.max(20, Math.round(value));
+  }, [fixedTargetKb, targetKbInput]);
+
+  const usesTargetSize = parsedTargetKb !== null;
 
   useEffect(() => {
-    const file = conversion.inputFiles[0];
     let cancelled = false;
+
+    const firstFile = conversion.inputFiles[0];
+    if (!firstFile) return;
+    if (presetKey !== "custom") return;
+
     (async () => {
-      try {
-        if (!file) {
-          if (!cancelled) setOriginalDims(null);
-          return;
-        }
-        const dims = await getImageDimensions(file);
-        if (!cancelled) setOriginalDims(dims);
-      } catch {
-        if (!cancelled) setOriginalDims(null);
-      }
+      const dims = await getImageDimensions(firstFile);
+      if (!dims || cancelled) return;
+
+      setCustomWidth(dims.width);
+      setCustomHeight(dims.height);
+      setCustomWidthInput(String(dims.width));
+      setCustomHeightInput(String(dims.height));
+      setAspectRatio(dims.width / dims.height);
     })();
 
     return () => {
       cancelled = true;
     };
-  }, [conversion.inputFiles]);
+  }, [conversion.inputFiles, presetKey]);
+
+  const beforeBytes = useMemo(
+    () => conversion.inputFiles.reduce((sum, file) => sum + file.size, 0),
+    [conversion.inputFiles]
+  );
+  const afterBytes = useMemo(
+    () => conversion.outputs.reduce((sum, out) => sum + out.blob.size, 0),
+    [conversion.outputs]
+  );
+
+  const selectPreset = (nextKey: PresetKey) => {
+    setPresetKey(nextKey);
+    const selected = presets.find((p) => p.key === nextKey);
+    if (selected && nextKey !== "custom") {
+      setCustomWidth(selected.width);
+      setCustomHeight(selected.height);
+      setCustomWidthInput(String(selected.width));
+      setCustomHeightInput(String(selected.height));
+      setAspectRatio(selected.width / selected.height);
+    }
+  };
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="space-y-3">
-        <h1 className="text-pretty text-3xl font-semibold tracking-tight sm:text-4xl">
+    <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+      <header className="space-y-3 text-center">
+        <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#d4cfc4] bg-[#ede8df] px-4 py-2 text-xs font-semibold text-[#6b6760]">
+          <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#e8672a] text-white">✦</span>
+          Resize presets for forms and social
+        </div>
+        <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
           Image Resizer
         </h1>
-        <p className="max-w-3xl text-pretty text-base leading-7 text-foreground/70">
+        <p className="mx-auto max-w-3xl text-pretty text-base leading-7 text-[#6b6760]">
           Resize images by pixels or pick a preset size (passport photo, Aadhaar, WhatsApp DP, Instagram, Facebook cover). Optionally target a file size like 200KB.
         </p>
       </header>
 
-      <section className="mt-8 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
+      <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
-            <div className="text-sm font-medium">Preset sizes</div>
-            <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {presets.map((p) => {
-                const active = p.key === presetKey;
-                return (
-                  <button
-                    key={p.key}
-                    type="button"
-                    onClick={() => {
-                      setPresetKey(p.key);
-                      if (p.key !== "custom") {
-                        setCustomWidth(p.width);
-                        setCustomHeight(p.height);
-                        setAspectRatio(p.width / p.height);
-                      }
-                    }}
-                    className={
-                      "rounded-2xl border p-4 text-left transition-colors " +
-                      (active
-                        ? "border-foreground/30 bg-foreground/[0.04]"
-                        : "border-foreground/10 hover:bg-foreground/[0.03]")
-                    }
-                  >
-                    <div className="text-sm font-semibold">{p.title}</div>
-                    <div className="mt-1 text-xs text-foreground/70">{p.helper}</div>
-                  </button>
-                );
-              })}
+            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Preset sizes</div>
+            <div className="mt-3 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <AppDropdown
+                value={presetKey}
+                onChange={selectPreset}
+                ariaLabel="Preset sizes"
+                options={presets.map((p) => ({
+                  value: p.key,
+                  label: p.title,
+                  helper: p.helper,
+                }))}
+                buttonClassName="inline-flex w-full items-center justify-between gap-2 rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-left text-sm font-semibold text-[#1c1a14] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition hover:border-[#e8672a]/55 focus:outline-none focus:ring-2 focus:ring-[#e8672a]/25"
+                menuClassName="z-30 w-full overflow-hidden rounded-xl border border-[#d4cfc4] bg-white p-1.5 shadow-[0_12px_28px_rgba(28,26,20,0.14)]"
+                renderButtonContent={(selected) => (
+                  <span className="min-w-0">
+                    <span className="block truncate">{selected.label}</span>
+                    <span className="block truncate text-xs font-medium text-[#6b6760]">{selected.helper}</span>
+                  </span>
+                )}
+                renderOptionContent={(option, active) => (
+                  <span className="min-w-0">
+                    <span className="block truncate">{option.label}</span>
+                    <span className={"block truncate text-xs font-medium " + (active ? "text-[#f7f3ec]/85" : "text-[#6b6760]")}>{option.helper}</span>
+                  </span>
+                )}
+              />
+              <div className="mt-2 text-xs text-[#6b6760]">{preset.helper}</div>
             </div>
 
             {presetKey === "custom" ? (
-              <div className="mt-5 rounded-2xl border border-foreground/10 p-4">
+              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-sm font-medium">Custom size (px)</div>
-                  <label className="inline-flex items-center gap-2 text-sm text-foreground/70">
+                  <label className="inline-flex items-center gap-2 text-sm text-[#6b6760]">
                     <input
                       type="checkbox"
                       checked={lockAspect}
                       onChange={(e) => setLockAspect(e.currentTarget.checked)}
+                      className="accent-[#e8672a]"
                     />
                     Lock aspect ratio
                   </label>
@@ -221,126 +377,175 @@ export function ResizeImageClient() {
 
                 <div className="mt-3 grid grid-cols-2 gap-3">
                   <label className="block">
-                    <div className="text-xs text-foreground/70">Width</div>
+                    <div className="text-xs text-[#6b6760]">Width</div>
                     <input
                       type="number"
                       min={1}
-                      value={customWidth}
+                      value={customWidthInput}
                       onChange={(e) => {
-                        const nextW = Number(e.currentTarget.value);
+                        const raw = e.currentTarget.value;
+                        setCustomWidthInput(raw);
+                        if (raw.trim() === "") return;
+
+                        const nextW = Number(raw);
                         if (!Number.isFinite(nextW) || nextW <= 0) return;
                         setCustomWidth(nextW);
                         if (lockAspect) {
-                          setCustomHeight(Math.round(nextW / aspectRatio));
+                          const nextH = Math.round(nextW / aspectRatio);
+                          setCustomHeight(nextH);
+                          setCustomHeightInput(String(nextH));
                         } else {
                           setAspectRatio(nextW / Math.max(1, customHeight));
                         }
                       }}
-                      className="mt-1 w-full rounded-xl border border-foreground/15 bg-background px-3 py-2 text-sm"
+                      onBlur={() => {
+                        if (customWidthInput.trim() === "") {
+                          setCustomWidthInput(String(customWidth));
+                          return;
+                        }
+
+                        const parsed = Number(customWidthInput);
+                        if (!Number.isFinite(parsed) || parsed <= 0) {
+                          setCustomWidthInput(String(customWidth));
+                          return;
+                        }
+
+                        const rounded = Math.round(parsed);
+                        setCustomWidth(rounded);
+                        setCustomWidthInput(String(rounded));
+                      }}
+                      className="mt-1 w-full rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-sm"
                     />
                   </label>
 
                   <label className="block">
-                    <div className="text-xs text-foreground/70">Height</div>
+                    <div className="text-xs text-[#6b6760]">Height</div>
                     <input
                       type="number"
                       min={1}
-                      value={customHeight}
+                      value={customHeightInput}
                       onChange={(e) => {
-                        const nextH = Number(e.currentTarget.value);
+                        const raw = e.currentTarget.value;
+                        setCustomHeightInput(raw);
+                        if (raw.trim() === "") return;
+
+                        const nextH = Number(raw);
                         if (!Number.isFinite(nextH) || nextH <= 0) return;
                         setCustomHeight(nextH);
                         if (lockAspect) {
-                          setCustomWidth(Math.round(nextH * aspectRatio));
+                          const nextW = Math.round(nextH * aspectRatio);
+                          setCustomWidth(nextW);
+                          setCustomWidthInput(String(nextW));
                         } else {
                           setAspectRatio(Math.max(1, customWidth) / nextH);
                         }
                       }}
-                      className="mt-1 w-full rounded-xl border border-foreground/15 bg-background px-3 py-2 text-sm"
+                      onBlur={() => {
+                        if (customHeightInput.trim() === "") {
+                          setCustomHeightInput(String(customHeight));
+                          return;
+                        }
+
+                        const parsed = Number(customHeightInput);
+                        if (!Number.isFinite(parsed) || parsed <= 0) {
+                          setCustomHeightInput(String(customHeight));
+                          return;
+                        }
+
+                        const rounded = Math.round(parsed);
+                        setCustomHeight(rounded);
+                        setCustomHeightInput(String(rounded));
+                      }}
+                      className="mt-1 w-full rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-sm"
                     />
                   </label>
                 </div>
 
-                <div className="mt-2 text-xs text-foreground/70">
-                  Output will be exactly {target.width}×{target.height}px.
-                </div>
               </div>
             ) : null}
 
-            <div className="mt-5 rounded-2xl border border-foreground/10 p-4">
-              <div className="flex items-start justify-between gap-3">
-                <div>
-                  <div className="text-sm font-medium">Resize to exact file size</div>
-                  <div className="mt-1 text-xs text-foreground/70">
-                    Uses a JPEG quality binary search to get under the target.
-                  </div>
+            {!hideTargetSizeBox ? (
+              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <div>
+                <div className="text-sm font-medium">Resize to exact file size</div>
+                <div className="mt-1 text-xs text-[#6b6760]">
+                  Enter a size to target that output; leave blank to only resize dimensions.
                 </div>
-                <label className="inline-flex items-center gap-2 text-sm text-foreground/70">
-                  <input
-                    type="checkbox"
-                    checked={enableTargetSize}
-                    onChange={(e) => setEnableTargetSize(e.currentTarget.checked)}
-                  />
-                  Enable
-                </label>
               </div>
 
               <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
                 <label className="block">
-                  <div className="text-xs text-foreground/70">Target (KB)</div>
+                  <div className="text-xs text-[#6b6760]">Target (KB)</div>
                   <input
                     type="number"
                     min={20}
-                    value={targetKb}
-                    disabled={!enableTargetSize}
-                    onChange={(e) => setTargetKb(Number(e.currentTarget.value))}
-                    className="mt-1 w-full rounded-xl border border-foreground/15 bg-background px-3 py-2 text-sm disabled:opacity-60"
+                    value={targetKbInput}
+                    onChange={(e) => setTargetKbInput(e.currentTarget.value)}
+                    onBlur={() => {
+                      if (parsedTargetKb !== null) {
+                        setTargetKbInput(String(parsedTargetKb));
+                      }
+                    }}
+                    placeholder="Enter target size in KB"
+                    className="mt-1 w-full rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-sm"
                   />
                 </label>
 
-                <div className="text-xs text-foreground/70 sm:pt-6">
-                  Output: JPEG
+                <div className="text-xs text-[#6b6760] sm:pt-6">
+                  {usesTargetSize ? "Output: JPEG" : "Output: Original format"}
                 </div>
               </div>
-            </div>
+              </div>
+            ) : null}
           </div>
 
           <div>
             <FileUploader
-              label="Upload an image"
-              helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)}. Paste from clipboard also works.`}
+              label="Upload images"
+              helperText={`You can select multiple images (JPG, PNG, WebP, AVIF, HEIC). Max file size ${formatFileSize(MAX_SIZE_BYTES)} each.`}
               accept={accept}
-              multiple={false}
-              maxFiles={1}
+              multiple
+              maxFiles={20}
               maxSizeBytes={MAX_SIZE_BYTES}
-              onFiles={(files) => conversion.setInputFiles(files)}
+              onFiles={(files) => {
+                const merged = [...conversion.inputFiles, ...files];
+                conversion.setInputFiles(merged.slice(0, 20));
+              }}
             />
 
             {conversion.inputFiles.length > 0 ? (
-              <div className="mt-5 rounded-2xl border border-foreground/10 p-4">
-                <div className="text-sm font-medium">Selected</div>
+              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+                <div className="text-sm font-bold">Selected files</div>
                 <div className="mt-2 flex items-center justify-between gap-3">
-                  <div className="min-w-0">
-                    <div className="truncate text-sm font-semibold">
-                      {conversion.inputFiles[0]?.name}
-                    </div>
-                    <div className="text-xs text-foreground/60">
-                      {formatFileSize(conversion.inputFiles[0]!.size)}
-                    </div>
-                    {originalDims ? (
-                      <div className="mt-1 text-xs text-foreground/60">
-                        Original: {originalDims.width}×{originalDims.height}px
-                      </div>
-                    ) : null}
+                  <div className="min-w-0 text-xs text-[#6b6760]">
+                    {conversion.inputFiles.length} files · {formatFileSize(beforeBytes)}
                   </div>
                   <button
                     type="button"
-                    className="text-sm text-foreground/70 underline underline-offset-4 hover:text-foreground"
+                    className="text-sm text-[#6b6760] underline underline-offset-4 hover:text-[#1c1a14]"
                     onClick={() => conversion.reset()}
                   >
                     Clear
                   </button>
                 </div>
+
+                <ul className="mt-3 max-h-56 divide-y divide-[#ede8df] overflow-auto rounded-xl border border-[#d4cfc4] bg-white">
+                  {conversion.inputFiles.map((file, index) => (
+                    <li key={`${file.name}-${file.size}-${index}`} className="flex items-center justify-between gap-3 px-3 py-2.5">
+                      <div className="min-w-0">
+                        <div className="truncate text-sm font-semibold">{file.name}</div>
+                        <div className="text-xs text-[#6b6760]">{formatFileSize(file.size)}</div>
+                      </div>
+                      <RemoveButton
+                        onClick={() => {
+                          conversion.setInputFiles(
+                            conversion.inputFiles.filter((_, fileIndex) => fileIndex !== index)
+                          );
+                        }}
+                      />
+                    </li>
+                  ))}
+                </ul>
 
                 <div className="mt-4 flex flex-wrap items-center gap-3">
                   <button
@@ -348,54 +553,77 @@ export function ResizeImageClient() {
                     disabled={!conversion.canRun}
                     onClick={async () => {
                       await conversion.run(async ({ files, signal, onProgress }) => {
-                        const file = files[0]!;
+                        const total = Math.max(1, files.length);
 
-                        if (enableTargetSize) {
-                          const result = await resizeImageToTargetBytes({
-                            file,
-                            width: target.width,
-                            height: target.height,
-                            targetBytes: Math.round(Math.max(20, targetKb) * 1024),
-                            signal,
-                            maxIterations: 12,
-                            onProgress,
-                          });
+                        if (usesTargetSize) {
+                          const outputs = [];
+                          for (let i = 0; i < files.length; i += 1) {
+                            const file = files[i]!;
+                            const normalizedFile = await normalizeResizeInputFile({
+                              file,
+                              signal,
+                            });
+                            const result = await resizeImageToTargetBytes({
+                              file: normalizedFile,
+                              width: target.width,
+                              height: target.height,
+                              targetBytes: Math.round(parsedTargetKb * 1024),
+                              signal,
+                              maxIterations: 12,
+                              onProgress: (percent) => {
+                                const done = i + percent / 100;
+                                onProgress(Math.round((done / total) * 100));
+                              },
+                            });
 
-                          return [
-                            {
+                            outputs.push({
                               blob: result.blob,
                               filename: result.filename,
                               mimeType: result.mimeType,
                               originalBytes: result.originalBytes,
                               originalName: file.name,
-                            },
-                          ];
+                            });
+                          }
+
+                          return outputs;
                         }
 
-                        const result = await resizeImage({
-                          file,
-                          options: {
-                            width: target.width,
-                            height: target.height,
-                            outputType: "image/jpeg",
-                            quality: 0.92,
-                          },
-                          signal,
-                        });
+                        const outputs = [];
+                        for (let i = 0; i < files.length; i += 1) {
+                          const file = files[i]!;
+                          const normalizedFile = await normalizeResizeInputFile({
+                            file,
+                            signal,
+                          });
+                          // Keep original format/quality by default; explicit target-size mode does compression.
+                          const outputType = outputTypeForFile(normalizedFile);
+                          const result = await resizeImage({
+                            file: normalizedFile,
+                            options: {
+                              width: target.width,
+                              height: target.height,
+                              outputType,
+                              quality: outputType === "image/png" ? undefined : 1,
+                              enhanceDownscale: true,
+                              sharpenAmount: 0.4,
+                            },
+                            signal,
+                          });
 
-                        onProgress(100);
-                        return [
-                          {
+                          outputs.push({
                             blob: result.blob,
                             filename: result.filename,
                             mimeType: result.mimeType,
                             originalBytes: result.originalBytes,
                             originalName: file.name,
-                          },
-                        ];
+                          });
+                          onProgress(Math.round(((i + 1) / total) * 100));
+                        }
+
+                        return outputs;
                       });
                     }}
-                    className="inline-flex items-center justify-center rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="inline-flex items-center justify-center rounded-full bg-[#e8672a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff8c5a] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     Resize
                   </button>
@@ -404,13 +632,13 @@ export function ResizeImageClient() {
                     <button
                       type="button"
                       onClick={() => conversion.cancel()}
-                      className="inline-flex items-center justify-center rounded-full border border-foreground/20 px-5 py-2.5 text-sm font-medium transition-colors hover:bg-foreground/[0.03]"
+                      className="inline-flex items-center justify-center rounded-full border border-[#d4cfc4] px-5 py-2.5 text-sm font-medium transition hover:bg-[#f7f3ec]"
                     >
                       Cancel
                     </button>
                   ) : null}
 
-                  <div className="text-sm text-foreground/70">
+                  <div className="text-sm text-[#6b6760]">
                     {conversion.status === "running"
                       ? `Resizing… ${conversion.progress}%`
                       : null}
@@ -419,9 +647,9 @@ export function ResizeImageClient() {
 
                 {conversion.status === "running" ? (
                   <div className="mt-4">
-                    <div className="h-2 w-full overflow-hidden rounded-full bg-foreground/10">
+                    <div className="h-2 w-full overflow-hidden rounded-full bg-[#ede8df]">
                       <div
-                        className="h-full bg-foreground transition-[width]"
+                        className="h-full bg-[#e8672a] transition-[width]"
                         style={{ width: `${conversion.progress}%` }}
                       />
                     </div>
@@ -429,44 +657,45 @@ export function ResizeImageClient() {
                 ) : null}
 
                 {conversion.error ? (
-                  <div className="mt-4 rounded-xl border border-red-500/20 bg-red-500/5 p-3 text-sm text-red-600 dark:text-red-400">
+                  <div className="mt-4 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
                     {conversion.error}
                   </div>
                 ) : null}
 
                 {conversion.status === "success" && conversion.outputs.length > 0 ? (
                   <div className="mt-5 space-y-3">
-                    <div className="rounded-2xl border border-foreground/10 p-4">
-                      <div className="text-sm font-medium">Result</div>
-                      <div className="mt-2 text-sm text-foreground/70">
+                    <div className="rounded-xl border border-[#b8ddc9] bg-[#e8f5ee] p-4">
+                      <div className="text-sm font-semibold text-[#2a7a5e]">Result</div>
+                      <div className="mt-2 text-sm text-[#2a7a5e]">
                         {formatFileSize(beforeBytes)} → {formatFileSize(afterBytes)}
                       </div>
-                      <div className="mt-1 text-sm text-foreground/70">
-                        {originalDims ? (
-                          <>
-                            Dimensions: {originalDims.width}×{originalDims.height}px → {target.width}×{target.height}px
-                          </>
-                        ) : (
-                          <>Output dimensions: {target.width}×{target.height}px</>
-                        )}
+                      <div className="mt-1 text-sm text-[#2a7a5e]">
+                        Output dimensions: {target.width}×{target.height}px
                       </div>
-                      {enableTargetSize ? (
-                        <div className="mt-1 text-xs text-foreground/70">
-                          Target: {formatFileSize(Math.round(Math.max(20, targetKb) * 1024))} (JPEG)
+                      {usesTargetSize ? (
+                        <div className="mt-1 text-xs text-[#2a7a5e]">
+                          Target: {formatFileSize(Math.round(parsedTargetKb * 1024))} (JPEG)
                         </div>
                       ) : null}
                     </div>
 
-                    <button
-                      type="button"
-                      className="rounded-full bg-foreground px-5 py-2.5 text-sm font-medium text-background hover:bg-foreground/90"
-                      onClick={() => {
-                        const out = conversion.outputs[0]!;
-                        downloadBlob(out.blob, out.filename);
-                      }}
-                    >
-                      Download
-                    </button>
+                    <ul className="divide-y divide-[#d4cfc4] overflow-hidden rounded-xl border border-[#d4cfc4] bg-white">
+                      {conversion.outputs.map((out, index) => (
+                        <li key={`${out.filename}-${out.blob.size}-${index}`} className="flex items-center justify-between gap-3 px-3 py-2.5">
+                          <div className="min-w-0">
+                            <div className="truncate text-sm font-semibold">{out.filename}</div>
+                            <div className="text-xs text-[#6b6760]">{formatFileSize(out.blob.size)}</div>
+                          </div>
+                          <button
+                            type="button"
+                            className="rounded-full bg-[#2a7a5e] px-3 py-1.5 text-xs font-semibold text-white hover:opacity-90"
+                            onClick={() => downloadBlob(out.blob, out.filename)}
+                          >
+                            Download
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ) : null}
               </div>

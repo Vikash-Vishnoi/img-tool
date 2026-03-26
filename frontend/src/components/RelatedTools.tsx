@@ -21,18 +21,20 @@ export function RelatedTools({ currentSlug }: RelatedToolsProps) {
     .slice(0, 3);
 
   return (
-    <section className="mt-10 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
-      <h2 className="text-lg font-semibold">Related tools</h2>
-      <div className="mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+    <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
+      <div className="mb-1 text-xs uppercase tracking-[0.08em] text-[#6b6760]">Next up</div>
+      <h2 className="text-xl font-extrabold tracking-[-0.02em]">Related tools</h2>
+      <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {related.map((tool) => (
           <Link
             key={tool.slug}
             href={tool.path}
-            className="rounded-2xl border border-foreground/10 p-4 transition-colors hover:bg-foreground/[0.03]"
+            prefetch
+            className="rounded-xl border border-[#d4cfc4] bg-white p-4 transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_18px_rgba(28,26,20,0.08)]"
           >
-            <div className="text-sm font-semibold">{tool.title}</div>
-            <div className="mt-1 text-sm text-foreground/70">
-              {tool.description}
+            <div className="text-sm font-bold text-[#1c1a14]">{tool.title.split("—")[0].trim()}</div>
+            <div className="mt-1 text-xs leading-5 text-[#6b6760]">
+              {tool.description.slice(0, 95)}...
             </div>
           </Link>
         ))}

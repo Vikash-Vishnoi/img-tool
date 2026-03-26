@@ -3,6 +3,8 @@ export type ResizeOptions = {
   height: number;
   outputType?: "image/jpeg" | "image/webp" | "image/png";
   quality?: number; // 0..1 used for jpeg/webp
+  enhanceDownscale?: boolean;
+  sharpenAmount?: number; // 0..1, effective mostly for downscaling
 };
 
 export type ResizeResult = {
@@ -99,6 +101,51 @@ function drawToCanvas(args: {
   return canvas;
 }
 
+function sourceDimensions(source: ImageBitmap | HTMLImageElement): { width: number; height: number } {
+  if (source instanceof ImageBitmap) {
+    return { width: source.width, height: source.height };
+  }
+  return {
+    width: source.naturalWidth || source.width,
+    height: source.naturalHeight || source.height,
+  };
+}
+
+function applySharpen(canvas: HTMLCanvasElement, amount: number): void {
+  const clamped = clamp(amount, 0, 1);
+  if (clamped <= 0) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  const { width, height } = canvas;
+  const imageData = ctx.getImageData(0, 0, width, height);
+  const src = imageData.data;
+  const out = new Uint8ClampedArray(src);
+
+  const a = clamped * 0.3;
+
+  for (let y = 1; y < height - 1; y++) {
+    for (let x = 1; x < width - 1; x++) {
+      const i = (y * width + x) * 4;
+      const left = i - 4;
+      const right = i + 4;
+      const up = i - width * 4;
+      const down = i + width * 4;
+
+      for (let c = 0; c < 3; c++) {
+        const value =
+          src[i + c] * (1 + 4 * a) -
+          a * (src[left + c] + src[right + c] + src[up + c] + src[down + c]);
+        out[i + c] = Math.max(0, Math.min(255, Math.round(value)));
+      }
+    }
+  }
+
+  imageData.data.set(out);
+  ctx.putImageData(imageData, 0, 0);
+}
+
 async function canvasToBlob(args: {
   canvas: HTMLCanvasElement;
   mimeType: string;
@@ -141,11 +188,21 @@ export async function resizeImage(args: {
 
   const outputType = options.outputType ?? "image/jpeg";
   const quality = options.quality;
+  const enhanceDownscale = options.enhanceDownscale ?? false;
+  const sharpenAmount = options.sharpenAmount ?? 0.4;
 
   const source = await decodeImage(file, signal);
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
 
+  const srcDims = sourceDimensions(source);
+
   const canvas = drawToCanvas({ source, width, height });
+
+  const downscaleRatio = Math.max(srcDims.width / width, srcDims.height / height);
+  if (enhanceDownscale && downscaleRatio > 1.2) {
+    applySharpen(canvas, sharpenAmount);
+  }
+
   const blob = await canvasToBlob({
     canvas,
     mimeType: outputType,
@@ -169,6 +226,126 @@ export async function resizeImage(args: {
 }
 
 export async function resizeImageToTargetBytes(args: {
+  file: File;
+  width: number;
+  height: number;
+  targetBytes: number;
+  signal: AbortSignal;
+  maxIterations?: number;
+  onProgress?: (percent: number) => void;
+}): Promise<ResizeToTargetResult> {
+  const workerSupported =
+    typeof window !== "undefined" &&
+    typeof Worker === "function" &&
+    typeof OffscreenCanvas === "function";
+
+  if (!workerSupported) {
+    return await resizeImageToTargetBytesMain(args);
+  }
+
+  try {
+    return await resizeImageToTargetBytesWorker(args);
+  } catch {
+    // Fall back to main-thread implementation if worker startup/execution fails.
+    return await resizeImageToTargetBytesMain(args);
+  }
+}
+
+async function resizeImageToTargetBytesWorker(args: {
+  file: File;
+  width: number;
+  height: number;
+  targetBytes: number;
+  signal: AbortSignal;
+  maxIterations?: number;
+  onProgress?: (percent: number) => void;
+}): Promise<ResizeToTargetResult> {
+  const {
+    file,
+    width,
+    height,
+    targetBytes,
+    signal,
+    maxIterations = 12,
+    onProgress,
+  } = args;
+
+  const w = assertPositiveInt(width, "Width");
+  const h = assertPositiveInt(height, "Height");
+  const target = assertPositiveInt(targetBytes, "Target size");
+
+  const worker = new Worker(new URL("./resizeImageTarget.worker.ts", import.meta.url));
+
+  return await new Promise<ResizeToTargetResult>((resolve, reject) => {
+    const cleanup = () => {
+      worker.onmessage = null;
+      worker.onerror = null;
+      signal.removeEventListener("abort", onAbort);
+      worker.terminate();
+    };
+
+    const onAbort = () => {
+      cleanup();
+      reject(new DOMException("Aborted", "AbortError"));
+    };
+
+    signal.addEventListener("abort", onAbort, { once: true });
+
+    worker.onmessage = (event: MessageEvent) => {
+      const data = event.data as
+        | { type: "progress"; percent: number }
+        | { type: "done"; blob: Blob; chosenQuality: number; metTarget: boolean }
+        | { type: "error"; message: string };
+
+      if (!data || typeof data !== "object" || !("type" in data)) return;
+
+      if (data.type === "progress") {
+        const percent = Number.isFinite(data.percent) ? clamp(Math.round(data.percent), 0, 100) : 0;
+        onProgress?.(percent);
+        return;
+      }
+
+      if (data.type === "error") {
+        cleanup();
+        reject(new Error(data.message || "Resize failed"));
+        return;
+      }
+
+      if (data.type === "done") {
+        const filename = replaceExt(file.name, "jpg");
+        cleanup();
+        resolve({
+          blob: data.blob,
+          filename,
+          mimeType: "image/jpeg",
+          originalBytes: file.size,
+          resizedBytes: data.blob.size,
+          chosenQuality: clamp(data.chosenQuality, 0.05, 0.98),
+          metTarget: data.metTarget,
+          targetBytes: target,
+        });
+      }
+    };
+
+    worker.onerror = (event) => {
+      cleanup();
+      reject(new Error(event.message || "Resize failed"));
+    };
+
+    worker.postMessage({
+      type: "run",
+      payload: {
+        file,
+        width: w,
+        height: h,
+        targetBytes: target,
+        maxIterations,
+      },
+    });
+  });
+}
+
+async function resizeImageToTargetBytesMain(args: {
   file: File;
   width: number;
   height: number;

@@ -1,6 +1,6 @@
-export type HeicOutputMimeType = "image/jpeg" | "image/png" | "image/webp";
+export type HeicOutputMimeType = "image/jpeg" | "image/png" | "image/webp" | "image/avif";
 
-export type HeicConvertFormat = "jpg" | "png" | "webp";
+export type HeicConvertFormat = "jpg" | "png" | "webp" | "avif";
 
 export type HeicConvertOutput = {
   blob: Blob;
@@ -146,6 +146,7 @@ async function encodeWebpFromBlob(args: {
 
 function toHeic2AnyType(format: HeicConvertFormat): "image/jpeg" | "image/png" {
   if (format === "png") return "image/png";
+  if (format === "avif") return "image/png";
   // For webp we convert via canvas from PNG to preserve alpha when possible.
   if (format === "webp") return "image/png";
   return "image/jpeg";
@@ -154,13 +155,37 @@ function toHeic2AnyType(format: HeicConvertFormat): "image/jpeg" | "image/png" {
 function extForFormat(format: HeicConvertFormat): string {
   if (format === "png") return "png";
   if (format === "webp") return "webp";
+  if (format === "avif") return "avif";
   return "jpg";
 }
 
 function mimeForFormat(format: HeicConvertFormat): HeicOutputMimeType {
   if (format === "png") return "image/png";
   if (format === "webp") return "image/webp";
+  if (format === "avif") return "image/avif";
   return "image/jpeg";
+}
+
+async function encodeAvifFromBlob(args: {
+  sourceBlob: Blob;
+  quality: number;
+  signal: AbortSignal;
+}): Promise<Blob> {
+  const { sourceBlob, quality, signal } = args;
+
+  const decoded = await decodeBlobToImage({ blob: sourceBlob, signal });
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+  const canvas = drawToCanvas(decoded);
+  const ctx = canvas.getContext("2d");
+  if (!ctx) throw new Error("Canvas is not supported in this browser");
+
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const { encode } = await import("@jsquash/avif");
+  const buffer = await encode(imageData, { quality: Math.round(clamp(quality, 0, 1) * 100) });
+
+  if (decoded instanceof ImageBitmap) decoded.close();
+  return new Blob([buffer], { type: "image/avif" });
 }
 
 export async function heicFilesConvert(args: {
@@ -170,7 +195,7 @@ export async function heicFilesConvert(args: {
   onProgress?: (percent: number) => void;
   quality?: number;
 }): Promise<HeicConvertOutput[]> {
-  const { files, format, signal, onProgress, quality = 0.92 } = args;
+  const { files, format, signal, onProgress, quality = 1 } = args;
 
   const { default: heic2any } = await import("heic2any");
 
@@ -224,6 +249,12 @@ export async function heicFilesConvert(args: {
                 quality: clampedQuality,
                 signal,
               })
+            : format === "avif"
+              ? await encodeAvifFromBlob({
+                  sourceBlob: blobs[i],
+                  quality: clampedQuality,
+                  signal,
+                })
             : blobs[i];
 
         results.push({

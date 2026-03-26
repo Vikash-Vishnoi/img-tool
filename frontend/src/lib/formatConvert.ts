@@ -170,7 +170,7 @@ export async function convertImageFiles(args: {
   const {
     files,
     to,
-    qualityPercent = 92,
+    qualityPercent = 100,
     fillJpgWhite = true,
     signal,
     onProgress,

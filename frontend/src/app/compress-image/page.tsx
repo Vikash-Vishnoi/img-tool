@@ -13,7 +13,7 @@ export default function CompressImagePage() {
     <>
       <ToolSchema tool={tool} />
       <CompressImageClient />
-      <div className="mx-auto w-full max-w-5xl px-4 pb-14 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-6xl px-4 pb-14 sm:px-6 lg:px-8">
         <RelatedTools currentSlug="compress-image" />
       </div>
     </>

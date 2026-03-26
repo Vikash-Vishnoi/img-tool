@@ -17,6 +17,22 @@ export type ToolDefinition = {
 
 export const TOOLS = [
   {
+    slug: "image-converter",
+    path: "/image-converter",
+    title: "Universal Image Converter — Convert Any Image Extension Online",
+    description:
+      "Upload JPG, JPEG, PNG, WebP, AVIF, or HEIC/HEIF and convert to your chosen output extension in your browser with no upload.",
+    keywords: [
+      "image converter",
+      "convert image extension",
+      "jpg png webp avif heic converter",
+      "universal image converter",
+      "no upload",
+      "india",
+    ],
+    related: ["heic-to-jpg", "compress-image", "resize-image"],
+  },
+  {
     slug: "heic-to-jpg",
     path: "/heic-to-jpg",
     title: "HEIC to JPG Converter — Free, No Install, Files Stay Private",
@@ -234,7 +250,52 @@ export const TOOLS = [
     description:
       "Convert images to a single PDF free in your browser—no upload needed. Useful for government form documents in India.",
     keywords: ["image to pdf", "jpg to pdf", "pdf converter", "india", "no upload"],
-    related: ["compress-image", "resize-image", "resize-image-to-200kb"],
+    related: ["jpg-to-pdf", "png-to-pdf", "heic-to-pdf"],
+  },
+  {
+    slug: "jpg-to-pdf",
+    path: "/jpg-to-pdf",
+    title: "JPG to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert JPG/JPEG photos into a single PDF in your browser with no upload. Free and private.",
+    keywords: ["jpg to pdf", "jpeg to pdf", "image to pdf", "india", "no upload"],
+    related: ["image-to-pdf", "png-to-pdf", "compress-image"],
+  },
+  {
+    slug: "png-to-pdf",
+    path: "/png-to-pdf",
+    title: "PNG to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert PNG images into one PDF in your browser. No upload required and works on mobile.",
+    keywords: ["png to pdf", "convert png to pdf", "pdf converter", "india", "no upload"],
+    related: ["image-to-pdf", "jpg-to-pdf", "webp-to-pdf"],
+  },
+  {
+    slug: "webp-to-pdf",
+    path: "/webp-to-pdf",
+    title: "WebP to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert WebP images into a single PDF in your browser with no upload.",
+    keywords: ["webp to pdf", "convert webp to pdf", "pdf converter", "india", "no upload"],
+    related: ["image-to-pdf", "png-to-pdf", "jpg-to-pdf"],
+  },
+  {
+    slug: "heic-to-pdf",
+    path: "/heic-to-pdf",
+    title: "HEIC to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIC photos to PDF in your browser. HEIC files are converted on-device with no upload.",
+    keywords: ["heic to pdf", "iphone heic to pdf", "pdf converter", "india", "no upload"],
+    related: ["image-to-pdf", "heic-to-jpg", "jpg-to-pdf"],
+  },
+  {
+    slug: "avif-to-pdf",
+    path: "/avif-to-pdf",
+    title: "AVIF to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert AVIF images into one PDF directly in your browser with no upload.",
+    keywords: ["avif to pdf", "convert avif to pdf", "pdf converter", "india", "no upload"],
+    related: ["image-to-pdf", "avif-to-jpg", "png-to-pdf"],
   },
 ] as const satisfies readonly ToolDefinition[];
 

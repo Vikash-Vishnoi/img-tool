@@ -22,15 +22,15 @@ export default function JpgToPngPage() {
         description={tool.description}
       />
 
-      <div className="mx-auto w-full max-w-5xl px-4 pb-14 sm:px-6 lg:px-8">
+      <div className="mx-auto w-full max-w-6xl px-4 pb-14 sm:px-6 lg:px-8">
         {faq.length > 0 ? (
-          <section className="mt-10 rounded-2xl border border-foreground/10 bg-background p-5 sm:p-6">
-            <h2 className="text-lg font-semibold">FAQ</h2>
+          <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
+            <h2 className="text-lg font-extrabold tracking-[-0.02em]">FAQ</h2>
             <div className="mt-4 space-y-5">
-              {faq.map((item) => (
-                <div key={item.question} className="space-y-1">
+              {faq.map((item, index) => (
+                <div key={`${item.question}-${index}`} className="space-y-1">
                   <h3 className="text-sm font-semibold">{item.question}</h3>
-                  <p className="text-sm leading-6 text-foreground/70">
+                  <p className="text-sm leading-6 text-[#6b6760]">
                     {item.answer}
                   </p>
                 </div>

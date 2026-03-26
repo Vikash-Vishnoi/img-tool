@@ -1,4 +1,4 @@
-import { ResizeTo200kbClient } from "./ResizeTo200kbClient";
+import { ResizeImageClient } from "../resize-image/ResizeImageClient";
 import type { Metadata } from "next";
 import { RelatedTools } from "@/components/RelatedTools";
 import { ToolSchema } from "@/components/ToolSchema";
@@ -12,8 +12,8 @@ export default function ResizeImageTo200kbPage() {
   return (
     <>
       <ToolSchema tool={tool} />
-      <ResizeTo200kbClient />
-      <div className="mx-auto w-full max-w-5xl px-4 pb-14 sm:px-6 lg:px-8">
+      <ResizeImageClient fixedTargetKb={200} hideTargetSizeBox defaultPresetKey="passport-india" />
+      <div className="mx-auto w-full max-w-6xl px-4 pb-14 sm:px-6 lg:px-8">
         <RelatedTools currentSlug="resize-image-to-200kb" />
       </div>
     </>

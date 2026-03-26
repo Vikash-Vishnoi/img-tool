@@ -1,16 +1,13 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import Link from "next/link";
+import { Syne } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const syne = Syne({
+  variable: "--font-syne",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -54,10 +51,9 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light dark",
+  colorScheme: "light",
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+    { media: "(prefers-color-scheme: light)", color: "#f7f3ec" },
   ],
 };
 
@@ -71,10 +67,85 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
+      className={`${syne.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
-        {children}
+      <body className="site-body min-h-full flex flex-col bg-background text-foreground">
+        <div aria-hidden className="grain-overlay" />
+
+        <header className="site-nav-wrap">
+          <nav className="site-nav mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
+            <Link href="/" className="site-logo" aria-label="ImgTools home" prefetch>
+              img<span className="logo-dot" />tools
+            </Link>
+
+            <div className="site-nav-links" aria-label="Primary">
+              <Link href="/" className="site-nav-link" prefetch>
+                Home
+              </Link>
+              <Link href="/compress-image" className="site-nav-link" prefetch>
+                Compress
+              </Link>
+              <Link href="/heic-to-jpg" className="site-nav-link" prefetch>
+                HEIC to JPG
+              </Link>
+              <Link href="/resize-image" className="site-nav-link" prefetch>
+                Resize
+              </Link>
+            </div>
+
+            <Link href="/" className="site-nav-cta" prefetch>
+              All tools
+            </Link>
+          </nav>
+        </header>
+
+        <div className="flex-1">{children}</div>
+
+        <footer className="site-footer mt-14">
+          <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+            <div className="footer-top">
+              <div>
+                <div className="footer-logo">
+                  img<span className="footer-dot">.</span>tools
+                </div>
+                <div className="footer-tag">Free image tools. Forever.</div>
+              </div>
+
+              <div className="footer-grid">
+                <div>
+                  <div className="footer-col-title">Tools</div>
+                  <Link href="/heic-to-jpg" className="footer-link" prefetch>
+                    HEIC to JPG
+                  </Link>
+                  <Link href="/compress-image" className="footer-link" prefetch>
+                    Compress Image
+                  </Link>
+                  <Link href="/resize-image" className="footer-link" prefetch>
+                    Resize Image
+                  </Link>
+                  <Link href="/png-to-webp" className="footer-link" prefetch>
+                    PNG to WebP
+                  </Link>
+                </div>
+                <div>
+                  <div className="footer-col-title">Site</div>
+                  <Link href="/" className="footer-link" prefetch>
+                    All tools
+                  </Link>
+                  <Link href="/image-to-pdf" className="footer-link" prefetch>
+                    Image to PDF
+                  </Link>
+                </div>
+              </div>
+            </div>
+
+            <div className="footer-bottom">
+              <p className="footer-copy">© 2026 ImgTools</p>
+              <p className="footer-made">Built for privacy-first image workflows</p>
+            </div>
+          </div>
+        </footer>
 
         {gaId ? (
           <>

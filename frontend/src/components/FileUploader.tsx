@@ -155,11 +155,11 @@ export function FileUploader({
   return (
     <div className="w-full">
       <div className="mb-2 flex items-center justify-between gap-4">
-        <label htmlFor={inputId} className="text-sm font-medium">
+        <label htmlFor={inputId} className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">
           {label}
         </label>
         {accept?.length ? (
-          <span className="text-xs text-foreground/60">{accept.join(", ")}</span>
+          <span className="max-w-[50%] truncate text-[11px] text-[#6b6760]">{accept.join(", ")}</span>
         ) : null}
       </div>
 
@@ -198,26 +198,29 @@ export function FileUploader({
         }}
         onDrop={onDrop}
         className={
-          "relative flex w-full flex-col items-center justify-center gap-2 rounded-2xl border p-6 text-center transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30 disabled:cursor-not-allowed disabled:opacity-60 " +
+          "relative flex w-full flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed p-8 text-center transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#e8672a]/40 disabled:cursor-not-allowed disabled:opacity-60 " +
           (isDragging
-            ? "border-foreground/30 bg-foreground/[0.04]"
-            : "border-foreground/15 bg-background hover:bg-foreground/[0.03]")
+            ? "border-[#e8672a] bg-[#fef0e8]"
+            : "border-[#d4cfc4] bg-[#f7f3ec] hover:border-[#e8672a] hover:bg-[#fef0e8]")
         }
         aria-label={label}
       >
-        <div className="text-sm font-medium">Drag & drop files here</div>
-        <div className="text-xs text-foreground/70">{helperText}</div>
-        <div className="mt-2 inline-flex items-center rounded-full bg-foreground px-3 py-1.5 text-xs font-medium text-background">
+        <div className="mb-1 inline-flex h-12 w-12 items-center justify-center rounded-lg border border-[#d4cfc4] bg-white text-xl">
+          📁
+        </div>
+        <div className="text-sm font-bold text-[#1c1a14]">Drop your image here</div>
+        <div className="text-xs text-[#6b6760]">{helperText}</div>
+        <div className="mt-2 inline-flex items-center rounded-full bg-[#1c1a14] px-3 py-1.5 text-xs font-semibold text-[#f7f3ec]">
           Choose files
         </div>
       </button>
 
       {errors.length > 0 ? (
-        <div className="mt-3 rounded-xl border border-red-500/20 bg-red-500/5 p-3 text-sm text-red-600 dark:text-red-400">
+        <div className="mt-3 rounded-xl border border-red-300 bg-red-50 p-3 text-sm text-red-700">
           <div className="font-medium">Upload error</div>
           <ul className="mt-1 list-disc pl-5">
-            {errors.map((message) => (
-              <li key={message}>{message}</li>
+            {errors.map((message, index) => (
+              <li key={`${message}-${index}`}>{message}</li>
             ))}
           </ul>
         </div>
