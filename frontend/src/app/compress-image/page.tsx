@@ -1,16 +1,6 @@
-import { CompressImageClient } from "./CompressImageClient";
-import type { Metadata } from "next";
-import { ToolPageShell } from "@/components/ToolPageShell";
-import { generateToolMetadata, getTool } from "@/lib/seo";
+import { createCompressToolPage } from "@/lib/pageFactories";
 
-const tool = getTool("compress-image");
+const { metadata, Page } = createCompressToolPage("compress-image");
 
-export const metadata: Metadata = generateToolMetadata(tool);
-
-export default function CompressImagePage() {
-  return (
-    <ToolPageShell tool={tool}>
-      <CompressImageClient />
-    </ToolPageShell>
-  );
-}
+export { metadata };
+export default Page;

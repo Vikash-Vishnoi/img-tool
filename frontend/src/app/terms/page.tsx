@@ -3,6 +3,12 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description: "Terms of use for Image Tools.",
+  alternates: {
+    canonical: "/terms",
+  },
+  openGraph: {
+    url: "/terms",
+  },
 };
 
 export default function TermsPage() {

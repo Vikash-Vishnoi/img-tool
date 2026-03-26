@@ -29,11 +29,11 @@ export default function Home() {
     },
     {
       title: "Compress Images",
-      description: "Reduce file size for JPG/PNG/WebP without uploading.",
+      description: "Reduce file size for JPG, PNG, WebP, AVIF, HEIC, and HEIF.",
       badge: "Browser-only",
       icon: Gauge,
       iconClassName: "text-[#087f5b] bg-[#e7f7f1] border-[#bde8d8]",
-      href: "/compress-image",
+      href: "/compress-jpg",
     },
     {
       title: "Resize Image",
@@ -52,12 +52,12 @@ export default function Home() {
       href: "/image-to-pdf",
     },
     {
-      title: "HEIC to PNG",
-      description: "Convert iPhone HEIC/HEIF photos into PNG instantly.",
-      badge: "iPhone",
+      title: "PDF to Image",
+      description: "Convert PDF pages to JPG, PNG, WebP, or AVIF instantly.",
+      badge: "PDF",
       icon: FileImage,
       iconClassName: "text-[#a63d00] bg-[#fff0e9] border-[#ffd8c7]",
-      href: "/heic-to-png",
+      href: "/pdf-to-image",
     },
     {
       title: "Government Form Photo",
@@ -111,6 +111,38 @@ export default function Home() {
     const bLabel = getToolLabel(b.title);
     return aLabel.localeCompare(bLabel);
   });
+
+  const getToolCategory = (slug: string): "Convert" | "PDF" | "Compress" | "Resize" | "Other" => {
+    if (slug.includes("pdf")) return "PDF";
+    if (slug.includes("compress")) return "Compress";
+    if (slug.includes("resize")) return "Resize";
+
+    if (
+      slug.includes("to-") ||
+      slug === "image-converter" ||
+      slug.includes("heic") ||
+      slug.includes("heif")
+    ) {
+      return "Convert";
+    }
+
+    return "Other";
+  };
+
+  const orderedCategories: Array<"Convert" | "PDF" | "Compress" | "Resize" | "Other"> = [
+    "Convert",
+    "PDF",
+    "Compress",
+    "Resize",
+    "Other",
+  ];
+
+  const groupedTools = orderedCategories
+    .map((category) => ({
+      category,
+      tools: toolsForHome.filter((tool) => getToolCategory(tool.slug) === category),
+    }))
+    .filter((group) => group.tools.length > 0);
 
   const getToolIcon = (slug: string) => {
     if (slug.includes("compress")) return Gauge;
@@ -265,27 +297,42 @@ export default function Home() {
           </span>
         </div>
 
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {toolsForHome.map((tool) => {
-            const ToolIcon = getToolIcon(tool.slug);
-            const iconBadgeClass = getToolIconBadgeClass(tool.slug);
-
-            return (
-              <Link
-                key={tool.slug}
-                href={tool.path}
-                prefetch
-                className="flex items-center gap-2 rounded-xl border border-[#d4cfc4] bg-white px-3 py-3 text-sm font-semibold text-[#1c1a14] transition hover:border-[#e8672a] hover:bg-[#fff7f2]"
-              >
-                <span
-                  className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${iconBadgeClass}`}
-                >
-                  <ToolIcon className="h-3.5 w-3.5" aria-hidden="true" />
+        <div className="space-y-6">
+          {groupedTools.map((group) => (
+            <div key={group.category} className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4 sm:p-5">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <h3 className="text-sm font-extrabold uppercase tracking-[0.08em] text-[#1c1a14]">
+                  {group.category}
+                </h3>
+                <span className="rounded-full border border-[#d4cfc4] px-2.5 py-1 text-[11px] font-semibold text-[#6b6760]">
+                  {group.tools.length}
                 </span>
-                <span className="truncate">{getToolLabel(tool.title)}</span>
-              </Link>
-            );
-          })}
+              </div>
+
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {group.tools.map((tool) => {
+                  const ToolIcon = getToolIcon(tool.slug);
+                  const iconBadgeClass = getToolIconBadgeClass(tool.slug);
+
+                  return (
+                    <Link
+                      key={tool.slug}
+                      href={tool.path}
+                      prefetch
+                      className="flex items-center gap-2 rounded-xl border border-[#d4cfc4] bg-white px-3 py-3 text-sm font-semibold text-[#1c1a14] transition hover:border-[#e8672a] hover:bg-[#fff7f2]"
+                    >
+                      <span
+                        className={`inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border ${iconBadgeClass}`}
+                      >
+                        <ToolIcon className="h-3.5 w-3.5" aria-hidden="true" />
+                      </span>
+                      <span className="truncate">{getToolLabel(tool.title)}</span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>

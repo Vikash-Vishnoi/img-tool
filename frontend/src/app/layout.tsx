@@ -14,14 +14,16 @@ const syne = Syne({
 const SITE_TITLE = "Image Tools — Free Image Converter (India)";
 const SITE_DESCRIPTION =
   "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech"
-  ),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
     template: "%s · Image Tools",
+  },
+  alternates: {
+    canonical: "/",
   },
   description: SITE_DESCRIPTION,
   applicationName: "Image Tools",
@@ -42,13 +44,23 @@ export const metadata: Metadata = {
     type: "website",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    url: "/",
     locale: "en_IN",
     siteName: "Image Tools",
+    images: [
+      {
+        url: "/og-image.svg",
+        width: 1200,
+        height: 630,
+        alt: "Image Tools - Convert, compress, and resize images",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    images: ["/og-image.svg"],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
@@ -71,6 +83,23 @@ export default function RootLayout({
 }>) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
   const currentYear = new Date().getFullYear();
+  const cleanSiteUrl = SITE_URL.replace(/\/$/, "");
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Image Tools",
+    url: cleanSiteUrl,
+    inLanguage: "en-IN",
+  };
+
+  const organizationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Image Tools",
+    url: cleanSiteUrl,
+    logo: `${cleanSiteUrl}/icon.svg`,
+  };
 
   return (
     <html
@@ -79,6 +108,15 @@ export default function RootLayout({
       className={`${syne.variable} h-full antialiased`}
     >
       <body className="site-body min-h-full flex flex-col bg-background text-foreground">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+
         <div aria-hidden className="grain-overlay" />
 
         <SiteHeader />
@@ -124,6 +162,14 @@ export default function RootLayout({
                 </div>
                 <div>
                   <div className="footer-col-title">Utility</div>
+                  <a
+                    href="https://forms.gle/TxrvRg69ZH1qeGMA9"
+                    className="footer-link"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Feedback Form
+                  </a>
                   <Link href="/privacy-policy" className="footer-link" prefetch>
                     Privacy Policy
                   </Link>

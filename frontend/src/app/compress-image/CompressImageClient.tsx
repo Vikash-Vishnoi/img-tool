@@ -34,6 +34,14 @@ type Preset = {
   helper: string;
 };
 
+export type CompressImageClientProps = {
+  title?: string;
+  description?: string;
+  inputLabel?: string;
+  accept?: string[];
+  uploadHelperText?: string;
+};
+
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
 }
@@ -71,13 +79,52 @@ async function getImageDimensions(file: File): Promise<{ width: number; height: 
   }
 }
 
+function isHeicLike(file: File): boolean {
+  const name = file.name.toLowerCase();
+  if (name.endsWith(".heic") || name.endsWith(".heif")) return true;
+
+  const type = file.type.toLowerCase();
+  return type === "image/heic" || type === "image/heif";
+}
+
+async function normalizeCompressInputFile(args: {
+  file: File;
+  signal: AbortSignal;
+}): Promise<File> {
+  const { file, signal } = args;
+  if (!isHeicLike(file)) return file;
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+  const { default: heic2any } = await import("heic2any");
+  const converted = await heic2any({
+    blob: file,
+    toType: "image/png",
+  });
+
+  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+  const blob = Array.isArray(converted) ? converted[0] : converted;
+  if (!(blob instanceof Blob)) {
+    throw new Error(`Could not convert HEIC file: ${file.name}`);
+  }
+
+  const baseName = file.name.replace(/\.(heic|heif)$/i, "") || "image";
+  return new File([blob], `${baseName}.png`, { type: "image/png" });
+}
+
 function toPercentReduction(beforeBytes: number, afterBytes: number): number {
   if (beforeBytes <= 0) return 0;
   const reduction = ((beforeBytes - afterBytes) / beforeBytes) * 100;
   return Math.max(0, Math.min(100, Math.round(reduction)));
 }
 
-export function CompressImageClient() {
+export function CompressImageClient({
+  title = "Compress Image",
+  description = "Reduce image file size in your browser-no uploads.",
+  inputLabel = "Upload an image",
+  accept: acceptProp,
+  uploadHelperText,
+}: CompressImageClientProps = {}) {
   const conversion = useConversion();
   const hasInputFile = conversion.inputFiles.length > 0;
   const replaceInputRef = useRef<HTMLInputElement | null>(null);
@@ -85,7 +132,6 @@ export function CompressImageClient() {
   const [targetSizeKbInput, setTargetSizeKbInput] = useState<string>("");
   const [presetKey, setPresetKey] = useState<PresetKey>("custom");
 
-  const [originalDimensions, setOriginalDimensions] = useState<{ width: number; height: number } | null>(null);
   const [customWidth, setCustomWidth] = useState<number>(MAX_WIDTH_DEFAULT);
   const [customHeight, setCustomHeight] = useState<number>(MAX_WIDTH_DEFAULT);
   const [customWidthInput, setCustomWidthInput] = useState<string>(String(MAX_WIDTH_DEFAULT));
@@ -95,10 +141,28 @@ export function CompressImageClient() {
   const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
   const accept = useMemo(
-    () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
-    []
+    () =>
+      acceptProp ?? [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/avif",
+        "image/heic",
+        "image/heif",
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+        ".avif",
+        ".heic",
+        ".heif",
+      ],
+    [acceptProp]
   );
   const acceptAttr = useMemo(() => accept.join(","), [accept]);
+  const helperText =
+    uploadHelperText ??
+    `Max file size ${formatFileSize(MAX_SIZE_BYTES)}. Paste from clipboard also works.`;
 
   const presets = useMemo<Preset[]>(() => {
     const dpi = 300;
@@ -234,10 +298,7 @@ export function CompressImageClient() {
 
   useEffect(() => {
     const file = conversion.inputFiles[0];
-    if (!file) {
-      setOriginalDimensions(null);
-      return;
-    }
+    if (!file) return;
 
     let cancelled = false;
     (async () => {
@@ -245,7 +306,6 @@ export function CompressImageClient() {
         const dims = await getImageDimensions(file);
         const valid = dims.width > 0 && dims.height > 0 ? dims : null;
         if (!cancelled) {
-          setOriginalDimensions(valid);
           if (valid) {
             setCustomWidth(valid.width);
             setCustomHeight(valid.height);
@@ -254,9 +314,7 @@ export function CompressImageClient() {
             setAspectRatio(valid.width / Math.max(1, valid.height));
           }
         }
-      } catch {
-        if (!cancelled) setOriginalDimensions(null);
-      }
+      } catch {}
     })();
 
     return () => {
@@ -272,10 +330,10 @@ export function CompressImageClient() {
           Fast image compression · no upload
         </div>
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
-          Compress Image
+          {title}
         </h1>
         <p className="mx-auto max-w-3xl text-pretty text-base leading-7 text-[#6b6760]">
-          Reduce image file size in your browser—no uploads.
+          {description}
         </p>
       </header>
 
@@ -287,8 +345,8 @@ export function CompressImageClient() {
         <div className="mx-auto max-w-5xl">
           {!hasInputFile ? (
             <FileUploader
-              label="Upload an image"
-              helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)}. Paste from clipboard also works.`}
+              label={inputLabel}
+              helperText={helperText}
               accept={accept}
               multiple={false}
               maxFiles={1}
@@ -567,9 +625,14 @@ export function CompressImageClient() {
                     disabled={!conversion.canRun}
                     onClick={async () => {
                       await conversion.run(async ({ files, signal, onProgress }) => {
+                        const sourceFile = await normalizeCompressInputFile({
+                          file: files[0]!,
+                          signal,
+                        });
+
                         const output = usesExactTargetSize
                           ? await compressImageToTargetBytes({
-                              file: files[0]!,
+                              file: sourceFile,
                               options: {
                                 targetBytes: Math.round(parsedTargetSizeKb * 1024),
                                 maxWidth,
@@ -579,7 +642,7 @@ export function CompressImageClient() {
                               onProgress,
                             })
                           : await compressImage({
-                              file: files[0]!,
+                              file: sourceFile,
                               options: {
                                 targetSizeMB,
                                 quality,

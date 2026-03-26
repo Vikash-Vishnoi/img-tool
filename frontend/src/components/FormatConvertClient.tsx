@@ -26,7 +26,7 @@ function toPercentChange(beforeBytes: number, afterBytes: number): number {
 }
 
 export type FormatConvertClientProps = {
-  from: RasterFormat;
+  from: RasterFormat | "heic";
   to: RasterFormat;
   title: string;
   description: string;
@@ -58,8 +58,8 @@ export function FormatConvertClient({
   const autoDownloadKeyRef = useRef<string>("");
   const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
-  const accept = useMemo(
-    () => [
+  const accept = useMemo(() => {
+    const baseTypes = [
       "image/jpeg",
       "image/png",
       "image/webp",
@@ -69,9 +69,14 @@ export function FormatConvertClient({
       ".png",
       ".webp",
       ".avif",
-    ],
-    []
-  );
+    ];
+
+    if (from === "heic" || allowOutputSourceFormat) {
+      return [...baseTypes, "image/heic", "image/heif", ".heic", ".heif"];
+    }
+
+    return baseTypes;
+  }, [allowOutputSourceFormat, from]);
   const acceptAttr = useMemo(() => accept.join(","), [accept]);
   const qualitySafe = useMemo(() => clamp(qualityPercent, 50, 100), [qualityPercent]);
 

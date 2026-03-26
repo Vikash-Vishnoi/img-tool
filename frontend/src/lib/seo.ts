@@ -11,6 +11,7 @@ export type ToolDefinition = {
   title: string;
   description: string;
   keywords: string[];
+  ogImage?: `/${string}`;
   faqs?: FaqItem[];
   related?: Array<ToolDefinition["slug"]>;
 };
@@ -22,6 +23,7 @@ export const TOOLS = [
     title: "Universal Image Converter — Convert Any Image Extension Online",
     description:
       "Upload JPG, JPEG, PNG, WebP, AVIF, or HEIC/HEIF and convert to your chosen output extension in your browser with no upload.",
+    ogImage: "/og-image-image-converter.svg",
     keywords: [
       "image converter",
       "convert image extension",
@@ -38,6 +40,7 @@ export const TOOLS = [
     title: "HEIC to JPG Converter — Free, No Install, Files Stay Private",
     description:
       "Convert iPhone HEIC photos to JPG free in your browser. No upload needed. Works on mobile in India (Android/iPhone) and on Windows/Mac.",
+    ogImage: "/og-image-heic-to-jpg.svg",
     keywords: ["heic to jpg", "convert heic", "iphone photo converter", "india"],
     faqs: [
       {
@@ -85,11 +88,89 @@ export const TOOLS = [
     related: ["heic-to-jpg", "png-to-jpg", "compress-image"],
   },
   {
+    slug: "heic-to-webp",
+    path: "/heic-to-webp",
+    title: "HEIC to WebP Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIC and HEIF photos to WebP in your browser with no upload. Fast, private, and mobile-friendly.",
+    keywords: [
+      "heic to webp",
+      "heif to webp",
+      "iphone photo to webp",
+      "convert heic",
+      "india",
+      "no upload",
+    ],
+    related: ["heic-to-jpg", "heic-to-png", "webp-to-jpg"],
+  },
+  {
+    slug: "heic-to-avif",
+    path: "/heic-to-avif",
+    title: "HEIC to AVIF Converter — Free, No Upload, Smaller Files",
+    description:
+      "Convert iPhone HEIC and HEIF photos to AVIF in your browser with no upload. Great for smaller file sizes at high quality.",
+    keywords: [
+      "heic to avif",
+      "heif to avif",
+      "iphone photo to avif",
+      "convert heic",
+      "india",
+      "no upload",
+    ],
+    related: ["heic-to-jpg", "heic-to-png", "webp-to-avif"],
+  },
+  {
+    slug: "heif-to-jpg",
+    path: "/heif-to-jpg",
+    title: "HEIF to JPG Converter — Free, No Upload, Files Stay Private",
+    description:
+      "Convert iPhone HEIF photos to JPG free in your browser. No upload needed and works on mobile.",
+    keywords: ["heif to jpg", "convert heif", "iphone heif converter", "india", "no upload"],
+    related: ["heic-to-jpg", "heif-to-png", "compress-image"],
+  },
+  {
+    slug: "heif-to-png",
+    path: "/heif-to-png",
+    title: "HEIF to PNG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIF photos to PNG in your browser with no upload. Files stay on your device.",
+    keywords: ["heif to png", "convert heif", "iphone heif to png", "india", "no upload"],
+    related: ["heic-to-png", "heif-to-jpg", "png-to-jpg"],
+  },
+  {
+    slug: "heif-to-webp",
+    path: "/heif-to-webp",
+    title: "HEIF to WebP Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIF photos to WebP in your browser with no upload. Fast, private, and mobile-friendly.",
+    keywords: ["heif to webp", "convert heif", "iphone heif to webp", "india", "no upload"],
+    related: ["heic-to-webp", "heif-to-jpg", "webp-to-jpg"],
+  },
+  {
+    slug: "heif-to-avif",
+    path: "/heif-to-avif",
+    title: "HEIF to AVIF Converter — Free, No Upload, Smaller Files",
+    description:
+      "Convert iPhone HEIF photos to AVIF in your browser with no upload for modern compression.",
+    keywords: ["heif to avif", "convert heif", "iphone heif to avif", "india", "no upload"],
+    related: ["heic-to-avif", "heif-to-jpg", "webp-to-avif"],
+  },
+  {
+    slug: "heif-to-pdf",
+    path: "/heif-to-pdf",
+    title: "HEIF to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIF photos to PDF in your browser. Files are processed on-device with no upload.",
+    keywords: ["heif to pdf", "iphone heif to pdf", "pdf converter", "india", "no upload"],
+    related: ["heic-to-pdf", "image-to-pdf", "heif-to-jpg"],
+  },
+  {
     slug: "compress-image",
     path: "/compress-image",
     title: "Compress Image for WhatsApp — Reduce Size Without Quality Loss",
     description:
       "Compress JPG/PNG/WebP free in your browser—no upload needed. Works on mobile in India and helps meet government form upload limits.",
+    ogImage: "/og-image-compress-image.svg",
     keywords: [
       "compress image",
       "compress for whatsapp",
@@ -98,6 +179,69 @@ export const TOOLS = [
       "india",
     ],
     related: ["resize-image-to-200kb", "resize-image", "heic-to-jpg"],
+  },
+  {
+    slug: "compress-jpg",
+    path: "/compress-jpg",
+    title: "Compress JPG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress JPG photos in your browser with no upload. Fast and private on mobile and desktop.",
+    keywords: ["compress jpg", "jpg compressor", "reduce jpg size", "india", "no upload"],
+    related: ["compress-image", "compress-jpeg", "resize-jpg"],
+  },
+  {
+    slug: "compress-jpeg",
+    path: "/compress-jpeg",
+    title: "Compress JPEG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress JPEG photos in your browser with no upload. Fast and private on mobile and desktop.",
+    keywords: ["compress jpeg", "jpeg compressor", "reduce jpeg size", "india", "no upload"],
+    related: ["compress-image", "compress-jpg", "resize-jpeg"],
+  },
+  {
+    slug: "compress-png",
+    path: "/compress-png",
+    title: "Compress PNG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress PNG images in your browser with no upload. Keep quality while reducing file size.",
+    keywords: ["compress png", "png compressor", "reduce png size", "india", "no upload"],
+    related: ["compress-image", "resize-png", "png-to-jpg"],
+  },
+  {
+    slug: "compress-webp",
+    path: "/compress-webp",
+    title: "Compress WebP Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress WebP images in your browser with no upload for smaller files and faster sharing.",
+    keywords: ["compress webp", "webp compressor", "reduce webp size", "india", "no upload"],
+    related: ["compress-image", "resize-webp", "webp-to-jpg"],
+  },
+  {
+    slug: "compress-avif",
+    path: "/compress-avif",
+    title: "Compress AVIF Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress AVIF images in your browser with no upload. Files stay on your device.",
+    keywords: ["compress avif", "avif compressor", "reduce avif size", "india", "no upload"],
+    related: ["compress-image", "resize-avif", "avif-to-jpg"],
+  },
+  {
+    slug: "compress-heic",
+    path: "/compress-heic",
+    title: "Compress HEIC Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress iPhone HEIC photos in your browser with no upload. Private and mobile-friendly.",
+    keywords: ["compress heic", "heic compressor", "reduce heic size", "india", "no upload"],
+    related: ["compress-image", "resize-heic", "heic-to-jpg"],
+  },
+  {
+    slug: "compress-heif",
+    path: "/compress-heif",
+    title: "Compress HEIF Image — Free, No Upload, Works on Mobile",
+    description:
+      "Compress iPhone HEIF photos in your browser with no upload. Private and mobile-friendly.",
+    keywords: ["compress heif", "heif compressor", "reduce heif size", "india", "no upload"],
+    related: ["compress-image", "resize-heif", "heif-to-jpg"],
   },
   {
     slug: "png-to-webp",
@@ -225,6 +369,7 @@ export const TOOLS = [
     title: "Resize Image to Passport Size — Free Online India",
     description:
       "Resize images to India passport photo size, Aadhaar photo, WhatsApp DP, Instagram, and more—free, instant, no upload, works on mobile.",
+    ogImage: "/og-image-resize-image.svg",
     keywords: [
       "resize image",
       "passport size photo india",
@@ -241,6 +386,168 @@ export const TOOLS = [
       "no upload",
     ],
     related: ["resize-image-to-200kb", "compress-image", "image-to-pdf"],
+  },
+  {
+    slug: "resize-jpg",
+    path: "/resize-jpg",
+    title: "Resize JPG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize JPG photos by pixels or preset sizes in your browser with no upload.",
+    keywords: ["resize jpg", "jpg resizer", "resize photo", "india", "no upload"],
+    related: ["resize-image", "resize-jpeg", "compress-jpg"],
+  },
+  {
+    slug: "resize-jpeg",
+    path: "/resize-jpeg",
+    title: "Resize JPEG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize JPEG photos by pixels or preset sizes in your browser with no upload.",
+    keywords: ["resize jpeg", "jpeg resizer", "resize photo", "india", "no upload"],
+    related: ["resize-image", "resize-jpg", "compress-jpeg"],
+  },
+  {
+    slug: "resize-png",
+    path: "/resize-png",
+    title: "Resize PNG Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize PNG images by pixels or preset sizes in your browser with no upload.",
+    keywords: ["resize png", "png resizer", "resize image", "india", "no upload"],
+    related: ["resize-image", "compress-png", "png-to-jpg"],
+  },
+  {
+    slug: "resize-webp",
+    path: "/resize-webp",
+    title: "Resize WebP Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize WebP images by pixels or preset sizes in your browser with no upload.",
+    keywords: ["resize webp", "webp resizer", "resize image", "india", "no upload"],
+    related: ["resize-image", "compress-webp", "webp-to-jpg"],
+  },
+  {
+    slug: "resize-avif",
+    path: "/resize-avif",
+    title: "Resize AVIF Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize AVIF images by pixels or preset sizes in your browser with no upload.",
+    keywords: ["resize avif", "avif resizer", "resize image", "india", "no upload"],
+    related: ["resize-image", "compress-avif", "avif-to-jpg"],
+  },
+  {
+    slug: "resize-heic",
+    path: "/resize-heic",
+    title: "Resize HEIC Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize iPhone HEIC photos by pixels or presets in your browser with no upload.",
+    keywords: ["resize heic", "heic resizer", "iphone photo resize", "india", "no upload"],
+    related: ["resize-image", "compress-heic", "heic-to-jpg"],
+  },
+  {
+    slug: "resize-heif",
+    path: "/resize-heif",
+    title: "Resize HEIF Image — Free, No Upload, Works on Mobile",
+    description:
+      "Resize iPhone HEIF photos by pixels or presets in your browser with no upload.",
+    keywords: ["resize heif", "heif resizer", "iphone photo resize", "india", "no upload"],
+    related: ["resize-image", "compress-heif", "heif-to-jpg"],
+  },
+  {
+    slug: "resize-passport-photo",
+    path: "/resize-passport-photo",
+    title: "Resize Passport Photo 35x45mm (413x531 px) — Free Online",
+    description:
+      "Resize image to passport photo size 35x45mm (413x531 px at 300 DPI) in your browser with no upload.",
+    keywords: ["passport photo 35x45mm", "413x531", "resize passport photo", "india", "no upload"],
+    related: ["resize-image", "resize-image-to-200kb", "resize-aadhar-photo"],
+  },
+  {
+    slug: "resize-aadhar-photo",
+    path: "/resize-aadhar-photo",
+    title: "Resize Aadhaar Card Photo 35x35mm (413x413 px) — Free Online",
+    description:
+      "Resize image to Aadhaar card photo size 35x35mm (413x413 px at 300 DPI) in your browser with no upload.",
+    keywords: ["aadhar photo 35x35mm", "413x413", "resize aadhar photo", "india", "no upload"],
+    related: ["resize-image", "resize-passport-photo", "resize-image-to-200kb"],
+  },
+  {
+    slug: "resize-whatsapp-dp",
+    path: "/resize-whatsapp-dp",
+    title: "Resize WhatsApp DP 500x500 px — Free Online",
+    description:
+      "Resize image to WhatsApp DP size 500x500 px in your browser with no upload.",
+    keywords: ["whatsapp dp size", "500x500", "resize whatsapp dp", "india", "no upload"],
+    related: ["resize-image", "resize-instagram-post", "compress-image"],
+  },
+  {
+    slug: "resize-instagram-post",
+    path: "/resize-instagram-post",
+    title: "Resize Instagram Post 1080x1080 px — Free Online",
+    description:
+      "Resize image to Instagram post size 1080x1080 px in your browser with no upload.",
+    keywords: ["instagram post size", "1080x1080", "resize instagram post", "india", "no upload"],
+    related: ["resize-image", "resize-instagram-story", "compress-image"],
+  },
+  {
+    slug: "resize-instagram-story",
+    path: "/resize-instagram-story",
+    title: "Resize Instagram Story / Reel 1080x1920 px — Free Online",
+    description:
+      "Resize image to Instagram story and reel size 1080x1920 px in your browser with no upload.",
+    keywords: ["instagram story size", "1080x1920", "resize instagram reel", "india", "no upload"],
+    related: ["resize-image", "resize-instagram-post", "compress-image"],
+  },
+  {
+    slug: "resize-youtube-thumbnail",
+    path: "/resize-youtube-thumbnail",
+    title: "Resize YouTube Thumbnail 1280x720 px — Free Online",
+    description:
+      "Resize image to YouTube thumbnail size 1280x720 px in your browser with no upload.",
+    keywords: ["youtube thumbnail size", "1280x720", "resize youtube thumbnail", "india", "no upload"],
+    related: ["resize-image", "resize-facebook-post", "compress-image"],
+  },
+  {
+    slug: "resize-facebook-post",
+    path: "/resize-facebook-post",
+    title: "Resize Facebook Post 1200x630 px — Free Online",
+    description:
+      "Resize image to Facebook post size 1200x630 px in your browser with no upload.",
+    keywords: ["facebook post size", "1200x630", "resize facebook post", "india", "no upload"],
+    related: ["resize-image", "resize-facebook-cover", "compress-image"],
+  },
+  {
+    slug: "resize-facebook-cover",
+    path: "/resize-facebook-cover",
+    title: "Resize Facebook Cover 820x312 px — Free Online",
+    description:
+      "Resize image to Facebook cover size 820x312 px in your browser with no upload.",
+    keywords: ["facebook cover size", "820x312", "resize facebook cover", "india", "no upload"],
+    related: ["resize-image", "resize-facebook-post", "compress-image"],
+  },
+  {
+    slug: "resize-signature-upload",
+    path: "/resize-signature-upload",
+    title: "Resize Signature Upload 400x150 px — Free Online",
+    description:
+      "Resize image to signature upload size 400x150 px in your browser with no upload.",
+    keywords: ["signature size 400x150", "resize signature", "signature upload", "india", "no upload"],
+    related: ["resize-image", "resize-image-to-200kb", "compress-image"],
+  },
+  {
+    slug: "resize-2x2-photo",
+    path: "/resize-2x2-photo",
+    title: "Resize 2x2 Inch Photo 600x600 px — Free Online",
+    description:
+      "Resize image to 2x2 inch photo size 600x600 px at 300 DPI in your browser with no upload.",
+    keywords: ["2x2 inch photo", "600x600", "resize 2x2 photo", "india", "no upload"],
+    related: ["resize-image", "resize-passport-photo", "resize-aadhar-photo"],
+  },
+  {
+    slug: "resize-product-square",
+    path: "/resize-product-square",
+    title: "Resize Product Image Square 1000x1000 px — Free Online",
+    description:
+      "Resize image to product square size 1000x1000 px in your browser with no upload.",
+    keywords: ["product image 1000x1000", "resize product image", "square image", "india", "no upload"],
+    related: ["resize-image", "resize-instagram-post", "compress-image"],
   },
   {
     slug: "resize-image-to-200kb",
@@ -265,8 +572,72 @@ export const TOOLS = [
     title: "Image to PDF Converter — Free, No Upload, Works on Mobile",
     description:
       "Convert images to a single PDF free in your browser—no upload needed. Useful for government form documents in India.",
+    ogImage: "/og-image-image-to-pdf.svg",
     keywords: ["image to pdf", "jpg to pdf", "pdf converter", "india", "no upload"],
-    related: ["jpg-to-pdf", "png-to-pdf", "heic-to-pdf"],
+    related: ["jpg-to-pdf", "png-to-pdf", "heic-to-pdf", "pdf-to-image"],
+  },
+  {
+    slug: "pdf-to-image",
+    path: "/pdf-to-image",
+    title: "PDF to Image Converter — JPG, PNG, WebP, AVIF",
+    description:
+      "Convert PDF pages to images in your browser with no upload. Choose JPG, PNG, WebP, or AVIF and download one-by-one or all at once.",
+    ogImage: "/og-image-pdf-to-image.svg",
+    keywords: [
+      "pdf to image",
+      "pdf to jpg",
+      "pdf to png",
+      "pdf to webp",
+      "pdf to avif",
+      "no upload",
+      "india",
+    ],
+    related: ["image-to-pdf", "jpg-to-pdf", "png-to-pdf", "compress-image"],
+  },
+  {
+    slug: "pdf-to-jpg",
+    path: "/pdf-to-jpg",
+    title: "PDF to JPG Converter — Free, No Upload",
+    description:
+      "Convert PDF pages to JPG in your browser with no upload. Download each page one-by-one or all at once.",
+    keywords: ["pdf to jpg", "pdf to image", "no upload", "india"],
+    related: ["pdf-to-image", "pdf-to-jpeg", "jpg-to-pdf"],
+  },
+  {
+    slug: "pdf-to-jpeg",
+    path: "/pdf-to-jpeg",
+    title: "PDF to JPEG Converter — Free, No Upload",
+    description:
+      "Convert PDF pages to JPEG in your browser with no upload. Download each page one-by-one or all at once.",
+    keywords: ["pdf to jpeg", "pdf to image", "no upload", "india"],
+    related: ["pdf-to-image", "pdf-to-jpg", "jpeg-to-pdf"],
+  },
+  {
+    slug: "pdf-to-png",
+    path: "/pdf-to-png",
+    title: "PDF to PNG Converter — Free, No Upload",
+    description:
+      "Convert PDF pages to PNG in your browser with no upload. Download each page one-by-one or all at once.",
+    keywords: ["pdf to png", "pdf to image", "no upload", "india"],
+    related: ["pdf-to-image", "png-to-pdf", "compress-png"],
+  },
+  {
+    slug: "pdf-to-webp",
+    path: "/pdf-to-webp",
+    title: "PDF to WebP Converter — Free, No Upload",
+    description:
+      "Convert PDF pages to WebP in your browser with no upload. Download each page one-by-one or all at once.",
+    keywords: ["pdf to webp", "pdf to image", "no upload", "india"],
+    related: ["pdf-to-image", "webp-to-pdf", "compress-webp"],
+  },
+  {
+    slug: "pdf-to-avif",
+    path: "/pdf-to-avif",
+    title: "PDF to AVIF Converter — Free, No Upload",
+    description:
+      "Convert PDF pages to AVIF in your browser with no upload. Download each page one-by-one or all at once.",
+    keywords: ["pdf to avif", "pdf to image", "no upload", "india"],
+    related: ["pdf-to-image", "avif-to-pdf", "compress-avif"],
   },
   {
     slug: "jpg-to-pdf",
@@ -276,6 +647,15 @@ export const TOOLS = [
       "Convert JPG/JPEG photos into a single PDF in your browser with no upload. Free and private.",
     keywords: ["jpg to pdf", "jpeg to pdf", "image to pdf", "india", "no upload"],
     related: ["image-to-pdf", "png-to-pdf", "compress-image"],
+  },
+  {
+    slug: "jpeg-to-pdf",
+    path: "/jpeg-to-pdf",
+    title: "JPEG to PDF Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert JPEG images into one PDF in your browser with no upload. Free and private.",
+    keywords: ["jpeg to pdf", "image to pdf", "pdf converter", "india", "no upload"],
+    related: ["jpg-to-pdf", "image-to-pdf", "compress-jpeg"],
   },
   {
     slug: "png-to-pdf",
@@ -324,6 +704,7 @@ export function getTool(slug: ToolDefinition["slug"]): ToolDefinition {
 export function generateToolMetadata(tool: ToolDefinition): Metadata {
   const title = tool.title;
   const description = tool.description;
+  const ogImage = tool.ogImage ?? "/og-image.svg";
 
   return {
     title,
@@ -339,11 +720,20 @@ export function generateToolMetadata(tool: ToolDefinition): Metadata {
       url: tool.path,
       locale: "en_IN",
       siteName: "Image Tools",
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
+      images: [ogImage],
     },
   };
 }

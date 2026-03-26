@@ -109,16 +109,27 @@ async function getImageDimensions(file: File): Promise<{ width: number; height: 
   });
 }
 
-type ResizeImageClientProps = {
+export type ResizeImageClientProps = {
   fixedTargetKb?: number;
   hideTargetSizeBox?: boolean;
   defaultPresetKey?: PresetKey;
+  title?: string;
+  description?: string;
+  inputLabel?: string;
+  accept?: string[];
+  uploadHelperText?: string;
 };
 
 export function ResizeImageClient({
   fixedTargetKb,
   hideTargetSizeBox = false,
   defaultPresetKey = "custom",
+  title = "Image Resizer",
+  description =
+    "Resize images by pixels or pick a preset size (passport photo, Aadhaar, WhatsApp DP, Instagram, Facebook cover). Optionally target a file size like 200KB.",
+  inputLabel = "Upload images",
+  accept: acceptProp,
+  uploadHelperText,
 }: ResizeImageClientProps = {}) {
   const conversion = useConversion();
   const addMoreInputRef = useRef<HTMLInputElement | null>(null);
@@ -229,24 +240,28 @@ export function ResizeImageClient({
   );
 
   const accept = useMemo(
-    () => [
-      "image/jpeg",
-      "image/png",
-      "image/webp",
-      "image/avif",
-      "image/heic",
-      "image/heif",
-      ".jpg",
-      ".jpeg",
-      ".png",
-      ".webp",
-      ".avif",
-      ".heic",
-      ".heif",
-    ],
-    []
+    () =>
+      acceptProp ?? [
+        "image/jpeg",
+        "image/png",
+        "image/webp",
+        "image/avif",
+        "image/heic",
+        "image/heif",
+        ".jpg",
+        ".jpeg",
+        ".png",
+        ".webp",
+        ".avif",
+        ".heic",
+        ".heif",
+      ],
+    [acceptProp]
   );
   const acceptAttr = useMemo(() => accept.join(","), [accept]);
+  const helperText =
+    uploadHelperText ??
+    `You can select multiple images (JPG, PNG, WebP, AVIF, HEIC). Max file size ${formatFileSize(MAX_SIZE_BYTES)} each.`;
 
   const target = useMemo(() => {
     if (presetKey !== "custom") return { width: preset.width, height: preset.height };
@@ -325,10 +340,10 @@ export function ResizeImageClient({
           Resize presets for forms and social
         </div>
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
-          Image Resizer
+          {title}
         </h1>
         <p className="mx-auto max-w-3xl text-pretty text-base leading-7 text-[#6b6760]">
-          Resize images by pixels or pick a preset size (passport photo, Aadhaar, WhatsApp DP, Instagram, Facebook cover). Optionally target a file size like 200KB.
+          {description}
         </p>
       </header>
 
@@ -338,8 +353,8 @@ export function ResizeImageClient({
         <div className="mx-auto max-w-5xl">
           {conversion.inputFiles.length === 0 ? (
             <FileUploader
-              label="Upload images"
-              helperText={`You can select multiple images (JPG, PNG, WebP, AVIF, HEIC). Max file size ${formatFileSize(MAX_SIZE_BYTES)} each.`}
+              label={inputLabel}
+              helperText={helperText}
               accept={accept}
               multiple
               maxFiles={20}
