@@ -158,11 +158,13 @@ export async function compressImage(args: {
     onProgress?.(55);
 
     const inputMime = (file.type || "").toLowerCase();
-    const supportsQuality = inputMime === "image/jpeg" || inputMime === "image/webp";
     const outputMime =
-      inputMime === "image/jpeg" || inputMime === "image/png" || inputMime === "image/webp"
+      inputMime === "image/jpeg" || inputMime === "image/webp"
         ? inputMime
-        : "image/jpeg";
+        : inputMime === "image/png"
+          ? "image/webp"
+          : "image/jpeg";
+    const supportsQuality = outputMime === "image/jpeg" || outputMime === "image/webp";
 
     let outBlob = await canvasToBlob({
       canvas,

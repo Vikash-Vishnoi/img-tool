@@ -462,12 +462,18 @@ export function CompressImageClient({
                 max={95}
                 step={1}
                 value={qualityPercent}
-                onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
+                onChange={(e) => {
+                  // If exact target mode is active, moving quality should switch back to quality mode.
+                  if (usesExactTargetSize) {
+                    setTargetSizeKbInput("");
+                  }
+                  setQualityPercent(Number(e.currentTarget.value));
+                }}
                 className="mt-3 w-full accent-[#e8672a]"
               />
               <div className="mt-2 text-xs text-[#6b6760]">
                 {usesExactTargetSize
-                  ? "Exact target size is active, so quality is ignored."
+                  ? "Exact target size is active. Move the slider to switch back to quality mode."
                   : "Higher quality keeps more detail but creates larger files."}
               </div>
             </div>

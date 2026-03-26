@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Syne } from "next/font/google";
 import Script from "next/script";
+import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
@@ -81,7 +82,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const gaId = (process.env.NEXT_PUBLIC_GA_ID ?? "").trim();
+  const hasValidGaId = /^G-[A-Z0-9]+$/i.test(gaId);
   const currentYear = new Date().getFullYear();
   const cleanSiteUrl = SITE_URL.replace(/\/$/, "");
 
@@ -190,7 +192,7 @@ export default function RootLayout({
           </div>
         </footer>
 
-        {gaId ? (
+        {hasValidGaId ? (
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
@@ -202,6 +204,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${gaId}', { anonymize_ip: true });`}
             </Script>
+            <GoogleAnalyticsPageView gaId={gaId} />
           </>
         ) : null}
       </body>
