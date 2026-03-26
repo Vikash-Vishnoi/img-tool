@@ -63,6 +63,12 @@ export function useConversion(): UseConversionState {
     async (converter: ConverterFn) => {
       if (status === "running") return;
 
+      if (typeof window !== "undefined") {
+        window.setTimeout(() => {
+          window.scrollBy({ top: 120, behavior: "smooth" });
+        }, 60);
+      }
+
       setStatus("running");
       setProgress(0);
       setError(null);

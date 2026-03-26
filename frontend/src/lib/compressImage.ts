@@ -124,25 +124,70 @@ export async function compressImage(args: {
   const { file, options, signal, onProgress } = args;
 
   if (signal.aborted) throw new DOMException("Aborted", "AbortError");
-
-  const { default: imageCompression } = await import("browser-image-compression");
-
   const quality = clamp(options.quality, 0.05, 1);
   const targetSizeMB = clamp(options.targetSizeMB, 0.05, 50);
   const maxWidthOrHeight = clamp(options.maxWidth, 320, 30000);
+  const targetBytes = Math.round(targetSizeMB * 1024 * 1024);
 
   try {
-    const outFile: File = await imageCompression(file, {
-      maxSizeMB: targetSizeMB,
-      maxWidthOrHeight,
-      initialQuality: quality,
-      useWebWorker: true,
-      onProgress: (p: number) => {
-        if (signal.aborted) return;
-        const percent = Number.isFinite(p) ? clamp(Math.round(p), 0, 100) : 0;
-        onProgress?.(percent);
-      },
+    onProgress?.(10);
+
+    const source = await decodeImage(file, signal);
+    if (signal.aborted) throw new DOMException("Aborted", "AbortError");
+
+    const src = sourceDimensions(source);
+    const scale = Math.min(1, maxWidthOrHeight / Math.max(src.width, src.height));
+    const outW = Math.max(1, Math.round(src.width * scale));
+    const outH = Math.max(1, Math.round(src.height * scale));
+
+    const canvas = document.createElement("canvas");
+    canvas.width = outW;
+    canvas.height = outH;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas is not supported in this browser");
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+    ctx.clearRect(0, 0, outW, outH);
+    ctx.drawImage(source as CanvasImageSource, 0, 0, outW, outH);
+
+    if (source instanceof ImageBitmap) {
+      source.close();
+    }
+
+    onProgress?.(55);
+
+    const inputMime = (file.type || "").toLowerCase();
+    const supportsQuality = inputMime === "image/jpeg" || inputMime === "image/webp";
+    const outputMime =
+      inputMime === "image/jpeg" || inputMime === "image/png" || inputMime === "image/webp"
+        ? inputMime
+        : "image/jpeg";
+
+    let outBlob = await canvasToBlob({
+      canvas,
+      mimeType: outputMime,
+      quality: supportsQuality ? quality : undefined,
+      signal,
     });
+
+    // Keep this path fast: at most one adaptive retry when output overshoots target.
+    if (supportsQuality && outBlob.size > targetBytes && targetBytes > 0) {
+      const adjustedQuality = clamp(quality * Math.sqrt(targetBytes / outBlob.size), 0.05, quality);
+      if (adjustedQuality < quality - 0.01) {
+        outBlob = await canvasToBlob({
+          canvas,
+          mimeType: outputMime,
+          quality: adjustedQuality,
+          signal,
+        });
+      }
+    }
+
+    onProgress?.(100);
+
+    const filename = replaceExt(file.name, extFromMime(outputMime));
+    const outFile = new File([outBlob], filename, { type: outputMime });
 
     if (signal.aborted) throw new DOMException("Aborted", "AbortError");
 

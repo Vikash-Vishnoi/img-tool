@@ -26,3 +26,25 @@ export function downloadBlob(blob: Blob, filename: string): void {
 
   URL.revokeObjectURL(url);
 }
+
+export async function shareFileToWhatsApp(file: File): Promise<boolean> {
+  if (typeof navigator !== "undefined" && "share" in navigator) {
+    const n = navigator as Navigator & {
+      canShare?: (data: { files: File[] }) => boolean;
+      share?: (data: { files?: File[]; title?: string; text?: string }) => Promise<void>;
+    };
+
+    if (n.canShare?.({ files: [file] }) && n.share) {
+      await n.share({
+        title: "Converted file",
+        text: "Here is the converted file.",
+        files: [file],
+      });
+      return true;
+    }
+  }
+
+  const text = encodeURIComponent("Here is the converted file.");
+  window.open(`https://wa.me/?text=${text}`, "_blank", "noopener,noreferrer");
+  return false;
+}
