@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Syne } from "next/font/google";
 import Script from "next/script";
+import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
 
 const syne = Syne({
@@ -10,16 +11,19 @@ const syne = Syne({
   display: "swap",
 });
 
+const SITE_TITLE = "Image Tools — Free Image Converter (India)";
+const SITE_DESCRIPTION =
+  "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
+
 export const metadata: Metadata = {
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech"
   ),
   title: {
-    default: "Image Tools — Free Image Converter (India)",
+    default: SITE_TITLE,
     template: "%s · Image Tools",
   },
-  description:
-    "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
+  description: SITE_DESCRIPTION,
   applicationName: "Image Tools",
   keywords: [
     "image converter",
@@ -36,17 +40,15 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "Image Tools — Free Image Converter (India)",
-    description:
-      "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
     locale: "en_IN",
     siteName: "Image Tools",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Image Tools — Free Image Converter (India)",
-    description:
-      "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
@@ -68,6 +70,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
+  const currentYear = new Date().getFullYear();
 
   return (
     <html
@@ -78,42 +81,12 @@ export default function RootLayout({
       <body className="site-body min-h-full flex flex-col bg-background text-foreground">
         <div aria-hidden className="grain-overlay" />
 
-        <header className="site-nav-wrap">
-          <nav className="site-nav mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="site-logo" aria-label="image.tools home" prefetch>
-              <span className="logo-word">image</span>
-              <span className="logo-dot" aria-hidden />
-              <span className="logo-word">tools</span>
-            </Link>
-
-            <div className="site-nav-links" aria-label="Primary">
-              <Link href="/" className="site-nav-link" prefetch>
-                Home
-              </Link>
-              <Link href="/compress-image" className="site-nav-link" prefetch>
-                Compress
-              </Link>
-              <Link href="/image-to-pdf" className="site-nav-link" prefetch>
-                PDF
-              </Link>
-              <Link href="/heic-to-png" className="site-nav-link" prefetch>
-                HEIC
-              </Link>
-              <Link href="/resize-image" className="site-nav-link" prefetch>
-                Resize
-              </Link>
-            </div>
-
-            <Link href="/" className="site-nav-cta" prefetch>
-              All tools
-            </Link>
-          </nav>
-        </header>
+        <SiteHeader />
 
         <div className="flex-1">{children}</div>
 
         <footer className="site-footer mt-14">
-          <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+          <div className="mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 lg:px-6">
             <div className="footer-top">
               <div>
                 <div className="footer-logo">
@@ -149,11 +122,23 @@ export default function RootLayout({
                     Image to PDF
                   </Link>
                 </div>
+                <div>
+                  <div className="footer-col-title">Utility</div>
+                  <Link href="/privacy-policy" className="footer-link" prefetch>
+                    Privacy Policy
+                  </Link>
+                  <Link href="/terms" className="footer-link" prefetch>
+                    Terms of Use
+                  </Link>
+                  <a href="mailto:support@image-tools.tech" className="footer-link">
+                    Contact
+                  </a>
+                </div>
               </div>
             </div>
 
             <div className="footer-bottom">
-              <p className="footer-copy">© 2026 Image Tools</p>
+              <p className="footer-copy">© {currentYear} Image Tools</p>
               <p className="footer-made">Built for privacy-first image workflows</p>
             </div>
           </div>

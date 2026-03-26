@@ -112,6 +112,11 @@ body {
   color: var(--ink);
 }
 
+.site-nav-link.active {
+  color: var(--ink);
+  background: var(--parchment);
+}
+
 .site-nav-cta {
   text-decoration: none;
   color: var(--cream);
@@ -125,6 +130,69 @@ body {
 
 .site-nav-cta:hover {
   background: var(--ember);
+}
+
+.site-nav-cta-desktop {
+  display: none;
+}
+
+.site-mobile-actions {
+  display: inline-flex;
+  align-items: center;
+}
+
+.site-mobile-menu-btn {
+  appearance: none;
+  border: 1px solid var(--sand);
+  background: var(--surface);
+  color: var(--ink);
+  border-radius: 10px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-mobile-menu {
+  max-height: 0;
+  overflow: hidden;
+  border-top: 1px solid transparent;
+  transition: max-height 0.2s ease;
+}
+
+.site-mobile-menu.open {
+  max-height: 360px;
+  border-top-color: var(--sand);
+}
+
+.site-mobile-menu-inner {
+  display: grid;
+  gap: 8px;
+  padding-top: 10px;
+  padding-bottom: 12px;
+}
+
+.site-mobile-link {
+  text-decoration: none;
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-weight: 700;
+  padding: 8px 10px;
+  border: 1px solid var(--sand);
+  border-radius: 10px;
+  background: var(--surface);
+}
+
+.site-mobile-link.active {
+  color: var(--ink);
+  background: var(--parchment);
+}
+
+.site-mobile-link-cta {
+  color: var(--cream);
+  background: var(--ink);
+  border-color: var(--ink);
 }
 
 .site-footer {
@@ -232,6 +300,18 @@ body {
 @media (min-width: 768px) {
   .site-nav-links {
     display: inline-flex;
+  }
+
+  .site-nav-cta-desktop {
+    display: inline-flex;
+  }
+
+  .site-mobile-actions {
+    display: none;
+  }
+
+  .site-mobile-menu {
+    display: none;
   }
 }
 
