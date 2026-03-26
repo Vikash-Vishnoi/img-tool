@@ -3,6 +3,10 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
   title: "Terms of Use",
   description: "Terms of use for Image Tools.",
+  robots: {
+    index: false,
+    follow: false,
+  },
   alternates: {
     canonical: "/terms",
   },

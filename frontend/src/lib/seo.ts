@@ -37,7 +37,7 @@ export const TOOLS = [
   {
     slug: "heic-to-jpg",
     path: "/heic-to-jpg",
-    title: "HEIC to JPG Converter — Free, No Install, Files Stay Private",
+    title: "HEIC to JPG Converter — Free, Instant, No Upload",
     description:
       "Convert iPhone HEIC photos to JPG free in your browser. No upload needed. Works on mobile in India (Android/iPhone) and on Windows/Mac.",
     ogImage: "/og-image-heic-to-jpg.svg",
@@ -167,7 +167,7 @@ export const TOOLS = [
   {
     slug: "compress-image",
     path: "/compress-image",
-    title: "Compress Image for WhatsApp — Reduce Size Without Quality Loss",
+    title: "Compress Image for WhatsApp — Reduce Size Free India",
     description:
       "Compress JPG/PNG/WebP free in your browser—no upload needed. Works on mobile in India and helps meet government form upload limits.",
     ogImage: "/og-image-compress-image.svg",
@@ -183,7 +183,7 @@ export const TOOLS = [
   {
     slug: "compress-jpg",
     path: "/compress-jpg",
-    title: "Compress JPG Image — Free, No Upload, Works on Mobile",
+    title: "Compress JPG Without Losing Quality — Free Online",
     description:
       "Compress JPG photos in your browser with no upload. Fast and private on mobile and desktop.",
     keywords: ["compress jpg", "jpg compressor", "reduce jpg size", "india", "no upload"],
@@ -201,7 +201,7 @@ export const TOOLS = [
   {
     slug: "compress-png",
     path: "/compress-png",
-    title: "Compress PNG Image — Free, No Upload, Works on Mobile",
+    title: "Compress PNG File Size Online — Free, No Upload",
     description:
       "Compress PNG images in your browser with no upload. Keep quality while reducing file size.",
     keywords: ["compress png", "png compressor", "reduce png size", "india", "no upload"],
@@ -228,7 +228,7 @@ export const TOOLS = [
   {
     slug: "compress-heic",
     path: "/compress-heic",
-    title: "Compress HEIC Image — Free, No Upload, Works on Mobile",
+    title: "Compress iPhone HEIC Photos — Reduce Size Free",
     description:
       "Compress iPhone HEIC photos in your browser with no upload. Private and mobile-friendly.",
     keywords: ["compress heic", "heic compressor", "reduce heic size", "india", "no upload"],
@@ -246,7 +246,7 @@ export const TOOLS = [
   {
     slug: "png-to-webp",
     path: "/png-to-webp",
-    title: "PNG to WebP Converter — Free, No Upload, Works on Mobile",
+    title: "PNG to WebP Converter — Reduce Size 30%, Free",
     description:
       "Convert PNG to WebP free in your browser. No upload needed, works on mobile in India for faster websites and smaller files.",
     keywords: ["png to webp", "convert png", "webp converter", "india", "no upload"],
@@ -303,7 +303,7 @@ export const TOOLS = [
   {
     slug: "webp-to-png",
     path: "/webp-to-png",
-    title: "WebP to PNG Converter — Free, No Upload, Works on Mobile",
+    title: "WebP to PNG Converter — Transparent Background, Free",
     description:
       "Convert WebP to PNG free in your browser. No upload needed, works on mobile in India.",
     keywords: ["webp to png", "convert webp", "png converter", "india", "no upload"],
@@ -339,7 +339,7 @@ export const TOOLS = [
   {
     slug: "avif-to-jpg",
     path: "/avif-to-jpg",
-    title: "AVIF to JPG Converter — Free, No Upload, Works Anywhere",
+    title: "AVIF to JPG Converter — Free Online, No Install",
     description:
       "Convert AVIF to JPG free in your browser—no upload needed. Useful for compatibility with older apps and sites.",
     keywords: ["avif to jpg", "avif to jpeg", "convert avif", "india", "no upload"],
@@ -453,7 +453,7 @@ export const TOOLS = [
   {
     slug: "resize-passport-photo",
     path: "/resize-passport-photo",
-    title: "Resize Passport Photo 35x45mm (413x531 px) — Free Online",
+    title: "Passport Size Photo Resize — 35x45mm Free India",
     description:
       "Resize image to passport photo size 35x45mm (413x531 px at 300 DPI) in your browser with no upload.",
     keywords: ["passport photo 35x45mm", "413x531", "resize passport photo", "india", "no upload"],
@@ -462,7 +462,7 @@ export const TOOLS = [
   {
     slug: "resize-aadhar-photo",
     path: "/resize-aadhar-photo",
-    title: "Resize Aadhaar Card Photo 35x35mm (413x413 px) — Free Online",
+    title: "Resize Photo for Aadhaar — Under 200KB Free",
     description:
       "Resize image to Aadhaar card photo size 35x35mm (413x413 px at 300 DPI) in your browser with no upload.",
     keywords: ["aadhar photo 35x35mm", "413x413", "resize aadhar photo", "india", "no upload"],
@@ -471,7 +471,7 @@ export const TOOLS = [
   {
     slug: "resize-whatsapp-dp",
     path: "/resize-whatsapp-dp",
-    title: "Resize WhatsApp DP 500x500 px — Free Online",
+    title: "Resize Image for WhatsApp DP — 500x500px Free",
     description:
       "Resize image to WhatsApp DP size 500x500 px in your browser with no upload.",
     keywords: ["whatsapp dp size", "500x500", "resize whatsapp dp", "india", "no upload"],
@@ -480,7 +480,7 @@ export const TOOLS = [
   {
     slug: "resize-instagram-post",
     path: "/resize-instagram-post",
-    title: "Resize Instagram Post 1080x1080 px — Free Online",
+    title: "Resize Image for Instagram Post — 1080x1080 Free",
     description:
       "Resize image to Instagram post size 1080x1080 px in your browser with no upload.",
     keywords: ["instagram post size", "1080x1080", "resize instagram post", "india", "no upload"],
@@ -498,7 +498,7 @@ export const TOOLS = [
   {
     slug: "resize-youtube-thumbnail",
     path: "/resize-youtube-thumbnail",
-    title: "Resize YouTube Thumbnail 1280x720 px — Free Online",
+    title: "YouTube Thumbnail Resize — 1280x720px Free",
     description:
       "Resize image to YouTube thumbnail size 1280x720 px in your browser with no upload.",
     keywords: ["youtube thumbnail size", "1280x720", "resize youtube thumbnail", "india", "no upload"],
@@ -516,7 +516,7 @@ export const TOOLS = [
   {
     slug: "resize-facebook-cover",
     path: "/resize-facebook-cover",
-    title: "Resize Facebook Cover 820x312 px — Free Online",
+    title: "Facebook Cover Photo Size — 820x312px Resizer Free",
     description:
       "Resize image to Facebook cover size 820x312 px in your browser with no upload.",
     keywords: ["facebook cover size", "820x312", "resize facebook cover", "india", "no upload"],
@@ -525,7 +525,7 @@ export const TOOLS = [
   {
     slug: "resize-signature-upload",
     path: "/resize-signature-upload",
-    title: "Resize Signature Upload 400x150 px — Free Online",
+    title: "Resize Signature for Online Form — Under 10KB Free",
     description:
       "Resize image to signature upload size 400x150 px in your browser with no upload.",
     keywords: ["signature size 400x150", "resize signature", "signature upload", "india", "no upload"],
@@ -534,7 +534,7 @@ export const TOOLS = [
   {
     slug: "resize-2x2-photo",
     path: "/resize-2x2-photo",
-    title: "Resize 2x2 Inch Photo 600x600 px — Free Online",
+    title: "Resize Photo to 2x2 Inch — US Visa & Passport",
     description:
       "Resize image to 2x2 inch photo size 600x600 px at 300 DPI in your browser with no upload.",
     keywords: ["2x2 inch photo", "600x600", "resize 2x2 photo", "india", "no upload"],
@@ -543,7 +543,7 @@ export const TOOLS = [
   {
     slug: "resize-product-square",
     path: "/resize-product-square",
-    title: "Resize Product Image Square 1000x1000 px — Free Online",
+    title: "Resize Product Image Square — Amazon Flipkart Size",
     description:
       "Resize image to product square size 1000x1000 px in your browser with no upload.",
     keywords: ["product image 1000x1000", "resize product image", "square image", "india", "no upload"],
@@ -552,7 +552,7 @@ export const TOOLS = [
   {
     slug: "resize-image-to-200kb",
     path: "/resize-image-to-200kb",
-    title: "Resize Image to 200KB — For Government Form Uploads",
+    title: "Resize Image to 200KB — For Govt Form Uploads",
     description:
       "Resize and compress an image to a target size like 200KB for government form uploads in India—free, instant, no upload, works on mobile.",
     keywords: [
@@ -642,7 +642,7 @@ export const TOOLS = [
   {
     slug: "jpg-to-pdf",
     path: "/jpg-to-pdf",
-    title: "JPG to PDF Converter — Free, No Upload, Works on Mobile",
+    title: "JPG to PDF Converter — Free Online, No Watermark",
     description:
       "Convert JPG/JPEG photos into a single PDF in your browser with no upload. Free and private.",
     keywords: ["jpg to pdf", "jpeg to pdf", "image to pdf", "india", "no upload"],

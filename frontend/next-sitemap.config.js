@@ -14,6 +14,15 @@ module.exports = {
     '/next.svg',
     '/vercel.svg',
     '/window.svg',
+    '/heif-to-jpg',
+    '/heif-to-png',
+    '/heif-to-pdf',
+    '/heif-to-avif',
+    '/heif-to-webp',
+    '/compress-heif',
+    '/resize-heif',
+    '/feedback',
+    '/terms',
   ],
   transform: async (config, path) => {
     const isHome = path === '/';

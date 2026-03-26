@@ -83,7 +83,7 @@ export const FORMAT_TOOL_PAGE_CONFIGS = {
     to: "jpg",
     title: "HEIC to JPG Converter",
     description:
-      "Convert iPhone HEIC/HEIF photos to JPG in your browser with no upload. Files stay on your device.",
+      "Convert iPhone HEIC photos to JPG in your browser with no upload. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload HEIC/HEIF images",
   },
   "heic-to-png": {
@@ -91,7 +91,7 @@ export const FORMAT_TOOL_PAGE_CONFIGS = {
     to: "png",
     title: "HEIC to PNG Converter",
     description:
-      "Convert iPhone HEIC/HEIF photos to PNG in your browser with no upload. Files stay on your device.",
+      "Convert iPhone HEIC photos to PNG in your browser with no upload. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload HEIC/HEIF images",
   },
   "heic-to-webp": {
@@ -99,7 +99,7 @@ export const FORMAT_TOOL_PAGE_CONFIGS = {
     to: "webp",
     title: "HEIC to WebP Converter",
     description:
-      "Convert iPhone HEIC/HEIF photos to WebP in your browser with no upload. Files stay on your device.",
+      "Convert iPhone HEIC photos to WebP in your browser with no upload. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload HEIC/HEIF images",
   },
   "heic-to-avif": {
@@ -107,7 +107,7 @@ export const FORMAT_TOOL_PAGE_CONFIGS = {
     to: "avif",
     title: "HEIC to AVIF Converter",
     description:
-      "Convert iPhone HEIC/HEIF photos to AVIF in your browser with no upload. Files stay on your device.",
+      "Convert iPhone HEIC photos to AVIF in your browser with no upload. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload HEIC/HEIF images",
   },
   "heif-to-jpg": {
@@ -165,7 +165,7 @@ export const PDF_TOOL_PAGE_CONFIGS = {
   "heic-to-pdf": {
     title: "HEIC to PDF Converter",
     description:
-      "Convert iPhone HEIC/HEIF photos into one PDF in your browser. Files stay on your device.",
+      "Convert iPhone HEIC photos into one PDF in your browser. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload images",
     uploadHelperText:
       "You can select multiple HEIC/HEIF images. Max file size 100 MB each (up to 30 images).",
@@ -242,7 +242,8 @@ export const COMPRESS_TOOL_PAGE_CONFIGS = {
   },
   "compress-heic": {
     title: "Compress HEIC Image",
-    description: "Compress iPhone HEIC photos in your browser with no upload. Files stay private.",
+    description:
+      "Compress iPhone HEIC photos in your browser with no upload. Files stay private. Also works with .heif files.",
     inputLabel: "Upload images",
     uploadHelperText: "Upload one HEIC/HEIF image (up to 100 MB).",
   },
@@ -293,7 +294,8 @@ export const RESIZE_TOOL_PAGE_CONFIGS = {
   },
   "resize-heic": {
     title: "Resize HEIC Image",
-    description: "Resize iPhone HEIC photos by pixels or presets in your browser with no upload.",
+    description:
+      "Resize iPhone HEIC photos by pixels or presets in your browser with no upload. Also works with .heif files.",
     inputLabel: "Upload images",
     uploadHelperText: "Upload HEIC/HEIF images (max 100 MB each).",
   },

@@ -164,14 +164,9 @@ export default function RootLayout({
                 </div>
                 <div>
                   <div className="footer-col-title">Utility</div>
-                  <a
-                    href="https://forms.gle/TxrvRg69ZH1qeGMA9"
-                    className="footer-link"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
+                  <Link href="/feedback" className="footer-link" prefetch>
                     Feedback Form
-                  </a>
+                  </Link>
                   <Link href="/privacy-policy" className="footer-link" prefetch>
                     Privacy Policy
                   </Link>
