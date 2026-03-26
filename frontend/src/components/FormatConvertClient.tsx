@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { useConversion } from "@/hooks/useConversion";
+import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
 import {
   convertImageFiles,
   formatLabel,
@@ -24,7 +25,7 @@ function toPercentChange(beforeBytes: number, afterBytes: number): number {
 }
 
 export type FormatConvertClientProps = {
-  from: RasterFormat;
+  from: RasterFormat | "heic";
   to: RasterFormat;
   title: string;
   description: string;
@@ -53,6 +54,7 @@ export function FormatConvertClient({
   const [qualityPercent, setQualityPercent] = useState<number>(100);
   const [fillWhiteForJpg, setFillWhiteForJpg] = useState<boolean>(true);
   const autoDownloadKeyRef = useRef<string>("");
+  const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
   const accept = useMemo(
     () => [
@@ -60,15 +62,40 @@ export function FormatConvertClient({
       "image/png",
       "image/webp",
       "image/avif",
+      "image/heic",
+      "image/heif",
       ".jpg",
       ".jpeg",
       ".png",
       ".webp",
       ".avif",
+      ".heic",
+      ".heif",
     ],
     []
   );
   const qualitySafe = useMemo(() => clamp(qualityPercent, 50, 100), [qualityPercent]);
+
+  const runConversion = useCallback(async () => {
+    await conversion.run(async ({ files, signal, onProgress }) => {
+      const outputs = await convertImageFiles({
+        files,
+        to: outputFormat,
+        qualityPercent: qualitySafe,
+        fillJpgWhite: fillWhiteForJpg,
+        signal,
+        onProgress,
+      });
+
+      return outputs.map((o) => ({
+        blob: o.blob,
+        filename: o.filename,
+        mimeType: o.mimeType,
+        originalBytes: o.originalBytes,
+        originalName: o.originalName,
+      }));
+    });
+  }, [conversion, fillWhiteForJpg, outputFormat, qualitySafe]);
 
   useEffect(() => {
     setOutputFormat(to);
@@ -112,34 +139,38 @@ export function FormatConvertClient({
         </p>
       </header>
 
-      <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
+      <section
+        className={
+          "mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6 " +
+          (conversion.inputFiles.length > 0 ? "pb-24 sm:pb-6" : "")
+        }
+      >
         <PrivacyBadge className="mb-5" />
 
-        <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Conversion</div>
-            <div className="mt-2 flex flex-wrap items-center justify-center gap-2 text-sm text-[#6b6760]">
-              <span className="rounded-full border border-[#d4cfc4] bg-white px-2.5 py-1 text-xs font-semibold text-[#1c1a14]">
-                {formatLabel(from)}
-              </span>
-              <span className="text-[#6b6760]">→</span>
-              <span className="rounded-full border border-[#d4cfc4] bg-white px-2.5 py-1 text-xs font-semibold text-[#1c1a14]">
-                {formatLabel(outputFormat)}
-              </span>
-            </div>
-            <div className="mt-2 text-center text-xs text-[#6b6760]">
-              Runs fully in your browser (no upload).
-            </div>
-          </div>
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
 
-          <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Output format</div>
+        <FileUploader
+          label={inputLabel ?? "Upload images"}
+          helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)} each. Paste from clipboard also works.`}
+          accept={accept}
+          multiple
+          maxFiles={20}
+          maxSizeBytes={MAX_SIZE_BYTES}
+          onFiles={(files) => {
+            conversion.setInputFiles(files);
+            onUpload();
+          }}
+        />
+
+        <div ref={optionsRef} className="mb-5 mt-6">
+          <div className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
+            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Output format</div>
+            <div className="mt-2 flex justify-center">
               <AppDropdown
                 value={outputFormat}
                 onChange={(value) => setOutputFormat(value)}
                 ariaLabel="Output format"
-                menuAlign="right"
                 buttonClassName="inline-flex min-w-[122px] items-center justify-between gap-2 rounded-lg border border-[#d4cfc4] bg-white px-3 py-1.5 text-xs font-semibold text-[#1c1a14] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition hover:border-[#e8672a]/55 focus:outline-none focus:ring-2 focus:ring-[#e8672a]/25"
                 options={outputOptions.map((fmt) => ({
                   value: fmt,
@@ -148,29 +179,27 @@ export function FormatConvertClient({
               />
             </div>
 
-            <div className="mt-4 flex items-center justify-between gap-3">
-              <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Quality</div>
-              <div className="text-sm font-medium text-[#1c1a14]">
-                {qualitySafe}%
-              </div>
-            </div>
+            <div className="mt-4 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Quality</div>
+            <div className="mt-1 text-sm font-medium text-[#1c1a14]">{qualitySafe}%</div>
 
-            <input
-              type="range"
-              min={50}
-              max={100}
-              step={1}
-              value={qualitySafe}
-              onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
-              className="mt-3 w-full accent-[#e8672a]"
-            />
+            <div className="mx-auto mt-3 max-w-md">
+              <input
+                type="range"
+                min={50}
+                max={100}
+                step={1}
+                value={qualitySafe}
+                onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
+                className="w-full accent-[#e8672a]"
+              />
+            </div>
 
             <div className="mt-2 text-xs text-[#6b6760]">
               Default 100% keeps quality. Lower only if you want smaller files.
             </div>
 
             {outputFormat === "jpg" && from !== "jpg" ? (
-              <label className="mt-3 flex items-start gap-2 text-xs text-[#6b6760]">
+              <label className="mx-auto mt-3 flex max-w-md items-start justify-center gap-2 text-xs text-[#6b6760] text-left">
                 <input
                   type="checkbox"
                   checked={fillWhiteForJpg}
@@ -185,16 +214,6 @@ export function FormatConvertClient({
           </div>
         </div>
 
-        <FileUploader
-          label={inputLabel ?? "Upload images"}
-          helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)} each. Paste from clipboard also works.`}
-          accept={accept}
-          multiple
-          maxFiles={20}
-          maxSizeBytes={MAX_SIZE_BYTES}
-          onFiles={(files) => conversion.setInputFiles(files)}
-        />
-
         {conversion.inputFiles.length > 0 ? (
           <div className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -202,7 +221,10 @@ export function FormatConvertClient({
               <button
                 type="button"
                 className="text-sm text-[#6b6760] underline underline-offset-4 hover:text-[#1c1a14]"
-                onClick={() => conversion.reset()}
+                onClick={() => {
+                  conversion.reset();
+                  resetUploadFlow();
+                }}
               >
                 Clear
               </button>
@@ -230,26 +252,7 @@ export function FormatConvertClient({
               <button
                 type="button"
                 disabled={!conversion.canRun}
-                onClick={async () => {
-                  await conversion.run(async ({ files, signal, onProgress }) => {
-                    const outputs = await convertImageFiles({
-                      files,
-                      to: outputFormat,
-                      qualityPercent: qualitySafe,
-                      fillJpgWhite: fillWhiteForJpg,
-                      signal,
-                      onProgress,
-                    });
-
-                    return outputs.map((o) => ({
-                      blob: o.blob,
-                      filename: o.filename,
-                      mimeType: o.mimeType,
-                      originalBytes: o.originalBytes,
-                      originalName: o.originalName,
-                    }));
-                  });
-                }}
+                onClick={runConversion}
                 className="inline-flex items-center justify-center rounded-full bg-[#e8672a] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#ff8c5a] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 Convert to {formatLabel(outputFormat)}
@@ -341,6 +344,37 @@ export function FormatConvertClient({
           </div>
         ) : null}
       </section>
+
+      {conversion.inputFiles.length > 0 ? (
+        <div className="fixed inset-x-0 bottom-0 z-50 border-t border-[#d4cfc4] bg-[rgba(255,253,249,0.96)] p-3 backdrop-blur sm:hidden">
+          <div className="mx-auto flex w-full max-w-6xl items-center gap-3">
+            <div className="min-w-0 flex-1 text-xs font-semibold text-[#6b6760]">
+              {conversion.status === "running"
+                ? `Converting ${conversion.progress}%`
+                : `${conversion.inputFiles.length} file${conversion.inputFiles.length > 1 ? "s" : ""} ready`}
+            </div>
+
+            {conversion.status === "running" ? (
+              <button
+                type="button"
+                onClick={() => conversion.cancel()}
+                className="inline-flex items-center justify-center rounded-full border border-[#d4cfc4] px-4 py-2 text-sm font-medium transition hover:bg-[#f7f3ec]"
+              >
+                Cancel
+              </button>
+            ) : (
+              <button
+                type="button"
+                disabled={!conversion.canRun}
+                onClick={runConversion}
+                className="inline-flex items-center justify-center rounded-full bg-[#e8672a] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#ff8c5a] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                Convert
+              </button>
+            )}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 }

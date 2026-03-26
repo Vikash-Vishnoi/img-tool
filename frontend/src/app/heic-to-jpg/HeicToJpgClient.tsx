@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
+import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
 import { convertImageFiles, type RasterFormat } from "@/lib/formatConvert";
 import { heicFilesConvert, type HeicConvertFormat } from "@/lib/heicToJpg";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
@@ -48,6 +50,7 @@ export function HeicToJpgClient() {
   const [format, setFormat] = useState<HeicConvertFormat>("jpg");
   const [qualityPercent, setQualityPercent] = useState<number>(100);
   const autoDownloadKeyRef = useRef<string>("");
+  const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
   const accept = useMemo(
     () => [
@@ -107,47 +110,7 @@ export function HeicToJpgClient() {
       <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
         <PrivacyBadge className="mb-5" />
 
-        <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Output format</div>
-            <div className="mt-2">
-              <select
-                value={format}
-                onChange={(e) => setFormat(e.currentTarget.value as HeicConvertFormat)}
-                className="w-full rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-sm"
-              >
-                <option value="jpg">JPG</option>
-                <option value="png">PNG</option>
-                <option value="webp">WebP</option>
-                <option value="avif">AVIF</option>
-              </select>
-            </div>
-            <div className="mt-2 text-xs text-[#6b6760]">
-              JPG = best compatibility · PNG = transparency · WebP = smaller files
-            </div>
-          </div>
-
-          <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-            <div className="flex items-center justify-between gap-3">
-              <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Quality</div>
-              <div className="text-sm text-[#6b6760]">{qualityPercent}%</div>
-            </div>
-
-            <input
-              type="range"
-              min={50}
-              max={100}
-              step={1}
-              value={qualityPercent}
-              onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
-              className="mt-3 w-full accent-[#e8672a]"
-            />
-
-            <div className="mt-2 text-xs text-[#6b6760]">
-              Default 100% keeps quality. Lower only if you want smaller files.
-            </div>
-          </div>
-        </div>
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
 
         <FileUploader
           label="Upload images"
@@ -156,8 +119,56 @@ export function HeicToJpgClient() {
           multiple
           maxFiles={20}
           maxSizeBytes={MAX_SIZE_BYTES}
-          onFiles={(files) => conversion.setInputFiles(files)}
+          onFiles={(files) => {
+            conversion.setInputFiles(files);
+            onUpload();
+          }}
         />
+
+        <div ref={optionsRef} className="mb-5 mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
+          <div className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
+            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Output format</div>
+            <div className="mt-2 flex justify-center">
+              <AppDropdown
+                value={format}
+                onChange={(value) => setFormat(value)}
+                ariaLabel="Output format"
+                options={(
+                  ["jpg", "png", "webp", "avif"] as HeicConvertFormat[]
+                ).map((value) => ({
+                  value,
+                  label: formatLabel(value),
+                }))}
+              />
+            </div>
+            <div className="mt-2 text-xs text-[#6b6760]">
+              JPG = best compatibility · PNG = transparency · WebP = smaller files
+            </div>
+          </div>
+
+          <div className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
+            <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Quality</div>
+            <div className="mt-1 text-sm text-[#6b6760]">{qualityPercent}%</div>
+
+            <div className="mx-auto mt-3 max-w-md">
+              <input
+                type="range"
+                min={50}
+                max={100}
+                step={1}
+                value={qualityPercent}
+                onChange={(e) => setQualityPercent(Number(e.currentTarget.value))}
+                className="w-full accent-[#e8672a]"
+              />
+            </div>
+
+            <div className="mt-2 text-xs text-[#6b6760]">
+              Default 100% keeps quality. Lower only if you want smaller files.
+            </div>
+          </div>
+        </div>
 
         {conversion.inputFiles.length > 0 ? (
           <div className="mt-6">
@@ -166,7 +177,10 @@ export function HeicToJpgClient() {
               <button
                 type="button"
                 className="text-sm text-[#6b6760] underline underline-offset-4 hover:text-[#1c1a14]"
-                onClick={() => conversion.reset()}
+                onClick={() => {
+                  conversion.reset();
+                  resetUploadFlow();
+                }}
               >
                 Clear
               </button>

@@ -85,6 +85,77 @@ async function canvasToBlob(args: {
   });
 }
 
+async function blobToCanvas(args: {
+  blob: Blob;
+  fillWhite?: boolean;
+  signal: AbortSignal;
+}): Promise<HTMLCanvasElement> {
+  const { blob, fillWhite, signal } = args;
+
+  ensureNotAborted(signal);
+
+  if (typeof createImageBitmap === "function") {
+    const bitmap = await createImageBitmap(blob);
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas not supported");
+
+    if (fillWhite) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx.drawImage(bitmap, 0, 0);
+    bitmap.close();
+    return canvas;
+  }
+
+  const url = URL.createObjectURL(blob);
+
+  try {
+    const img = new Image();
+    img.decoding = "async";
+    img.src = url;
+
+    await new Promise<void>((resolve, reject) => {
+      const onAbort = () => reject(new DOMException("Aborted", "AbortError"));
+      signal.addEventListener("abort", onAbort, { once: true });
+
+      img.onload = () => {
+        signal.removeEventListener("abort", onAbort);
+        resolve();
+      };
+
+      img.onerror = () => {
+        signal.removeEventListener("abort", onAbort);
+        reject(new Error("Failed to decode image"));
+      };
+    });
+
+    ensureNotAborted(signal);
+
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth;
+    canvas.height = img.naturalHeight;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) throw new Error("Canvas not supported");
+
+    if (fillWhite) {
+      ctx.fillStyle = "#fff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
+
+    ctx.drawImage(img, 0, 0);
+    return canvas;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
 async function decodeToCanvas(args: {
   file: File;
   fillWhite?: boolean;
@@ -116,13 +187,30 @@ async function decodeToCanvas(args: {
 
     return canvas;
   } catch {
-    // Fallback: decode AVIF via WASM if the browser can't decode it.
+    // Fallback: decode AVIF/HEIC if the browser can't decode it natively.
     const name = file.name.toLowerCase();
     const type = file.type.toLowerCase();
     const isAvif = type === "image/avif" || name.endsWith(".avif");
+    const isHeic =
+      type === "image/heic" ||
+      type === "image/heif" ||
+      name.endsWith(".heic") ||
+      name.endsWith(".heif");
 
-    if (!isAvif) {
+    if (!isAvif && !isHeic) {
       throw new Error("This image format is not supported by your browser");
+    }
+
+    if (isHeic) {
+      const { default: heic2any } = await import("heic2any");
+      const converted = await heic2any({ blob: file, toType: "image/png", quality: 1 });
+
+      const pngBlob = Array.isArray(converted) ? converted[0] : converted;
+      if (!pngBlob) {
+        throw new Error("Failed to decode HEIC image");
+      }
+
+      return await blobToCanvas({ blob: pngBlob, fillWhite, signal });
     }
 
     const { decode } = await import("@jsquash/avif");

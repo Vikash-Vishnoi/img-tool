@@ -28,5 +28,5 @@ sudo systemctl reload nginx
 2) Run Certbot:
 
 ```bash
-sudo certbot --nginx -d yourdomain.tech -d www.yourdomain.tech
+sudo certbot --nginx -d image-tools.tech -d www.image-tools.tech
 ```

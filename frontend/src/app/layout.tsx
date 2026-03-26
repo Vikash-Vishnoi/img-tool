@@ -12,15 +12,15 @@ const syne = Syne({
 
 export const metadata: Metadata = {
   metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "https://yourdomain.tech"
+    process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech"
   ),
   title: {
-    default: "ImgTools — Free Image Converter (India)",
-    template: "%s · ImgTools",
+    default: "Image Tools — Free Image Converter (India)",
+    template: "%s · Image Tools",
   },
   description:
     "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
-  applicationName: "ImgTools",
+  applicationName: "Image Tools",
   keywords: [
     "image converter",
     "compress image",
@@ -36,17 +36,22 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
-    title: "ImgTools — Free Image Converter (India)",
+    title: "Image Tools — Free Image Converter (India)",
     description:
       "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
     locale: "en_IN",
-    siteName: "ImgTools",
+    siteName: "Image Tools",
   },
   twitter: {
     card: "summary_large_image",
-    title: "ImgTools — Free Image Converter (India)",
+    title: "Image Tools — Free Image Converter (India)",
     description:
       "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.",
+  },
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
   },
 };
 
@@ -75,8 +80,10 @@ export default function RootLayout({
 
         <header className="site-nav-wrap">
           <nav className="site-nav mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-            <Link href="/" className="site-logo" aria-label="ImgTools home" prefetch>
-              img<span className="logo-dot" />tools
+            <Link href="/" className="site-logo" aria-label="image.tools home" prefetch>
+              <span className="logo-word">image</span>
+              <span className="logo-dot" aria-hidden />
+              <span className="logo-word">tools</span>
             </Link>
 
             <div className="site-nav-links" aria-label="Primary">
@@ -86,8 +93,11 @@ export default function RootLayout({
               <Link href="/compress-image" className="site-nav-link" prefetch>
                 Compress
               </Link>
-              <Link href="/heic-to-jpg" className="site-nav-link" prefetch>
-                HEIC to JPG
+              <Link href="/image-to-pdf" className="site-nav-link" prefetch>
+                PDF
+              </Link>
+              <Link href="/heic-to-png" className="site-nav-link" prefetch>
+                HEIC
               </Link>
               <Link href="/resize-image" className="site-nav-link" prefetch>
                 Resize
@@ -107,7 +117,9 @@ export default function RootLayout({
             <div className="footer-top">
               <div>
                 <div className="footer-logo">
-                  img<span className="footer-dot">.</span>tools
+                  <span className="footer-logo-word">image</span>
+                  <span className="footer-dot" aria-hidden />
+                  <span className="footer-logo-word">tools</span>
                 </div>
                 <div className="footer-tag">Free image tools. Forever.</div>
               </div>
@@ -141,7 +153,7 @@ export default function RootLayout({
             </div>
 
             <div className="footer-bottom">
-              <p className="footer-copy">© 2026 ImgTools</p>
+              <p className="footer-copy">© 2026 Image Tools</p>
               <p className="footer-made">Built for privacy-first image workflows</p>
             </div>
           </div>

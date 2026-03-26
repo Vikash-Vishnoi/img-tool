@@ -1,21 +1,6 @@
-import type { Metadata } from "next";
-import { ImageToPdfClient } from "@/app/image-to-pdf/ImageToPdfClient";
-import { RelatedTools } from "@/components/RelatedTools";
-import { ToolSchema } from "@/components/ToolSchema";
-import { generateToolMetadata, getTool } from "@/lib/seo";
+import { createPdfToolPage } from "@/lib/pageFactories";
 
-const tool = getTool("image-to-pdf");
+const { metadata, Page } = createPdfToolPage("image-to-pdf");
 
-export const metadata: Metadata = generateToolMetadata(tool);
-
-export default function ImageToPdfPage() {
-  return (
-    <>
-      <ToolSchema tool={tool} />
-      <ImageToPdfClient />
-      <div className="mx-auto w-full max-w-6xl px-4 pb-10 sm:px-6 lg:px-8">
-        <RelatedTools currentSlug="image-to-pdf" />
-      </div>
-    </>
-  );
-}
+export { metadata };
+export default Page;

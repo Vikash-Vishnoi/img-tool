@@ -5,6 +5,7 @@ import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
 import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
+import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
 import { resizeImage, resizeImageToTargetBytes } from "@/lib/resizeImage";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
 
@@ -120,6 +121,7 @@ export function ResizeImageClient({
   defaultPresetKey = "custom",
 }: ResizeImageClientProps = {}) {
   const conversion = useConversion();
+  const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
   const presets = useMemo<Preset[]>(() => {
     const dpi = 300;
@@ -329,10 +331,28 @@ export function ResizeImageClient({
       </header>
 
       <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
+
+        <FileUploader
+          label="Upload images"
+          helperText={`You can select multiple images (JPG, PNG, WebP, AVIF, HEIC). Max file size ${formatFileSize(MAX_SIZE_BYTES)} each.`}
+          accept={accept}
+          multiple
+          maxFiles={20}
+          maxSizeBytes={MAX_SIZE_BYTES}
+          onFiles={(files) => {
+            const merged = [...conversion.inputFiles, ...files];
+            conversion.setInputFiles(merged.slice(0, 20));
+            onUpload();
+          }}
+        />
+
+        <div className="mt-6 mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
+
+        <div ref={optionsRef} className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
             <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Preset sizes</div>
-            <div className="mt-3 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+            <div className="mt-3 min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
               <AppDropdown
                 value={presetKey}
                 onChange={selectPreset}
@@ -361,7 +381,7 @@ export function ResizeImageClient({
             </div>
 
             {presetKey === "custom" ? (
-              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <div className="mt-5 min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
                 <div className="flex items-center justify-between gap-3">
                   <div className="text-sm font-medium">Custom size (px)</div>
                   <label className="inline-flex items-center gap-2 text-sm text-[#6b6760]">
@@ -465,7 +485,7 @@ export function ResizeImageClient({
             ) : null}
 
             {!hideTargetSizeBox ? (
-              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <div className="mt-5 min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
               <div>
                 <div className="text-sm font-medium">Resize to exact file size</div>
                 <div className="mt-1 text-xs text-[#6b6760]">
@@ -500,21 +520,10 @@ export function ResizeImageClient({
           </div>
 
           <div>
-            <FileUploader
-              label="Upload images"
-              helperText={`You can select multiple images (JPG, PNG, WebP, AVIF, HEIC). Max file size ${formatFileSize(MAX_SIZE_BYTES)} each.`}
-              accept={accept}
-              multiple
-              maxFiles={20}
-              maxSizeBytes={MAX_SIZE_BYTES}
-              onFiles={(files) => {
-                const merged = [...conversion.inputFiles, ...files];
-                conversion.setInputFiles(merged.slice(0, 20));
-              }}
-            />
-
             {conversion.inputFiles.length > 0 ? (
-              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <>
+                <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
+                <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
                 <div className="text-sm font-bold">Selected files</div>
                 <div className="mt-2 flex items-center justify-between gap-3">
                   <div className="min-w-0 text-xs text-[#6b6760]">
@@ -523,7 +532,10 @@ export function ResizeImageClient({
                   <button
                     type="button"
                     className="text-sm text-[#6b6760] underline underline-offset-4 hover:text-[#1c1a14]"
-                    onClick={() => conversion.reset()}
+                    onClick={() => {
+                      conversion.reset();
+                      resetUploadFlow();
+                    }}
                   >
                     Clear
                   </button>
@@ -698,7 +710,8 @@ export function ResizeImageClient({
                     </ul>
                   </div>
                 ) : null}
-              </div>
+                </div>
+              </>
             ) : null}
           </div>
         </div>

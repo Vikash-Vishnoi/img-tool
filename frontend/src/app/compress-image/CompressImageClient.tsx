@@ -5,6 +5,7 @@ import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { useConversion } from "@/hooks/useConversion";
+import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
 import { compressImage, compressImageToTargetBytes } from "@/lib/compressImage";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
 
@@ -105,7 +106,7 @@ export function CompressImageClient() {
   const [targetSizeKbInput, setTargetSizeKbInput] = useState<string>("");
   const [presetKey, setPresetKey] = useState<PresetKey>("custom");
 
-  const [originalDimensions, setOriginalDimensions] = useState<{ width: number; height: number } | null>(null);
+  const [, setOriginalDimensions] = useState<{ width: number; height: number } | null>(null);
   const [customWidth, setCustomWidth] = useState<number>(MAX_WIDTH_DEFAULT);
   const [customHeight, setCustomHeight] = useState<number>(MAX_WIDTH_DEFAULT);
   const [customWidthInput, setCustomWidthInput] = useState<string>(String(MAX_WIDTH_DEFAULT));
@@ -115,6 +116,7 @@ export function CompressImageClient() {
   const [estimateBytes, setEstimateBytes] = useState<number | null>(null);
   const [isEstimating, setIsEstimating] = useState<boolean>(false);
   const estimateAbortRef = useRef<AbortController | null>(null);
+  const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
 
   const accept = useMemo(
     () => ["image/jpeg", "image/png", "image/webp", ".jpg", ".jpeg", ".png", ".webp"],
@@ -239,14 +241,6 @@ export function CompressImageClient() {
     const ratio = 0.2 + normalized * 0.75;
     return clamp(originalMB * ratio, 0.05, 50);
   }, [conversion.inputFiles, qualityPercent]);
-
-  const originalMaxDimension = useMemo(
-    () =>
-      originalDimensions
-        ? Math.max(originalDimensions.width, originalDimensions.height)
-        : null,
-    [originalDimensions]
-  );
 
   const maxWidth = useMemo(() => {
     if (presetKey === "custom") {
@@ -393,10 +387,28 @@ export function CompressImageClient() {
 
       <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
         <PrivacyBadge className="mb-5" />
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
+
+        <FileUploader
+          label="Upload an image"
+          helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)}. Paste from clipboard also works.`}
+          accept={accept}
+          multiple={false}
+          maxFiles={1}
+          maxSizeBytes={MAX_SIZE_BYTES}
+          onFiles={(files) => {
+            conversion.setInputFiles(files);
+            onUpload();
+          }}
+        />
+
+        <div className="mt-6 mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
+
+        <div ref={optionsRef} className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
           <div>
             <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Compression level</div>
-            <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+            <div className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
               <div>
                 <div className="text-sm font-medium">Exact target size</div>
                 <div className="mt-1 text-xs text-[#6b6760]">
@@ -430,7 +442,7 @@ export function CompressImageClient() {
               </div>
             </div>
 
-            <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+            <div className="mt-5 min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
               <div className="text-sm font-medium">Quality</div>
               <div className="mt-2 text-sm text-[#6b6760]">{qualityPercent}%</div>
               <input
@@ -449,7 +461,7 @@ export function CompressImageClient() {
               </div>
             </div>
 
-            <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+            <div className="mt-5 min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
               <div className="text-sm font-medium">Dimensions</div>
               <div className="mt-1 text-xs text-[#6b6760]">
                 Choose a preset or select Custom.
@@ -619,18 +631,10 @@ export function CompressImageClient() {
           </div>
 
           <div>
-            <FileUploader
-              label="Upload an image"
-              helperText={`Max file size ${formatFileSize(MAX_SIZE_BYTES)}. Paste from clipboard also works.`}
-              accept={accept}
-              multiple={false}
-              maxFiles={1}
-              maxSizeBytes={MAX_SIZE_BYTES}
-              onFiles={(files) => conversion.setInputFiles(files)}
-            />
-
             {conversion.inputFiles.length > 0 ? (
-              <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <>
+                <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
+                <div className="mt-5 rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
                 <div className="text-sm font-bold">Selected</div>
                 <div className="mt-2 flex items-center justify-between gap-3">
                   <div className="min-w-0">
@@ -644,7 +648,10 @@ export function CompressImageClient() {
                   <button
                     type="button"
                     className="text-sm text-[#6b6760] underline underline-offset-4 hover:text-[#1c1a14]"
-                    onClick={() => conversion.reset()}
+                    onClick={() => {
+                      conversion.reset();
+                      resetUploadFlow();
+                    }}
                   >
                     Clear
                   </button>
@@ -771,7 +778,8 @@ export function CompressImageClient() {
                     </div>
                   </div>
                 ) : null}
-              </div>
+                </div>
+              </>
             ) : null}
           </div>
         </div>

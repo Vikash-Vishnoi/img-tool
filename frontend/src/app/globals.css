@@ -72,17 +72,22 @@ body {
 .site-logo {
   text-decoration: none;
   color: var(--ink);
-  font-weight: 800;
-  font-size: 1.1rem;
-  letter-spacing: -0.02em;
+  font-weight: 900;
+  font-size: 1.14rem;
+  letter-spacing: -0.03em;
   display: inline-flex;
   align-items: center;
+  line-height: 1;
+}
+
+.logo-word {
+  display: inline-flex;
 }
 
 .logo-dot {
-  width: 6px;
-  height: 6px;
-  margin: 0 2px;
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
   border-radius: 999px;
   background: var(--ember);
 }
@@ -147,12 +152,24 @@ body {
 
 .footer-logo {
   color: var(--cream);
-  font-size: 1.3rem;
-  font-weight: 800;
+  font-size: 1.4rem;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-logo-word {
+  display: inline-flex;
 }
 
 .footer-dot {
-  color: var(--ember);
+  width: 8px;
+  height: 8px;
+  margin: 0 3px;
+  border-radius: 999px;
+  background: var(--ember);
 }
 
 .footer-tag {

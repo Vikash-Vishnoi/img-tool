@@ -69,6 +69,22 @@ export const TOOLS = [
     related: ["compress-image", "resize-image", "resize-image-to-200kb"],
   },
   {
+    slug: "heic-to-png",
+    path: "/heic-to-png",
+    title: "HEIC to PNG Converter — Free, No Upload, Works on Mobile",
+    description:
+      "Convert iPhone HEIC and HEIF photos to PNG in your browser with no upload. Keeps transparency and works on mobile in India.",
+    keywords: [
+      "heic to png",
+      "heif to png",
+      "iphone photo to png",
+      "convert heic",
+      "india",
+      "no upload",
+    ],
+    related: ["heic-to-jpg", "png-to-jpg", "compress-image"],
+  },
+  {
     slug: "compress-image",
     path: "/compress-image",
     title: "Compress Image for WhatsApp — Reduce Size Without Quality Loss",
@@ -322,7 +338,7 @@ export function generateToolMetadata(tool: ToolDefinition): Metadata {
       type: "website",
       url: tool.path,
       locale: "en_IN",
-      siteName: "ImgTools",
+      siteName: "Image Tools",
     },
     twitter: {
       card: "summary_large_image",

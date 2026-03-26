@@ -1,6 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://yourdomain.tech',
+  siteUrl: 'https://image-tools.tech',
   generateRobotsTxt: true,
   changefreq: 'monthly',
   priority: 0.8,

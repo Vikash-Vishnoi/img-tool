@@ -7,6 +7,7 @@ import { FileUploader } from "@/components/FileUploader";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
+import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
 import { downloadBlob, formatFileSize } from "@/lib/utils";
 
 type PageSize = "a3" | "a4" | "a5" | "letter" | "legal" | "image-fit";
@@ -231,6 +232,7 @@ export function ImageToPdfClient({
 }: ImageToPdfClientProps) {
   const conversion = useConversion();
   const autoDownloadKeyRef = useRef<string>("");
+  const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
   const [previewIndex, setPreviewIndex] = useState<number | null>(null);
 
   const [pageSize, setPageSize] = useState<PageSize>("a4");
@@ -332,8 +334,25 @@ export function ImageToPdfClient({
       <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
         <PrivacyBadge className="mb-5" />
 
-        <div className="mb-5 grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
+
+        <FileUploader
+          label={inputLabel}
+          helperText={helperText}
+          accept={accept}
+          multiple
+          maxFiles={30}
+          maxSizeBytes={MAX_SIZE_BYTES}
+          onFiles={(files) => {
+            const merged = [...conversion.inputFiles, ...files];
+            conversion.setInputFiles(merged.slice(0, 30));
+            onUpload();
+          }}
+        />
+
+        <div ref={optionsRef} className="mb-5 mt-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          <div className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
             <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Page size</div>
             <div className="mt-2">
               <AppDropdown
@@ -353,7 +372,8 @@ export function ImageToPdfClient({
             </div>
           </div>
 
-          <label className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+          <label className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
             <div className="flex items-center justify-between gap-3 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">
               <span>Page margin</span>
               <span>{pageSize === "image-fit" ? "Not used" : `${Math.max(0, Math.min(30, marginMm))} mm`}</span>
@@ -375,7 +395,8 @@ export function ImageToPdfClient({
             </div>
           </label>
 
-          <label className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+          <label className="min-h-[220px] rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 4</div>
             <div className="flex items-center justify-between gap-3 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">
               <span>JPEG quality</span>
               <span>{Math.max(60, Math.min(100, jpegQualityPercent))}%</span>
@@ -392,19 +413,6 @@ export function ImageToPdfClient({
           </label>
         </div>
 
-        <FileUploader
-          label={inputLabel}
-          helperText={helperText}
-          accept={accept}
-          multiple
-          maxFiles={30}
-          maxSizeBytes={MAX_SIZE_BYTES}
-          onFiles={(files) => {
-            const merged = [...conversion.inputFiles, ...files];
-            conversion.setInputFiles(merged.slice(0, 30));
-          }}
-        />
-
         {conversion.inputFiles.length > 0 ? (
           <div className="mt-6">
             <div className="flex flex-wrap items-center justify-between gap-3">
@@ -417,6 +425,7 @@ export function ImageToPdfClient({
                 onClick={() => {
                   setPreviewIndex(null);
                   conversion.reset();
+                  resetUploadFlow();
                 }}
               >
                 Clear
@@ -556,7 +565,7 @@ export function ImageToPdfClient({
             ) : null}
 
             {conversion.outputs[0] ? (
-              <div className="mt-6 rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <div className="mt-6 rounded-xl border border-[#d4cfc4] bg-[#f7f3ec] p-6 text-center">
                 <div className="text-sm font-bold">Download</div>
                 <div className="mt-1 text-xs text-[#6b6760]">
                   {conversion.outputs[0].filename} · {formatFileSize(conversion.outputs[0].blob.size)}

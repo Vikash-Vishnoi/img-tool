@@ -10,7 +10,7 @@ function jsonLd(data: unknown): string {
 }
 
 export function ToolSchema({ tool, faqs }: ToolSchemaProps) {
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://yourdomain.tech";
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
   const absoluteUrl = `${siteUrl.replace(/\/$/, "")}${tool.path}`;
 
   const webAppJsonLd = {

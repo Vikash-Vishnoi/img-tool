@@ -3,7 +3,7 @@ User-agent: *
 Allow: /
 
 # Host
-Host: https://yourdomain.tech
+Host: https://image-tools.tech
 
 # Sitemaps
-Sitemap: https://yourdomain.tech/sitemap.xml
+Sitemap: https://image-tools.tech/sitemap.xml
