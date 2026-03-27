@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Syne } from "next/font/google";
 import Script from "next/script";
+import { Suspense } from "react";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import SiteHeader from "@/components/SiteHeader";
 import "./globals.css";
@@ -199,7 +200,9 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', '${gaId}', { anonymize_ip: true });`}
             </Script>
-            <GoogleAnalyticsPageView gaId={gaId} />
+            <Suspense fallback={null}>
+              <GoogleAnalyticsPageView gaId={gaId} />
+            </Suspense>
           </>
         ) : null}
       </body>
