@@ -144,7 +144,7 @@ function getSecondaryBadge(slug: string): string {
 }
 
 type RouteContext = {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export async function GET(_request: Request, context: RouteContext): Promise<Response> {
