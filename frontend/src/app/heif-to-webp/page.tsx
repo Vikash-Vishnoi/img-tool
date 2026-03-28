@@ -1,6 +1,5 @@
-import { createFormatToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createFormatToolPage("heif-to-webp");
-
-export { metadata };
-export default Page;
+export default function HeifToWebpRedirectPage() {
+	permanentRedirect("/heic-to-webp");
+}

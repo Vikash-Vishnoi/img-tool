@@ -1,6 +1,5 @@
-import { createPdfToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createPdfToolPage("jpeg-to-pdf");
-
-export { metadata };
-export default Page;
+export default function JpegToPdfRedirectPage() {
+	permanentRedirect("/jpg-to-pdf");
+}

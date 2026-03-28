@@ -4,16 +4,16 @@ import { getOgSvgPath } from "@/lib/seo";
 const OG_IMAGE = getOgSvgPath("about");
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About Image Tools — Free Browser-Based Image Utilities",
   description:
-    "Learn about Image Tools, our privacy-first approach, and why we build fast, free image utilities for everyday use.",
+    "Learn what Image Tools does, why we built privacy-first browser utilities, and how people use our free image converters for daily upload and sharing tasks.",
   alternates: {
     canonical: "/about",
   },
   openGraph: {
-    title: "About",
+    title: "About Image Tools — Free Browser-Based Image Utilities",
     description:
-      "Learn about Image Tools, our privacy-first approach, and why we build fast, free image utilities for everyday use.",
+      "Learn what Image Tools does, why we built privacy-first browser utilities, and how people use our free image converters for daily upload and sharing tasks.",
     type: "website",
     locale: "en_IN",
     siteName: "Image Tools",
@@ -30,16 +30,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "About",
+    title: "About Image Tools — Free Browser-Based Image Utilities",
     description:
-      "Learn about Image Tools, our privacy-first approach, and why we build fast, free image utilities for everyday use.",
+      "Learn what Image Tools does, why we built privacy-first browser utilities, and how people use our free image converters for daily upload and sharing tasks.",
     images: [OG_IMAGE],
   },
 };
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-10 sm:px-6">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-12 pt-10 sm:px-6">
       <h1 className="text-3xl font-extrabold tracking-[-0.03em]">About Image Tools</h1>
 
       <p className="mt-4 text-sm leading-7 text-[#6b6760]">
@@ -54,7 +54,16 @@ export default function AboutPage() {
         to run directly on your device, which helps keep your files private.
       </p>
 
-      <h2 className="mt-8 text-xl font-bold tracking-[-0.02em]">What we value</h2>
+      <h2 className="mt-8 text-xl font-bold tracking-[-0.02em]">What Image Tools does</h2>
+      <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+        Image Tools helps you convert formats, reduce file size, and resize images for
+        fixed dimensions without installing apps. It is optimized for practical tasks
+        like online form uploads, social media posting, and quick file compatibility.
+      </p>
+
+      <h2 className="mt-8 text-xl font-bold tracking-[-0.02em]">
+        Why we built it privacy-first
+      </h2>
       <ul className="mt-3 space-y-2 text-sm leading-7 text-[#6b6760]">
         <li>Privacy-first processing whenever possible.</li>
         <li>Simple, mobile-friendly tools that work instantly.</li>
@@ -62,12 +71,12 @@ export default function AboutPage() {
         <li>Free access with no account requirements.</li>
       </ul>
 
-      <h2 className="mt-8 text-xl font-bold tracking-[-0.02em]">Who it is for</h2>
+      <h2 className="mt-8 text-xl font-bold tracking-[-0.02em]">Who uses Image Tools</h2>
       <p className="mt-3 text-sm leading-7 text-[#6b6760]">
         Students, job applicants, creators, and professionals who need reliable image
         utilities without friction. If you need to prepare files for uploads quickly,
         Image Tools is built for that exact task.
       </p>
-    </main>
+    </div>
   );
 }

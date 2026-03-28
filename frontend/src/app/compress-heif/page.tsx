@@ -1,6 +1,5 @@
-import { createCompressToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createCompressToolPage("compress-heif");
-
-export { metadata };
-export default Page;
+export default function CompressHeifRedirectPage() {
+	permanentRedirect("/compress-heic");
+}

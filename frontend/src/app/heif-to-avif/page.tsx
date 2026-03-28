@@ -1,6 +1,5 @@
-import { createFormatToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createFormatToolPage("heif-to-avif");
-
-export { metadata };
-export default Page;
+export default function HeifToAvifRedirectPage() {
+	permanentRedirect("/heic-to-avif");
+}

@@ -4,8 +4,9 @@ import { getOgSvgPath } from "@/lib/seo";
 const OG_IMAGE = getOgSvgPath("feedback");
 
 export const metadata: Metadata = {
-  title: "Feedback · Image Tools",
-  description: "Share feedback for Image Tools.",
+  title: "Share Feedback — Help Us Improve Image Tools",
+  description:
+    "Share your feedback about Image Tools, report issues, and suggest new converters or presets to help us improve speed, quality, and usability for everyone.",
   robots: {
     index: true,
     follow: true,
@@ -14,8 +15,9 @@ export const metadata: Metadata = {
     canonical: "/feedback",
   },
   openGraph: {
-    title: "Feedback · Image Tools",
-    description: "Share feedback for Image Tools.",
+    title: "Share Feedback — Help Us Improve Image Tools",
+    description:
+      "Share your feedback about Image Tools, report issues, and suggest new converters or presets to help us improve speed, quality, and usability for everyone.",
     type: "website",
     locale: "en_IN",
     siteName: "Image Tools",
@@ -32,15 +34,16 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Feedback · Image Tools",
-    description: "Share feedback for Image Tools.",
+    title: "Share Feedback — Help Us Improve Image Tools",
+    description:
+      "Share your feedback about Image Tools, report issues, and suggest new converters or presets to help us improve speed, quality, and usability for everyone.",
     images: [OG_IMAGE],
   },
 };
 
 export default function FeedbackPage() {
   return (
-    <main className="mx-auto w-full max-w-3xl px-4 pb-12 pt-10 sm:px-6">
+    <div className="mx-auto w-full max-w-3xl px-4 pb-12 pt-10 sm:px-6">
       <h1 className="text-3xl font-extrabold tracking-[-0.03em]">Feedback</h1>
       <p className="mt-4 text-sm leading-7 text-[#6b6760]">
         Help us improve Image Tools by sharing your feedback and feature requests.
@@ -53,6 +56,6 @@ export default function FeedbackPage() {
       >
         Open Feedback Form
       </a>
-    </main>
+    </div>
   );
 }

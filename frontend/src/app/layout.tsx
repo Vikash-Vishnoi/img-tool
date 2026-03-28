@@ -148,7 +148,34 @@ export default function RootLayout({
     countryOfOrigin: "IN",
   };
 
-  const globalSchema = [websiteJsonLd, organizationJsonLd, webApplicationJsonLd];
+  const siteNavigationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "SiteNavigationElement",
+    name: [
+      "HEIC to JPG",
+      "Compress Image",
+      "Resize Image",
+      "Image Converter",
+      "Image to PDF",
+      "PDF to Image",
+      "About",
+      "Privacy Policy",
+      "Terms of Use",
+      "Disclaimer",
+    ],
+    url: [
+      `${NORMALIZED_SITE_URL}/heic-to-jpg`,
+      `${NORMALIZED_SITE_URL}/compress-image`,
+      `${NORMALIZED_SITE_URL}/resize-image`,
+      `${NORMALIZED_SITE_URL}/image-converter`,
+      `${NORMALIZED_SITE_URL}/image-to-pdf`,
+      `${NORMALIZED_SITE_URL}/pdf-to-image`,
+      `${NORMALIZED_SITE_URL}/about`,
+      `${NORMALIZED_SITE_URL}/privacy-policy`,
+      `${NORMALIZED_SITE_URL}/terms`,
+      `${NORMALIZED_SITE_URL}/disclaimer`,
+    ],
+  };
 
   return (
     <html
@@ -158,15 +185,31 @@ export default function RootLayout({
     >
       <body className="site-body min-h-full flex flex-col bg-background text-foreground">
         <script
+          id="schema-website"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        />
+        <script
+          id="schema-navigation"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteNavigationJsonLd) }}
+        />
+        <script
+          id="schema-organization"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+        />
+        <script
+          id="schema-webapp"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webApplicationJsonLd) }}
         />
 
         <div aria-hidden className="grain-overlay" />
 
         <SiteHeader />
 
-        <div className="flex-1">{children}</div>
+        <main className="flex-1">{children}</main>
 
         <footer className="site-footer mt-14">
           <div className="mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 lg:px-6">

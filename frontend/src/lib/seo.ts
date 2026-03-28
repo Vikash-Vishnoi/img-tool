@@ -96,7 +96,7 @@ export const TOOLS = [
     path: "/heic-to-webp",
     title: "HEIC to WebP Converter — Free, No Upload, Works on Mobile",
     description:
-      "Convert iPhone HEIC and HEIF photos to WebP in your browser with no upload. Fast, private, and mobile-friendly.",
+      "Convert HEIC photos to WebP free in your browser for smaller, web-ready files. No upload needed, so images stay private. Works on Android and iPhone.",
     keywords: [
       "heic to webp",
       "heif to webp",
@@ -186,7 +186,7 @@ export const TOOLS = [
     path: "/compress-jpg",
     title: "Compress JPG Without Losing Quality — Free Online",
     description:
-      "Compress JPG photos in your browser with no upload. Fast and private on mobile and desktop.",
+      "Compress JPG photos free in your browser to reduce file size for uploads and sharing. No upload needed, so images stay private. Works on Android and iPhone.",
     keywords: ["compress jpg", "jpg compressor", "reduce jpg size", "no upload"],
     related: ["compress-image", "compress-jpeg", "resize-jpg"],
   },
@@ -249,7 +249,7 @@ export const TOOLS = [
     path: "/png-to-webp",
     title: "PNG to WebP Converter — Reduce Size 30%, Free",
     description:
-      "Convert PNG to WebP free in your browser. No upload needed, works on mobile for faster websites and smaller files.",
+      "Convert PNG to WebP free in your browser for faster page loads and smaller files. No upload needed, so images stay private. Works on Android and iPhone.",
     keywords: ["png to webp", "convert png", "webp converter", "no upload"],
     faqs: pngToWebpFAQs,
     related: ["webp-to-png", "webp-to-jpg", "compress-image"],
@@ -341,7 +341,7 @@ export const TOOLS = [
     path: "/avif-to-jpg",
     title: "AVIF to JPG Converter — Free Online, No Install",
     description:
-      "Convert AVIF to JPG free in your browser—no upload needed. Useful for compatibility with older apps and sites.",
+      "Convert AVIF to JPG free in your browser for wider app and form compatibility. No upload needed, so files stay private. Works on Android and iPhone.",
     keywords: ["avif to jpg", "avif to jpeg", "convert avif", "no upload"],
     related: ["avif-to-png", "avif-to-webp", "compress-image"],
   },
@@ -391,7 +391,7 @@ export const TOOLS = [
     path: "/resize-jpg",
     title: "Resize JPG Image — Free, No Upload, Works on Mobile",
     description:
-      "Resize JPG photos by pixels or preset sizes in your browser with no upload. Supports passport size, WhatsApp DP, Instagram, and custom dimensions. Works on mobile.",
+      "Resize JPG photos by pixels or presets free in your browser for social posts and forms. No upload needed, and images stay private. Includes custom dimensions.",
     keywords: ["resize jpg", "jpg resizer", "resize photo", "no upload"],
     related: ["resize-image", "resize-jpeg", "compress-jpg"],
   },
@@ -400,7 +400,7 @@ export const TOOLS = [
     path: "/resize-jpeg",
     title: "Resize JPEG Image — Free, No Upload, Works on Mobile",
     description:
-      "Resize JPG/JPEG photos by pixels or preset sizes in your browser with no upload. Supports passport, WhatsApp DP, Instagram, and custom dimensions. Works on mobile.",
+      "Resize JPEG photos by pixels or presets free in your browser for uploads and sharing. No upload needed, so images stay private. Includes presets and custom dimensions.",
     keywords: ["resize jpeg", "jpeg resizer", "resize photo", "no upload"],
     related: ["resize-image", "resize-jpg", "compress-jpeg"],
   },
@@ -409,7 +409,7 @@ export const TOOLS = [
     path: "/resize-png",
     title: "Resize PNG Image — Free, No Upload, Works on Mobile",
     description:
-      "Resize PNG images by pixels or preset sizes in your browser with no upload. Supports passport size, WhatsApp DP, Instagram, and custom dimensions. Works on mobile.",
+      "Resize PNG images by pixels or presets free in your browser for social posts and forms. No upload needed, and images stay private. Includes custom dimensions.",
     keywords: ["resize png", "png resizer", "resize image", "no upload"],
     related: ["resize-image", "compress-png", "png-to-jpg"],
   },
@@ -418,7 +418,7 @@ export const TOOLS = [
     path: "/resize-webp",
     title: "Resize WebP Image — Free, No Upload, Works on Mobile",
     description:
-      "Resize WebP images by pixels or preset sizes in your browser with no upload. Supports passport size, WhatsApp DP, Instagram, and custom dimensions. Works on mobile.",
+      "Resize WebP images by pixels or presets free in your browser for faster sharing and uploads. No upload needed, and images stay private. Includes custom dimensions.",
     keywords: ["resize webp", "webp resizer", "resize image", "no upload"],
     related: ["resize-image", "compress-webp", "webp-to-jpg"],
   },
@@ -454,7 +454,7 @@ export const TOOLS = [
     path: "/resize-passport-photo",
     title: "Passport Size Photo Resize — 35x45mm Free",
     description:
-      "Resize image to passport photo size 35x45mm (413x531 px at 300 DPI) in your browser with no upload.",
+      "Resize any image to passport photo size 35x45 mm (413x531 px) free in your browser. No upload needed, files stay private. Works on Android and iPhone.",
     keywords: ["passport photo 35x45mm", "413x531", "resize passport photo", "no upload"],
     faqs: resizePassportPhotoFAQs,
     faqHeading: "Passport photo size - common questions",
@@ -465,7 +465,7 @@ export const TOOLS = [
     path: "/resize-aadhar-photo",
     title: "Resize Photo for Aadhaar — Under 200KB Free",
     description:
-      "Resize image to Aadhaar card photo size 35x35mm (413x413 px at 300 DPI) in your browser with no upload.",
+      "Resize any image to Aadhaar photo size 35x35 mm (413x413 px) free in your browser. No upload needed, files stay private. Works on Android and iPhone.",
     keywords: ["aadhar photo 35x35mm", "413x413", "resize aadhar photo", "no upload"],
     faqs: resizeAadharPhotoFAQs,
     related: ["resize-image", "resize-passport-photo", "resize-image-to-200kb"],
@@ -502,7 +502,7 @@ export const TOOLS = [
     path: "/resize-youtube-thumbnail",
     title: "YouTube Thumbnail Resize — 1280x720px Free",
     description:
-      "Resize image to YouTube thumbnail size 1280x720 px in your browser with no upload.",
+      "Resize any image to YouTube thumbnail size 1280x720 px free in your browser for crisp 16:9 previews. No upload needed, files stay private. Instant download.",
     keywords: ["youtube thumbnail size", "1280x720", "resize youtube thumbnail", "no upload"],
     related: ["resize-image", "resize-facebook-post", "compress-image"],
   },
@@ -511,7 +511,7 @@ export const TOOLS = [
     path: "/resize-facebook-post",
     title: "Resize Facebook Post 1200x630 px — Free Online",
     description:
-      "Resize image to Facebook post size 1200x630 px in your browser with no upload.",
+      "Resize any image to Facebook post size 1200x630 px free in your browser for clear social previews. No upload needed, files stay private. Instant download.",
     keywords: ["facebook post size", "1200x630", "resize facebook post", "no upload"],
     related: ["resize-image", "resize-facebook-cover", "compress-image"],
   },
@@ -538,7 +538,7 @@ export const TOOLS = [
     path: "/resize-2x2-photo",
     title: "Resize Photo to 2x2 Inch — US Visa & Passport",
     description:
-      "Resize image to 2x2 inch photo size 600x600 px at 300 DPI in your browser with no upload.",
+      "Resize any image to 2x2 inch photo size (600x600 px at 300 DPI) free in your browser. No upload needed, files stay private. Works on Android and iPhone.",
     keywords: ["2x2 inch photo", "600x600", "resize 2x2 photo", "no upload"],
     related: ["resize-image", "resize-passport-photo", "resize-aadhar-photo"],
   },
@@ -547,7 +547,7 @@ export const TOOLS = [
     path: "/resize-product-square",
     title: "Resize Product Image Square — Amazon Flipkart Size",
     description:
-      "Resize product image to 1000×1000 px square in your browser with no upload. Ideal for Amazon, Flipkart, and Meesho product listings. Free, instant, works on mobile.",
+      "Resize product images to 1000x1000 px square free in your browser for ecommerce listings. No upload needed, so files stay private. Works on Android and iPhone.",
     keywords: ["product image 1000x1000", "resize product image", "square image", "no upload"],
     related: ["resize-image", "resize-instagram-post", "compress-image"],
   },
@@ -598,7 +598,7 @@ export const TOOLS = [
     path: "/pdf-to-jpg",
     title: "PDF to JPG Converter — Free, No Upload",
     description:
-      "Convert PDF pages to JPG in your browser with no upload. Download each page one-by-one or all at once.",
+      "Convert PDF pages to JPG free in your browser for sharing and submissions. No upload needed, so files stay private. Download one page or all pages at once.",
     keywords: ["pdf to jpg", "pdf to image", "no upload"],
     related: ["pdf-to-image", "pdf-to-jpeg", "jpg-to-pdf"],
   },
@@ -616,7 +616,7 @@ export const TOOLS = [
     path: "/pdf-to-png",
     title: "PDF to PNG Converter — Free, No Upload",
     description:
-      "Convert PDF pages to PNG in your browser with no upload. Download each page one-by-one or all at once.",
+      "Convert PDF pages to PNG free in your browser for crisp text and graphics. No upload needed, so files stay private. Download one page or all pages at once.",
     keywords: ["pdf to png", "pdf to image", "no upload"],
     related: ["pdf-to-image", "png-to-pdf", "compress-png"],
   },
@@ -625,7 +625,7 @@ export const TOOLS = [
     path: "/pdf-to-webp",
     title: "PDF to WebP Converter — Free, No Upload",
     description:
-      "Convert PDF pages to WebP in your browser with no upload. Download each page one-by-one or all at once.",
+      "Convert PDF pages to WebP free in your browser for smaller image files. No upload needed, so files stay private. Download one page or all pages at once.",
     keywords: ["pdf to webp", "pdf to image", "no upload"],
     related: ["pdf-to-image", "webp-to-pdf", "compress-webp"],
   },
@@ -634,7 +634,7 @@ export const TOOLS = [
     path: "/pdf-to-avif",
     title: "PDF to AVIF Converter — Free, No Upload",
     description:
-      "Convert PDF pages to AVIF in your browser with no upload. Download each page one-by-one or all at once.",
+      "Convert PDF pages to AVIF free in your browser for maximum compression. No upload needed, so files stay private. Download one page or all pages at once.",
     keywords: ["pdf to avif", "pdf to image", "no upload"],
     related: ["pdf-to-image", "avif-to-pdf", "compress-avif"],
   },
@@ -643,7 +643,7 @@ export const TOOLS = [
     path: "/jpg-to-pdf",
     title: "JPG to PDF Converter — Free Online, No Watermark",
     description:
-      "Convert JPG/JPEG photos into a single PDF in your browser with no upload. Free and private.",
+      "Convert JPG or JPEG images to PDF free in your browser for forms, sharing, and archives. No upload needed, so files stay private. Works on Android and iPhone.",
     keywords: ["jpg to pdf", "jpeg to pdf", "image to pdf", "no upload"],
     faqs: jpgToPdfFAQs,
     related: ["image-to-pdf", "png-to-pdf", "compress-image"],

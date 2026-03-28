@@ -1,6 +1,5 @@
-import { createFormatToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createFormatToolPage("heif-to-jpg");
-
-export { metadata };
-export default Page;
+export default function HeifToJpgRedirectPage() {
+	permanentRedirect("/heic-to-jpg");
+}

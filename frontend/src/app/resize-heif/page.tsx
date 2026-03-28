@@ -1,6 +1,5 @@
-import { createResizeToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createResizeToolPage("resize-heif");
-
-export { metadata };
-export default Page;
+export default function ResizeHeifRedirectPage() {
+	permanentRedirect("/resize-heic");
+}

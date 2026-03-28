@@ -1,6 +1,5 @@
-import { createResizeToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createResizeToolPage("resize-jpeg");
-
-export { metadata };
-export default Page;
+export default function ResizeJpegRedirectPage() {
+	permanentRedirect("/resize-jpg");
+}

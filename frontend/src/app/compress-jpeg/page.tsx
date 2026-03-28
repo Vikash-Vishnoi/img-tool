@@ -1,6 +1,5 @@
-import { createCompressToolPage } from "@/lib/pageFactories";
+import { permanentRedirect } from "next/navigation";
 
-const { metadata, Page } = createCompressToolPage("compress-jpeg");
-
-export { metadata };
-export default Page;
+export default function CompressJpegRedirectPage() {
+	permanentRedirect("/compress-jpg");
+}
