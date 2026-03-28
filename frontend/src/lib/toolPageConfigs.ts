@@ -260,7 +260,7 @@ export const RESIZE_TOOL_PAGE_CONFIGS = {
   "resize-image-to-200kb": {
     fixedTargetKb: 200,
     hideTargetSizeBox: true,
-    defaultPresetKey: "passport-india",
+    defaultPresetKey: "passport-standard",
   },
   "resize-jpg": {
     title: "Resize JPG Image",
@@ -308,7 +308,7 @@ export const RESIZE_TOOL_PAGE_CONFIGS = {
   "resize-passport-photo": {
     title: "Resize Passport Photo 35x45mm (413x531 px)",
     description: "Resize photo to passport size 35x45mm (413x531 px at 300 DPI) in your browser.",
-    defaultPresetKey: "passport-india",
+    defaultPresetKey: "passport-standard",
   },
   "resize-aadhar-photo": {
     title: "Resize Aadhaar Card Photo 35x35mm (413x413 px)",

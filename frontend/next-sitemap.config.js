@@ -6,28 +6,20 @@ module.exports = {
   priority: 0.8,
   sitemapSize: 7000,
   exclude: [
-    '/icon.svg',
-    '/file.svg',
-    '/globe.svg',
+    '/icon.png',
+    '/file.png',
+    '/globe.png',
     '/og/*',
-    '/og-image.svg',
-    '/og-image-*.svg',
-    '/next.svg',
-    '/vercel.svg',
-    '/window.svg',
-    '/heif-to-jpg',
-    '/heif-to-png',
-    '/heif-to-pdf',
-    '/heif-to-avif',
-    '/heif-to-webp',
-    '/compress-heif',
-    '/resize-heif',
-    '/feedback',
-    '/terms',
+    '/og-image.png',
+    '/og-image-*.png',
+    '/next.png',
+    '/vercel.png',
+    '/window.png',
   ],
   transform: async (config, path) => {
     const isHome = path === '/';
-    const isPolicyPage = path === '/privacy-policy' || path === '/terms';
+    const isPolicyPage =
+      path === '/privacy-policy' || path === '/terms' || path === '/disclaimer';
     const isCoreTool =
       path === '/image-converter' ||
       path === '/compress-image' ||

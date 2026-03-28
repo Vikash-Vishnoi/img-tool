@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: "Feedback · Image Tools",
   description: "Share feedback for Image Tools.",
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
   alternates: {
     canonical: "/feedback",

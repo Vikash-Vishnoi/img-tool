@@ -14,9 +14,9 @@ const syne = Syne({
   display: "swap",
 });
 
-const SITE_TITLE = "Image Tools — Free Image Converter (India)";
+const SITE_TITLE = "Image Tools — Free Image Converter";
 const SITE_DESCRIPTION =
-  "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
+  "Free image converter tools: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
 const HOME_OG_IMAGE = getOgSvgPath("home");
@@ -33,11 +33,11 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   applicationName: "Image Tools",
   keywords: [
-    "image converter india",
+    "image converter",
     "compress image whatsapp",
     "heic to jpg",
     "passport size photo resize",
-    "resize image online free india",
+    "resize image online free",
     "image tools free",
   ],
   robots: {
@@ -58,15 +58,15 @@ export const metadata: Metadata = {
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
     url: NORMALIZED_SITE_URL,
-    locale: "en_IN",
+    locale: "en",
     siteName: "Image Tools",
     images: [
       {
         url: HOME_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Image Tools — Free Image Converter India",
-        type: "image/svg+xml",
+        alt: "Image Tools — Free Image Converter",
+        type: "image/png",
       },
     ],
   },
@@ -77,9 +77,9 @@ export const metadata: Metadata = {
     images: [HOME_OG_IMAGE],
   },
   icons: {
-    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    shortcut: [{ url: "/icon.svg", type: "image/svg+xml" }],
-    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    icon: [{ url: "/icon.png", type: "image/png" }],
+    shortcut: [{ url: "/icon.png", type: "image/png" }],
+    apple: [{ url: "/icon.png", type: "image/png" }],
   },
 };
 
@@ -104,7 +104,7 @@ export default function RootLayout({
     "@type": "WebSite",
     name: "Image Tools",
     url: NORMALIZED_SITE_URL,
-    description: "Free image converter tools for India",
+    description: "Free image converter tools",
     inLanguage: "en-IN",
     potentialAction: {
       "@type": "SearchAction",
@@ -118,7 +118,7 @@ export default function RootLayout({
     "@type": "Organization",
     name: "Image Tools",
     url: NORMALIZED_SITE_URL,
-    logo: `${NORMALIZED_SITE_URL}/icon.svg`,
+    logo: `${NORMALIZED_SITE_URL}/icon.png`,
     sameAs: [],
   };
 
@@ -128,7 +128,7 @@ export default function RootLayout({
     name: "Image Tools",
     url: NORMALIZED_SITE_URL,
     description:
-      "Free image converter tools for India — compress, resize, convert HEIC, JPG, PNG, WebP, AVIF",
+      "Free image converter tools — compress, resize, convert HEIC, JPG, PNG, WebP, AVIF",
     applicationCategory: "UtilitiesApplication",
     operatingSystem: "Any",
     browserRequirements: "Requires JavaScript",
@@ -140,7 +140,7 @@ export default function RootLayout({
     featureList: [
       "HEIC to JPG conversion",
       "Image compression for WhatsApp",
-      "Passport photo resize India",
+      "Passport photo resize",
       "No file upload required",
       "Works on Android and iPhone",
     ],
@@ -212,6 +212,9 @@ export default function RootLayout({
                   <div className="footer-col-title">Utility</div>
                   <Link href="/feedback" className="footer-link" prefetch>
                     Feedback Form
+                  </Link>
+                  <Link href="/disclaimer" className="footer-link" prefetch>
+                    Disclaimer
                   </Link>
                   <Link href="/privacy-policy" className="footer-link" prefetch>
                     Privacy Policy

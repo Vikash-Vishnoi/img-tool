@@ -5,7 +5,7 @@ type FAQEntry = {
 
 export const compressImageFAQs: FAQEntry[] = [
   {
-    question: "How do I compress an image for WhatsApp in India?",
+    question: "How do I compress an image for WhatsApp?",
     answer:
       "Upload your image, select the WhatsApp preset (reduces size to under 1MB), and click Compress. The file processes entirely in your browser - nothing is uploaded to any server. Download the compressed image and send it on WhatsApp directly.",
   },
@@ -33,29 +33,29 @@ export const compressImageFAQs: FAQEntry[] = [
 
 export const resizePassportPhotoFAQs: FAQEntry[] = [
   {
-    question: "What is the standard passport photo size in India?",
+    question: "What is the standard passport photo size?",
     answer:
-      "The standard Indian passport photo size is 35mm x 45mm, which equals 413 x 531 pixels at 300 DPI. The photo must have a white background, and your face should cover 70-80% of the frame. This tool resizes your image to these exact dimensions automatically.",
+      "The standard passport photo size is 35mm x 45mm, which equals 413 x 531 pixels at 300 DPI. The photo must have a white background, and your face should cover 70-80% of the frame. This tool resizes your image to these exact dimensions automatically.",
   },
   {
     question: "Does the resized photo meet Ministry of External Affairs requirements?",
     answer:
-      "Yes. This tool resizes to the 35x45mm standard specified by the Ministry of External Affairs (MEA) for Indian passports. The output is 413x531 pixels at 300 DPI - accepted by Passport Seva Kendra (PSK) and online passport application portals.",
+      "Yes. This tool resizes to the 35x45mm standard specified by the Ministry of External Affairs (MEA) for passports. The output is 413x531 pixels at 300 DPI - accepted by Passport Seva Kendra (PSK) and online passport application portals.",
   },
   {
     question: "What background colour should a passport photo have?",
     answer:
-      "Indian passport photos require a plain white background. If your photo has a different background, you should use a background removal tool first, then resize here. The photo should show a neutral facial expression with both eyes open.",
+      "Passport photos require a plain white background. If your photo has a different background, you should use a background removal tool first, then resize here. The photo should show a neutral facial expression with both eyes open.",
   },
   {
     question: "Can I use this tool for visa photos too?",
     answer:
-      "Yes. The tool supports multiple photo standards. Use the Passport preset (35x45mm) for Indian passports, or the 2x2 inch preset for US visa photos, UK visa photos, and other international applications that require the 51x51mm standard.",
+      "Yes. The tool supports multiple photo standards. Use the Passport preset (35x45mm) for passports, or the 2x2 inch preset for US visa photos, UK visa photos, and other international applications that require the 51x51mm standard.",
   },
   {
     question: "What file size should a passport photo be for online upload?",
     answer:
-      "Most Indian government portals (including Passport Seva) require the photo to be between 10KB and 500KB in JPEG format. After resizing, if the file is too large, use the Compress Image tool to reduce it to under 200KB while keeping the correct dimensions.",
+      "Most government portals (including Passport Seva) require the photo to be between 10KB and 500KB in JPEG format. After resizing, if the file is too large, use the Compress Image tool to reduce it to under 200KB while keeping the correct dimensions.",
   },
 ];
 
@@ -83,15 +83,15 @@ export const resizeAadharPhotoFAQs: FAQEntry[] = [
   {
     question: "Is this tool different from the passport photo resizer?",
     answer:
-      "Yes. Indian passport photos are 35x45mm (portrait orientation), while Aadhaar photos are 35x35mm (square). Using the wrong size may cause your application to be rejected. This tool uses the correct 35x35mm Aadhaar dimensions automatically.",
+      "Yes. Passport photos are 35x45mm (portrait orientation), while Aadhaar photos are 35x35mm (square). Using the wrong size may cause your application to be rejected. This tool uses the correct 35x35mm Aadhaar dimensions automatically.",
   },
 ];
 
 export const jpgToPdfFAQs: FAQEntry[] = [
   {
-    question: "How do I convert a JPG photo to PDF for a government form in India?",
+    question: "How do I convert a JPG photo to PDF for a government form?",
     answer:
-      "Upload your JPG photo, click Convert to PDF, and download the PDF. The tool combines your images into a single PDF file, which is the accepted format for most Indian government portals including UPSC, SSC, bank exams, and state government applications.",
+      "Upload your JPG photo, click Convert to PDF, and download the PDF. The tool combines your images into a single PDF file, which is the accepted format for most government portals including UPSC, SSC, bank exams, and state government applications.",
   },
   {
     question: "Can I combine multiple JPG images into one PDF?",
@@ -109,7 +109,7 @@ export const jpgToPdfFAQs: FAQEntry[] = [
       "Up to 50MB per image. All conversion happens in your browser - no upload to any server, so there are no server-side file size restrictions. Larger images may take a few extra seconds to process.",
   },
   {
-    question: "Does JPG to PDF work on mobile phones in India?",
+    question: "Does JPG to PDF work on mobile phones?",
     answer:
       "Yes. The tool works on Android and iPhone browsers including Chrome, Safari, and Firefox. You can upload directly from your phone gallery, convert to PDF, and download - no app installation needed.",
   },
@@ -119,7 +119,7 @@ export const pngToWebpFAQs: FAQEntry[] = [
   {
     question: "What is WebP and why should I convert PNG to WebP?",
     answer:
-      "WebP is a modern image format developed by Google that produces files 25-35% smaller than PNG at the same visual quality. Smaller images mean your website loads faster, which improves Google PageSpeed scores and reduces mobile data usage - important for Indian users on 4G.",
+      "WebP is a modern image format developed by Google that produces files 25-35% smaller than PNG at the same visual quality. Smaller images mean your website loads faster, which improves Google PageSpeed scores and reduces mobile data usage - important for users on 4G.",
   },
   {
     question: "Will I lose image quality when converting PNG to WebP?",
@@ -145,7 +145,7 @@ export const pngToWebpFAQs: FAQEntry[] = [
 
 export const resizeTo200kbFAQs: FAQEntry[] = [
   {
-    question: "Why do government forms in India require images under 200KB?",
+    question: "Why do government forms require images under 200KB?",
     answer:
       "Government portals like UPSC, SSC CGL, IBPS, railway recruitment (RRB), and state government job portals set file size limits to reduce server storage costs and ensure fast uploads on slow internet connections. The most common limits are 20KB, 50KB, 100KB, and 200KB for photos and signatures.",
   },

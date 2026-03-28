@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: "Privacy Policy · Image Tools",
   description: "Privacy policy for Image Tools.",
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
   alternates: {
     canonical: "/privacy-policy",

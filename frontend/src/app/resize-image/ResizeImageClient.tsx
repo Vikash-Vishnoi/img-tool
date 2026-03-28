@@ -10,7 +10,7 @@ import { resizeImage, resizeImageToTargetBytes } from "@/lib/resizeImage";
 import { downloadBlob, formatFileSize, shareFileToWhatsApp } from "@/lib/utils";
 
 type PresetKey =
-  | "passport-india"
+  | "passport-standard"
   | "aadhar"
   | "whatsapp-dp"
   | "instagram"
@@ -139,7 +139,7 @@ export function ResizeImageClient({
     const dpi = 300;
     return [
       {
-        key: "passport-india",
+        key: "passport-standard",
         title: "Passport photo",
         width: 413,
         height: 531,

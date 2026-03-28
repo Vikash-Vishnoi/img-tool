@@ -7,8 +7,8 @@ export const metadata: Metadata = {
   title: "Terms of Use · Image Tools",
   description: "Terms of use for Image Tools.",
   robots: {
-    index: false,
-    follow: false,
+    index: true,
+    follow: true,
   },
   alternates: {
     canonical: "/terms",

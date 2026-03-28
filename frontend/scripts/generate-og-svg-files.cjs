@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-require-imports */
 const fs = require("fs");
 const path = require("path");
+const sharp = require("sharp");
 
 const repoRoot = path.resolve(__dirname, "..", "..");
 const auditPath = path.join(repoRoot, "seo-audit", "seo-audit.js");
@@ -184,17 +185,18 @@ const wrapText = (input, maxCharsPerLine, maxLines) => {
   return lines;
 };
 
-for (const route of routes) {
-  const slug = route === "/" ? "home" : route.replace(/^\//, "");
+async function main() {
+  for (const route of routes) {
+    const slug = route === "/" ? "home" : route.replace(/^\//, "");
 
-  const copy = getCopyForSlug(slug);
-  const titleLine = wrapText(copy.title, 34, 1)[0] || copy.title;
-  const subtitleLine = wrapText(copy.description, 58, 1)[0] || copy.description;
-  const secondaryBadge = getSecondaryBadge(slug);
-  const secondaryBadgeWidth = Math.max(225, Math.min(350, 170 + secondaryBadge.length * 8));
-  const secondaryBadgeTextX = 350 + Math.floor((secondaryBadgeWidth - secondaryBadge.length * 13) / 2);
+    const copy = getCopyForSlug(slug);
+    const titleLine = wrapText(copy.title, 34, 1)[0] || copy.title;
+    const subtitleLine = wrapText(copy.description, 58, 1)[0] || copy.description;
+    const secondaryBadge = getSecondaryBadge(slug);
+    const secondaryBadgeWidth = Math.max(225, Math.min(350, 170 + secondaryBadge.length * 8));
+    const secondaryBadgeTextX = 350 + Math.floor((secondaryBadgeWidth - secondaryBadge.length * 13) / 2);
 
-  const svg = `<?xml version="1.0" encoding="UTF-8"?>
+    const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escapeXml(copy.title)}">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
@@ -219,12 +221,18 @@ for (const route of routes) {
   <text x="${secondaryBadgeTextX}" y="449" fill="#2a7a5e" font-size="26" font-family="Syne, Georgia, serif" font-weight="600">${escapeXml(secondaryBadge)}</text>
 </svg>`;
 
-  fs.writeFileSync(path.join(ogDir, `${slug}.svg`), svg, "utf8");
+    await sharp(Buffer.from(svg)).png().toFile(path.join(ogDir, `${slug}.png`));
+  }
+
+  const missing = routes
+    .map((route) => (route === "/" ? "home" : route.replace(/^\//, "")))
+    .filter((slug) => !fs.existsSync(path.join(ogDir, `${slug}.png`)));
+
+  console.log(`Generated ${routes.length} PNG files in ${ogDir}`);
+  console.log(`Missing files: ${missing.length}`);
 }
 
-const missing = routes
-  .map((route) => (route === "/" ? "home" : route.replace(/^\//, "")))
-  .filter((slug) => !fs.existsSync(path.join(ogDir, `${slug}.svg`)));
-
-console.log(`Generated ${routes.length} SVG files in ${ogDir}`);
-console.log(`Missing files: ${missing.length}`);
+main().catch((error) => {
+  console.error(error);
+  process.exit(1);
+});

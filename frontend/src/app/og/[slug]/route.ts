@@ -2,7 +2,7 @@ import { TOOLS, generateToolMetadata } from "@/lib/seo";
 
 const STATIC_PAGE_COPY: Record<string, { title: string; description: string }> = {
   home: {
-    title: "Image Tools - Free Image Converter India",
+    title: "Image Tools - Free Image Converter",
     description:
       "Convert, compress, and resize images with no upload. Fast tools for JPG, PNG, WebP, AVIF, HEIC, and PDF.",
   },
@@ -151,7 +151,7 @@ export async function GET(_request: Request, context: RouteContext): Promise<Res
   const resolvedParams = await context.params;
   const rawSlug = resolvedParams.slug || "home";
   const slugWithExtension = decodeURIComponent(rawSlug).trim().toLowerCase() || "home";
-  const slug = slugWithExtension.replace(/\.svg$/i, "") || "home";
+  const slug = slugWithExtension.replace(/\.(png|svg)$/i, "") || "home";
 
   const copy = getCopyForSlug(slug);
   const title = slug === "home" ? "Image Tools" : normalizeTitle(copy.title);

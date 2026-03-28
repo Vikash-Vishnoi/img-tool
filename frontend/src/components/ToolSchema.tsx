@@ -1,4 +1,4 @@
-import { type ToolDefinition } from "@/lib/seo";
+import { getToolFaqs, type ToolDefinition } from "@/lib/seo";
 
 export type ToolSchemaProps = {
   tool: ToolDefinition;
@@ -29,10 +29,30 @@ export function ToolSchema({ tool }: ToolSchemaProps) {
     isAccessibleForFree: true,
   };
 
+  const faqs = getToolFaqs(tool);
+  const faqPageJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: faq.answer,
+      },
+    })),
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: jsonLd(webAppJsonLd) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(webAppJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(faqPageJsonLd) }}
+      />
+    </>
   );
 }

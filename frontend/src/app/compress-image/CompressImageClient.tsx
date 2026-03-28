@@ -13,7 +13,7 @@ import { downloadBlob, formatFileSize, shareFileToWhatsApp } from "@/lib/utils";
 const MAX_SIZE_BYTES = 100 * 1024 * 1024;
 const MAX_WIDTH_DEFAULT = 1920;
 type PresetKey =
-  | "passport-india"
+  | "passport-standard"
   | "aadhar"
   | "whatsapp-dp"
   | "instagram"
@@ -168,7 +168,7 @@ export function CompressImageClient({
     const dpi = 300;
     return [
       {
-        key: "passport-india",
+        key: "passport-standard",
         title: "Passport photo",
         width: 413,
         height: 531,
