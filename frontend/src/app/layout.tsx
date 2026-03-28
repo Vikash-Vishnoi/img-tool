@@ -158,6 +158,7 @@ export default function RootLayout({
       "Image Converter",
       "Image to PDF",
       "PDF to Image",
+      "Blog",
       "About",
       "Privacy Policy",
       "Terms of Use",
@@ -170,6 +171,7 @@ export default function RootLayout({
       `${NORMALIZED_SITE_URL}/image-converter`,
       `${NORMALIZED_SITE_URL}/image-to-pdf`,
       `${NORMALIZED_SITE_URL}/pdf-to-image`,
+      `${NORMALIZED_SITE_URL}/blog`,
       `${NORMALIZED_SITE_URL}/about`,
       `${NORMALIZED_SITE_URL}/privacy-policy`,
       `${NORMALIZED_SITE_URL}/terms`,
@@ -215,10 +217,10 @@ export default function RootLayout({
           <div className="mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 lg:px-6">
             <div className="footer-top">
               <div>
-                <div className="footer-logo">
-                  <span className="footer-logo-word">image</span>
+                <div className="footer-logo" aria-label="Image Tools">
+                  <span className="footer-logo-word" aria-hidden>image</span>
                   <span className="footer-dot" aria-hidden />
-                  <span className="footer-logo-word">tools</span>
+                  <span className="footer-logo-word" aria-hidden>tools</span>
                 </div>
                 <div className="footer-tag">Free image tools. Forever.</div>
               </div>
@@ -246,6 +248,9 @@ export default function RootLayout({
                   </Link>
                   <Link href="/about" className="footer-link" prefetch>
                     About
+                  </Link>
+                  <Link href="/blog" className="footer-link" prefetch>
+                    Blog
                   </Link>
                   <Link href="/image-to-pdf" className="footer-link" prefetch>
                     Image to PDF

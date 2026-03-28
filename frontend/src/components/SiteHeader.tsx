@@ -165,7 +165,7 @@ export default function SiteHeader() {
                 aria-haspopup="menu"
               >
                 {group.label}
-                <ChevronDown className="h-3.5 w-3.5" />
+                <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
               </button>
 
               {openDropdown === group.key ? (
@@ -187,6 +187,19 @@ export default function SiteHeader() {
               ) : null}
             </div>
           ))}
+
+          <Link
+            href="/blog"
+            prefetch
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              setOpenDropdown(null);
+            }}
+            className={`site-nav-link ${pathname === "/blog" || pathname.startsWith("/blog/") ? "active" : ""}`}
+            aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined}
+          >
+            Blog
+          </Link>
 
           <Link
             href="/about"
@@ -264,6 +277,16 @@ export default function SiteHeader() {
               </div>
             </div>
           ))}
+
+          <Link
+            href="/blog"
+            prefetch
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`site-mobile-link ${pathname === "/blog" || pathname.startsWith("/blog/") ? "active" : ""}`}
+            aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined}
+          >
+            Blog
+          </Link>
 
           <Link
             href="/about"

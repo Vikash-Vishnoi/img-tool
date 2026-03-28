@@ -17,6 +17,10 @@ const STATIC_PAGE_COPY: Record<string, { title: string; description: string }> =
     title: "Feedback - Image Tools",
     description: "Share feedback and feature requests for Image Tools.",
   },
+  blog: {
+    title: "Image Tools Blog",
+    description: "Guides for image conversion, compression, resize, and PDF workflows.",
+  },
   "privacy-policy": {
     title: "Privacy Policy - Image Tools",
     description: "Read how Image Tools handles privacy and data processing.",

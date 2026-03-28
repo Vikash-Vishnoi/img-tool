@@ -110,38 +110,6 @@ export const FORMAT_TOOL_PAGE_CONFIGS = {
       "Convert iPhone HEIC photos to AVIF in your browser with no upload. Files stay on your device. Also works with .heif files.",
     inputLabel: "Upload HEIC/HEIF images",
   },
-  "heif-to-jpg": {
-    from: "heic",
-    to: "jpg",
-    title: "HEIF to JPG Converter",
-    description:
-      "Convert iPhone HEIF/HEIC photos to JPG in your browser with no upload. Files stay on your device.",
-    inputLabel: "Upload HEIF/HEIC images",
-  },
-  "heif-to-png": {
-    from: "heic",
-    to: "png",
-    title: "HEIF to PNG Converter",
-    description:
-      "Convert iPhone HEIF/HEIC photos to PNG in your browser with no upload. Files stay on your device.",
-    inputLabel: "Upload HEIF/HEIC images",
-  },
-  "heif-to-webp": {
-    from: "heic",
-    to: "webp",
-    title: "HEIF to WebP Converter",
-    description:
-      "Convert iPhone HEIF/HEIC photos to WebP in your browser with no upload. Files stay on your device.",
-    inputLabel: "Upload HEIF/HEIC images",
-  },
-  "heif-to-avif": {
-    from: "heic",
-    to: "avif",
-    title: "HEIF to AVIF Converter",
-    description:
-      "Convert iPhone HEIF/HEIC photos to AVIF in your browser with no upload. Files stay on your device.",
-    inputLabel: "Upload HEIF/HEIC images",
-  },
   "image-converter": {
     from: "jpg",
     to: "png",
@@ -169,21 +137,6 @@ export const PDF_TOOL_PAGE_CONFIGS = {
     inputLabel: "Upload images",
     uploadHelperText:
       "You can select multiple HEIC/HEIF images. Max file size 100 MB each (up to 30 images).",
-  },
-  "heif-to-pdf": {
-    title: "HEIF to PDF Converter",
-    description:
-      "Convert iPhone HEIF/HEIC photos into one PDF in your browser. Files stay on your device.",
-    inputLabel: "Upload images",
-    uploadHelperText:
-      "You can select multiple HEIF/HEIC images. Max file size 100 MB each (up to 30 images).",
-  },
-  "jpeg-to-pdf": {
-    title: "JPEG to PDF Converter",
-    description: "Convert JPEG images into one PDF in your browser. Files stay on your device.",
-    inputLabel: "Upload images",
-    uploadHelperText:
-      "You can select multiple JPEG images. Max file size 100 MB each (up to 30 images).",
   },
   "jpg-to-pdf": {
     title: "JPG to PDF Converter",
@@ -216,12 +169,6 @@ export const COMPRESS_TOOL_PAGE_CONFIGS = {
     inputLabel: "Upload images",
     uploadHelperText: "Upload one JPG/JPEG image (up to 100 MB).",
   },
-  "compress-jpeg": {
-    title: "Compress JPEG Image",
-    description: "Compress JPEG photos in your browser with no upload. Fast, private, and mobile-friendly.",
-    inputLabel: "Upload images",
-    uploadHelperText: "Upload one JPEG/JPG image (up to 100 MB).",
-  },
   "compress-png": {
     title: "Compress PNG Image",
     description: "Compress PNG images in your browser with no upload while keeping visual quality.",
@@ -247,12 +194,6 @@ export const COMPRESS_TOOL_PAGE_CONFIGS = {
     inputLabel: "Upload images",
     uploadHelperText: "Upload one HEIC/HEIF image (up to 100 MB).",
   },
-  "compress-heif": {
-    title: "Compress HEIF Image",
-    description: "Compress iPhone HEIF photos in your browser with no upload. Files stay private.",
-    inputLabel: "Upload images",
-    uploadHelperText: "Upload one HEIF/HEIC image (up to 100 MB).",
-  },
 } as const satisfies Record<string, CompressToolPageConfig>;
 
 export const RESIZE_TOOL_PAGE_CONFIGS = {
@@ -267,12 +208,6 @@ export const RESIZE_TOOL_PAGE_CONFIGS = {
     description: "Resize JPG photos by pixels or presets in your browser with no upload.",
     inputLabel: "Upload images",
     uploadHelperText: "Upload JPG/JPEG images (max 100 MB each).",
-  },
-  "resize-jpeg": {
-    title: "Resize JPEG Image",
-    description: "Resize JPEG photos by pixels or presets in your browser with no upload.",
-    inputLabel: "Upload images",
-    uploadHelperText: "Upload JPEG/JPG images (max 100 MB each).",
   },
   "resize-png": {
     title: "Resize PNG Image",
@@ -298,12 +233,6 @@ export const RESIZE_TOOL_PAGE_CONFIGS = {
       "Resize iPhone HEIC photos by pixels or presets in your browser with no upload. Also works with .heif files.",
     inputLabel: "Upload images",
     uploadHelperText: "Upload HEIC/HEIF images (max 100 MB each).",
-  },
-  "resize-heif": {
-    title: "Resize HEIF Image",
-    description: "Resize iPhone HEIF photos by pixels or presets in your browser with no upload.",
-    inputLabel: "Upload images",
-    uploadHelperText: "Upload HEIF/HEIC images (max 100 MB each).",
   },
   "resize-passport-photo": {
     title: "Resize Passport Photo 35x45mm (413x531 px)",

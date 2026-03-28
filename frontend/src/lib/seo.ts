@@ -122,51 +122,6 @@ export const TOOLS = [
     related: ["heic-to-jpg", "heic-to-png", "webp-to-avif"],
   },
   {
-    slug: "heif-to-jpg",
-    path: "/heif-to-jpg",
-    title: "HEIF to JPG Converter — Free, No Upload, Files Stay Private",
-    description:
-      "Convert iPhone HEIF photos to JPG free in your browser. No upload needed and works on mobile.",
-    keywords: ["heif to jpg", "convert heif", "iphone heif converter", "no upload"],
-    related: ["heic-to-jpg", "heif-to-png", "compress-image"],
-  },
-  {
-    slug: "heif-to-png",
-    path: "/heif-to-png",
-    title: "HEIF to PNG Converter — Free, No Upload, Works on Mobile",
-    description:
-      "Convert iPhone HEIF photos to PNG in your browser with no upload. Files stay on your device.",
-    keywords: ["heif to png", "convert heif", "iphone heif to png", "no upload"],
-    related: ["heic-to-png", "heif-to-jpg", "png-to-jpg"],
-  },
-  {
-    slug: "heif-to-webp",
-    path: "/heif-to-webp",
-    title: "HEIF to WebP Converter — Free, No Upload, Works on Mobile",
-    description:
-      "Convert iPhone HEIF photos to WebP in your browser with no upload. Fast, private, and mobile-friendly.",
-    keywords: ["heif to webp", "convert heif", "iphone heif to webp", "no upload"],
-    related: ["heic-to-webp", "heif-to-jpg", "webp-to-jpg"],
-  },
-  {
-    slug: "heif-to-avif",
-    path: "/heif-to-avif",
-    title: "HEIF to AVIF Converter — Free, No Upload, Smaller Files",
-    description:
-      "Convert iPhone HEIF photos to AVIF in your browser with no upload for modern compression.",
-    keywords: ["heif to avif", "convert heif", "iphone heif to avif", "no upload"],
-    related: ["heic-to-avif", "heif-to-jpg", "webp-to-avif"],
-  },
-  {
-    slug: "heif-to-pdf",
-    path: "/heif-to-pdf",
-    title: "HEIF to PDF Converter — Free, No Upload, Works on Mobile",
-    description:
-      "Convert iPhone HEIF photos to PDF in your browser. Files are processed on-device with no upload.",
-    keywords: ["heif to pdf", "iphone heif to pdf", "pdf converter", "no upload"],
-    related: ["heic-to-pdf", "image-to-pdf", "heif-to-jpg"],
-  },
-  {
     slug: "compress-image",
     path: "/compress-image",
     title: "Compress Image for WhatsApp — Reduce Size Free",
@@ -188,16 +143,7 @@ export const TOOLS = [
     description:
       "Compress JPG photos free in your browser to reduce file size for uploads and sharing. No upload needed, so images stay private. Works on Android and iPhone.",
     keywords: ["compress jpg", "jpg compressor", "reduce jpg size", "no upload"],
-    related: ["compress-image", "compress-jpeg", "resize-jpg"],
-  },
-  {
-    slug: "compress-jpeg",
-    path: "/compress-jpeg",
-    title: "Compress JPEG Image — Free, No Upload, Works on Mobile",
-    description:
-      "Compress JPEG photos in your browser with no upload. Fast and private on mobile and desktop.",
-    keywords: ["compress jpeg", "jpeg compressor", "reduce jpeg size", "no upload"],
-    related: ["compress-image", "compress-jpg", "resize-jpeg"],
+    related: ["compress-image", "resize-jpg", "resize-image-to-200kb"],
   },
   {
     slug: "compress-png",
@@ -234,15 +180,6 @@ export const TOOLS = [
       "Compress iPhone HEIC photos in your browser with no upload—completely private. Reduce file size for WhatsApp, email, and government form uploads.",
     keywords: ["compress heic", "heic compressor", "reduce heic size", "no upload"],
     related: ["compress-image", "resize-heic", "heic-to-jpg"],
-  },
-  {
-    slug: "compress-heif",
-    path: "/compress-heif",
-    title: "Compress HEIF Image — Free, No Upload, Works on Mobile",
-    description:
-      "Compress iPhone HEIC/HEIF photos in your browser with no upload—completely private. Reduce file size for WhatsApp, email, and government form uploads.",
-    keywords: ["compress heif", "heif compressor", "reduce heif size", "no upload"],
-    related: ["compress-image", "resize-heif", "heif-to-jpg"],
   },
   {
     slug: "png-to-webp",
@@ -393,16 +330,7 @@ export const TOOLS = [
     description:
       "Resize JPG photos by pixels or presets free in your browser for social posts and forms. No upload needed, and images stay private. Includes custom dimensions.",
     keywords: ["resize jpg", "jpg resizer", "resize photo", "no upload"],
-    related: ["resize-image", "resize-jpeg", "compress-jpg"],
-  },
-  {
-    slug: "resize-jpeg",
-    path: "/resize-jpeg",
-    title: "Resize JPEG Image — Free, No Upload, Works on Mobile",
-    description:
-      "Resize JPEG photos by pixels or presets free in your browser for uploads and sharing. No upload needed, so images stay private. Includes presets and custom dimensions.",
-    keywords: ["resize jpeg", "jpeg resizer", "resize photo", "no upload"],
-    related: ["resize-image", "resize-jpg", "compress-jpeg"],
+    related: ["resize-image", "resize-image-to-200kb", "compress-jpg"],
   },
   {
     slug: "resize-png",
@@ -439,15 +367,6 @@ export const TOOLS = [
       "Resize iPhone HEIC photos by pixels or presets in your browser with no upload. Supports passport size, WhatsApp DP, Instagram, and custom px. Works on mobile.",
     keywords: ["resize heic", "heic resizer", "iphone photo resize", "no upload"],
     related: ["resize-image", "compress-heic", "heic-to-jpg"],
-  },
-  {
-    slug: "resize-heif",
-    path: "/resize-heif",
-    title: "Resize HEIF Image — Free, No Upload, Works on Mobile",
-    description:
-      "Resize iPhone HEIC/HEIF photos by pixels or presets in your browser with no upload. Supports passport size, WhatsApp DP, Instagram, and custom px. Works on mobile.",
-    keywords: ["resize heif", "heif resizer", "iphone photo resize", "no upload"],
-    related: ["resize-image", "compress-heif", "heif-to-jpg"],
   },
   {
     slug: "resize-passport-photo",
@@ -600,16 +519,7 @@ export const TOOLS = [
     description:
       "Convert PDF pages to JPG free in your browser for sharing and submissions. No upload needed, so files stay private. Download one page or all pages at once.",
     keywords: ["pdf to jpg", "pdf to image", "no upload"],
-    related: ["pdf-to-image", "pdf-to-jpeg", "jpg-to-pdf"],
-  },
-  {
-    slug: "pdf-to-jpeg",
-    path: "/pdf-to-jpeg",
-    title: "PDF to JPEG Converter — Free, No Upload",
-    description:
-      "Convert PDF pages to JPEG in your browser with no upload. Download each page one-by-one or all at once.",
-    keywords: ["pdf to jpeg", "pdf to image", "no upload"],
-    related: ["pdf-to-image", "pdf-to-jpg", "jpeg-to-pdf"],
+    related: ["pdf-to-image", "pdf-to-png", "jpg-to-pdf"],
   },
   {
     slug: "pdf-to-png",
@@ -647,15 +557,6 @@ export const TOOLS = [
     keywords: ["jpg to pdf", "jpeg to pdf", "image to pdf", "no upload"],
     faqs: jpgToPdfFAQs,
     related: ["image-to-pdf", "png-to-pdf", "compress-image"],
-  },
-  {
-    slug: "jpeg-to-pdf",
-    path: "/jpeg-to-pdf",
-    title: "JPEG to PDF Converter — Free, No Upload, Works on Mobile",
-    description:
-      "Convert JPEG images into one PDF in your browser with no upload. Free and private.",
-    keywords: ["jpeg to pdf", "image to pdf", "pdf converter", "no upload"],
-    related: ["jpg-to-pdf", "image-to-pdf", "compress-jpeg"],
   },
   {
     slug: "png-to-pdf",
@@ -767,7 +668,6 @@ const TOOL_METADATA_OVERRIDES: Record<string, ToolMetadataOverride> = {
   "heic-to-webp": { title: "HEIC to WebP Converter — Free, No Upload" },
   "image-converter": { title: "Universal Image Converter — Free Online" },
   "image-to-pdf": { title: "Image to PDF Converter — Free, No Upload" },
-  "jpeg-to-pdf": { title: "JPG to PDF Converter — Free, No Watermark" },
   "jpg-to-avif": { title: "JPG to AVIF Converter — Free, No Upload" },
   "jpg-to-pdf": { title: "JPG to PDF Converter — Free, No Watermark" },
   "jpg-to-png": { title: "JPG to PNG Converter — Free, No Upload" },
@@ -780,10 +680,6 @@ const TOOL_METADATA_OVERRIDES: Record<string, ToolMetadataOverride> = {
     title: "Facebook Cover Photo Size — 820x312 Resizer Free",
   },
   "resize-heic": { title: "Resize HEIC Image — Free, No Upload" },
-  "resize-heif": {
-    title: "Resize HEIC Image — Free, No Upload",
-    canonicalPath: "/resize-heic",
-  },
   "resize-image": { title: "Resize Image — Passport, WhatsApp, Instagram Free" },
   "resize-instagram-post": {
     title: "Resize for Instagram Post — 1080x1080 Free",
