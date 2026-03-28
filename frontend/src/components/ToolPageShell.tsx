@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { RelatedTools } from "@/components/RelatedTools";
 import { ToolFaqSection } from "@/components/ToolFaqSection";
 import { ToolSchema } from "@/components/ToolSchema";
-import type { ToolDefinition } from "@/lib/seo";
+import { getToolFaqs, type ToolDefinition } from "@/lib/seo";
 
 export type ToolPageShellProps = {
   tool: ToolDefinition;
@@ -17,12 +17,14 @@ export function ToolPageShell({
   showFaq = false,
   footerPaddingClassName = "pb-14",
 }: ToolPageShellProps) {
+  const faqs = showFaq ? getToolFaqs(tool) : undefined;
+
   return (
     <>
       <ToolSchema tool={tool} />
       {children}
       <div className={`mx-auto w-full max-w-6xl px-4 ${footerPaddingClassName} sm:px-6 lg:px-8`}>
-        {showFaq ? <ToolFaqSection faqs={tool.faqs} /> : null}
+        {showFaq ? <ToolFaqSection faqs={faqs} heading={tool.faqHeading} /> : null}
         <RelatedTools currentSlug={tool.slug} />
       </div>
     </>

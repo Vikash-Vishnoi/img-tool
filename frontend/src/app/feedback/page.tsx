@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
+import { getOgSvgPath } from "@/lib/seo";
+
+const OG_IMAGE = getOgSvgPath("feedback");
 
 export const metadata: Metadata = {
-  title: "Feedback",
+  title: "Feedback · Image Tools",
   description: "Share feedback for Image Tools.",
   robots: {
     index: false,
@@ -11,7 +14,27 @@ export const metadata: Metadata = {
     canonical: "/feedback",
   },
   openGraph: {
+    title: "Feedback · Image Tools",
+    description: "Share feedback for Image Tools.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Image Tools",
     url: "/feedback",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Feedback · Image Tools",
+        type: "image/svg+xml",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Feedback · Image Tools",
+    description: "Share feedback for Image Tools.",
+    images: [OG_IMAGE],
   },
 };
 

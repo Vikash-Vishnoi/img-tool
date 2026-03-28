@@ -20,6 +20,14 @@
 # sitemap (generated in postbuild)
 public/sitemap*.xml
 
+# seo reports and local seo scripts
+seo_report_image-tools-k8yd.csv
+seo-audit-image-tools-k8yd.csv
+seo-report-by-url.csv
+scripts/generate-seo-report.mjs
+scripts/generate-seo-report.psl
+scripts/generate-seo-report.ps1
+
 # production
 /build
 

@@ -1,13 +1,40 @@
 import type { Metadata } from "next";
+import { getOgSvgPath } from "@/lib/seo";
+
+const OG_IMAGE = getOgSvgPath("privacy-policy");
 
 export const metadata: Metadata = {
-  title: "Privacy Policy",
+  title: "Privacy Policy · Image Tools",
   description: "Privacy policy for Image Tools.",
+  robots: {
+    index: false,
+    follow: false,
+  },
   alternates: {
     canonical: "/privacy-policy",
   },
   openGraph: {
+    title: "Privacy Policy · Image Tools",
+    description: "Privacy policy for Image Tools.",
+    type: "website",
+    locale: "en_IN",
+    siteName: "Image Tools",
     url: "/privacy-policy",
+    images: [
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "Privacy Policy · Image Tools",
+        type: "image/svg+xml",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy · Image Tools",
+    description: "Privacy policy for Image Tools.",
+    images: [OG_IMAGE],
   },
 };
 

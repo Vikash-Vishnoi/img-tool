@@ -1,15 +1,14 @@
-import { type FaqItem, type ToolDefinition } from "@/lib/seo";
+import { type ToolDefinition } from "@/lib/seo";
 
 export type ToolSchemaProps = {
   tool: ToolDefinition;
-  faqs?: FaqItem[];
 };
 
 function jsonLd(data: unknown): string {
   return JSON.stringify(data);
 }
 
-export function ToolSchema({ tool, faqs }: ToolSchemaProps) {
+export function ToolSchema({ tool }: ToolSchemaProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
   const absoluteUrl = `${siteUrl.replace(/\/$/, "")}${tool.path}`;
 
@@ -30,35 +29,10 @@ export function ToolSchema({ tool, faqs }: ToolSchemaProps) {
     isAccessibleForFree: true,
   };
 
-  const resolvedFaqs = faqs ?? tool.faqs;
-
-  const faqJsonLd = resolvedFaqs?.length
-    ? {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        mainEntity: resolvedFaqs.map((item) => ({
-          "@type": "Question",
-          name: item.question,
-          acceptedAnswer: {
-            "@type": "Answer",
-            text: item.answer,
-          },
-        })),
-      }
-    : null;
-
   return (
-    <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: jsonLd(webAppJsonLd) }}
-      />
-      {faqJsonLd ? (
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: jsonLd(faqJsonLd) }}
-        />
-      ) : null}
-    </>
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: jsonLd(webAppJsonLd) }}
+    />
   );
 }

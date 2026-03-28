@@ -5,6 +5,7 @@ import Script from "next/script";
 import { Suspense } from "react";
 import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
 import SiteHeader from "@/components/SiteHeader";
+import { getOgSvgPath } from "@/lib/seo";
 import "./globals.css";
 
 const syne = Syne({
@@ -17,44 +18,55 @@ const SITE_TITLE = "Image Tools — Free Image Converter (India)";
 const SITE_DESCRIPTION =
   "Free image converter tools for India: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
+const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
+const HOME_OG_IMAGE = getOgSvgPath("home");
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
     default: SITE_TITLE,
-    template: "%s · Image Tools",
+    template: "%s",
   },
   alternates: {
-    canonical: "/",
+    canonical: `${NORMALIZED_SITE_URL}/`,
   },
   description: SITE_DESCRIPTION,
   applicationName: "Image Tools",
   keywords: [
-    "image converter",
-    "compress image",
-    "resize image",
-    "passport size photo india",
-    "government form upload",
-    "no upload",
-    "free",
+    "image converter india",
+    "compress image whatsapp",
+    "heic to jpg",
+    "passport size photo resize",
+    "resize image online free india",
+    "image tools free",
   ],
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || undefined,
   },
   openGraph: {
     type: "website",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    url: "/",
+    url: NORMALIZED_SITE_URL,
     locale: "en_IN",
     siteName: "Image Tools",
     images: [
       {
-        url: "/og-image.svg",
+        url: HOME_OG_IMAGE,
         width: 1200,
         height: 630,
-        alt: "Image Tools - Convert, compress, and resize images",
+        alt: "Image Tools — Free Image Converter India",
+        type: "image/svg+xml",
       },
     ],
   },
@@ -62,7 +74,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
-    images: ["/og-image.svg"],
+    images: [HOME_OG_IMAGE],
   },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
@@ -86,23 +98,57 @@ export default function RootLayout({
   const gaId = (process.env.NEXT_PUBLIC_GA_ID ?? "").trim();
   const hasValidGaId = /^G-[A-Z0-9]+$/i.test(gaId);
   const currentYear = new Date().getFullYear();
-  const cleanSiteUrl = SITE_URL.replace(/\/$/, "");
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Image Tools",
-    url: cleanSiteUrl,
+    url: NORMALIZED_SITE_URL,
+    description: "Free image converter tools for India",
     inLanguage: "en-IN",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: `${NORMALIZED_SITE_URL}/image-converter?q={search_term_string}`,
+      "query-input": "required name=search_term_string",
+    },
   };
 
   const organizationJsonLd = {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: "Image Tools",
-    url: cleanSiteUrl,
-    logo: `${cleanSiteUrl}/icon.svg`,
+    url: NORMALIZED_SITE_URL,
+    logo: `${NORMALIZED_SITE_URL}/icon.svg`,
+    sameAs: [],
   };
+
+  const webApplicationJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "Image Tools",
+    url: NORMALIZED_SITE_URL,
+    description:
+      "Free image converter tools for India — compress, resize, convert HEIC, JPG, PNG, WebP, AVIF",
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "Any",
+    browserRequirements: "Requires JavaScript",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "INR",
+    },
+    featureList: [
+      "HEIC to JPG conversion",
+      "Image compression for WhatsApp",
+      "Passport photo resize India",
+      "No file upload required",
+      "Works on Android and iPhone",
+    ],
+    inLanguage: ["en", "hi"],
+    countryOfOrigin: "IN",
+  };
+
+  const globalSchema = [websiteJsonLd, organizationJsonLd, webApplicationJsonLd];
 
   return (
     <html
@@ -113,11 +159,7 @@ export default function RootLayout({
       <body className="site-body min-h-full flex flex-col bg-background text-foreground">
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(globalSchema) }}
         />
 
         <div aria-hidden className="grain-overlay" />
@@ -158,6 +200,9 @@ export default function RootLayout({
                   <div className="footer-col-title">Site</div>
                   <Link href="/" className="footer-link" prefetch>
                     All tools
+                  </Link>
+                  <Link href="/about" className="footer-link" prefetch>
+                    About
                   </Link>
                   <Link href="/image-to-pdf" className="footer-link" prefetch>
                     Image to PDF

@@ -187,6 +187,19 @@ export default function SiteHeader() {
               ) : null}
             </div>
           ))}
+
+          <Link
+            href="/about"
+            prefetch
+            onClick={() => {
+              setIsMobileMenuOpen(false);
+              setOpenDropdown(null);
+            }}
+            className={`site-nav-link ${pathname === "/about" ? "active" : ""}`}
+            aria-current={pathname === "/about" ? "page" : undefined}
+          >
+            About
+          </Link>
         </div>
 
         <Link
@@ -251,6 +264,16 @@ export default function SiteHeader() {
               </div>
             </div>
           ))}
+
+          <Link
+            href="/about"
+            prefetch
+            onClick={() => setIsMobileMenuOpen(false)}
+            className={`site-mobile-link ${pathname === "/about" ? "active" : ""}`}
+            aria-current={pathname === "/about" ? "page" : undefined}
+          >
+            About
+          </Link>
 
           <Link
             href="/#all-tools"

@@ -9,6 +9,7 @@ module.exports = {
     '/icon.svg',
     '/file.svg',
     '/globe.svg',
+    '/og/*',
     '/og-image.svg',
     '/og-image-*.svg',
     '/next.svg',

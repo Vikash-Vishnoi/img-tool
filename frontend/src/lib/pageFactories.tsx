@@ -59,7 +59,7 @@ export function createPdfToolPage(slug: PdfToolPageSlug): {
 
   function Page() {
     return (
-      <ToolPageShell tool={tool} footerPaddingClassName="pb-10">
+      <ToolPageShell tool={tool} showFaq footerPaddingClassName="pb-10">
         <ImageToPdfClient
           title={config.title}
           description={config.description}
@@ -85,7 +85,7 @@ export function createCompressToolPage(slug: CompressToolPageSlug): {
 
   function Page() {
     return (
-      <ToolPageShell tool={tool}>
+      <ToolPageShell tool={tool} showFaq>
         <CompressImageClient
           title={config.title}
           description={config.description}
@@ -111,7 +111,7 @@ export function createResizeToolPage(slug: ResizeToolPageSlug): {
 
   function Page() {
     return (
-      <ToolPageShell tool={tool}>
+      <ToolPageShell tool={tool} showFaq>
         <ResizeImageClient
           fixedTargetKb={config.fixedTargetKb}
           hideTargetSizeBox={config.hideTargetSizeBox}
