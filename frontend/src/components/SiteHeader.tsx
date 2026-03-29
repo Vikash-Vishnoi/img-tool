@@ -116,7 +116,7 @@ export default function SiteHeader() {
           href="/"
           className="site-logo"
           aria-label="image.tools home"
-          prefetch
+          prefetch={false}
           onClick={() => {
             setIsMobileMenuOpen(false);
             setOpenDropdown(null);
@@ -130,7 +130,7 @@ export default function SiteHeader() {
         <div className="site-nav-links flex items-center gap-2" aria-label="Primary">
           <Link
             href="/"
-            prefetch
+            prefetch={false}
             onClick={() => {
               setIsMobileMenuOpen(false);
               setOpenDropdown(null);
@@ -174,7 +174,7 @@ export default function SiteHeader() {
                     <Link
                       key={link.href}
                       href={link.href}
-                      prefetch
+                      prefetch={false}
                       className={`block rounded-lg px-3 py-2 text-sm font-semibold text-[#1c1a14] transition hover:bg-[#fff7f2] ${
                         pathname === link.href ? "bg-[#fff7f2] text-[#e8672a]" : ""
                       }`}
@@ -190,7 +190,7 @@ export default function SiteHeader() {
 
           <Link
             href="/blog"
-            prefetch
+            prefetch={false}
             onClick={() => {
               setIsMobileMenuOpen(false);
               setOpenDropdown(null);
@@ -203,7 +203,7 @@ export default function SiteHeader() {
 
           <Link
             href="/about"
-            prefetch
+            prefetch={false}
             onClick={() => {
               setIsMobileMenuOpen(false);
               setOpenDropdown(null);
@@ -218,7 +218,7 @@ export default function SiteHeader() {
         <Link
           href="/#all-tools"
           className="site-nav-cta site-nav-cta-desktop"
-          prefetch
+          prefetch={false}
           onClick={() => {
             setIsMobileMenuOpen(false);
             setOpenDropdown(null);
@@ -248,7 +248,7 @@ export default function SiteHeader() {
         <div className="site-mobile-menu-inner mx-auto w-full max-w-7xl px-3 sm:px-5">
           <Link
             href="/"
-            prefetch
+            prefetch={false}
             onClick={() => setIsMobileMenuOpen(false)}
             className={`site-mobile-link ${pathname === "/" ? "active" : ""}`}
             aria-current={pathname === "/" ? "page" : undefined}
@@ -266,7 +266,7 @@ export default function SiteHeader() {
                   <Link
                     key={link.href}
                     href={link.href}
-                    prefetch
+                    prefetch={false}
                     onClick={() => setIsMobileMenuOpen(false)}
                     className={`site-mobile-link ${pathname === link.href ? "active" : ""}`}
                     aria-current={pathname === link.href ? "page" : undefined}
@@ -280,7 +280,7 @@ export default function SiteHeader() {
 
           <Link
             href="/blog"
-            prefetch
+            prefetch={false}
             onClick={() => setIsMobileMenuOpen(false)}
             className={`site-mobile-link ${pathname === "/blog" || pathname.startsWith("/blog/") ? "active" : ""}`}
             aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined}
@@ -290,7 +290,7 @@ export default function SiteHeader() {
 
           <Link
             href="/about"
-            prefetch
+            prefetch={false}
             onClick={() => setIsMobileMenuOpen(false)}
             className={`site-mobile-link ${pathname === "/about" ? "active" : ""}`}
             aria-current={pathname === "/about" ? "page" : undefined}
@@ -301,7 +301,7 @@ export default function SiteHeader() {
           <Link
             href="/#all-tools"
             className="site-mobile-link site-mobile-link-cta"
-            prefetch
+            prefetch={false}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             All tools

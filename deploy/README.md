@@ -71,8 +71,6 @@ Notes:
 
 ## Keep ngrok running after reboot (optional)
 
-Create a systemd unit:
-
 ```bash
 sudo tee /etc/systemd/system/ngrok-imgtools.service >/dev/null <<'EOF'
 [Unit]

@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { Link2 } from "lucide-react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import BlogReadingProgress from "@/components/BlogReadingProgress";
-import BlogShareButtons from "@/components/BlogShareButtons";
 import { BLOG_POSTS, type BlogFaq, type BlogPost, getBlogPost } from "@/lib/blog";
+
+const BlogReadingProgress = dynamic(() => import("@/components/BlogReadingProgress"));
+
+const BlogShareButtons = dynamic(() => import("@/components/BlogShareButtons"));
 
 type BlogPageProps = {
   params: Promise<{ slug: string }>;
@@ -905,7 +908,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         </ul>
 
         <p className="mt-3 text-sm leading-7 text-[#6b6760]">
-          A useful habit is to maintain a tiny "approved settings" note for each workflow you run often.
+          A useful habit is to maintain a tiny &quot;approved settings&quot; note for each workflow you run often.
           Include the target dimensions, size range, preferred format, and the final quality setting that
           passed successfully. Reusing that note can save significant time and helps keep output quality
           consistent across future submissions, even when you are working quickly from mobile.

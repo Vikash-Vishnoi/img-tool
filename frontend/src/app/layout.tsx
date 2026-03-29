@@ -11,7 +11,8 @@ import "./globals.css";
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
-  display: "swap",
+  display: "optional",
+  fallback: ["Segoe UI", "Arial", "sans-serif"],
 });
 
 const SITE_TITLE = "Image Tools — Free Image Converter";
@@ -219,7 +220,7 @@ export default function RootLayout({
           <div className="mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 lg:px-6">
             <div className="footer-top">
               <div>
-                <div className="footer-logo" aria-label="Image Tools">
+                <div className="footer-logo" role="img" aria-label="Image Tools">
                   <span className="footer-logo-word" aria-hidden>image</span>
                   <span className="footer-dot" aria-hidden />
                   <span className="footer-logo-word" aria-hidden>tools</span>
@@ -230,46 +231,46 @@ export default function RootLayout({
               <div className="footer-grid">
                 <div>
                   <div className="footer-col-title">Tools</div>
-                  <Link href="/heic-to-jpg" className="footer-link" prefetch>
+                  <Link href="/heic-to-jpg" className="footer-link" prefetch={false}>
                     HEIC to JPG
                   </Link>
-                  <Link href="/compress-image" className="footer-link" prefetch>
+                  <Link href="/compress-image" className="footer-link" prefetch={false}>
                     Compress Image
                   </Link>
-                  <Link href="/resize-image" className="footer-link" prefetch>
+                  <Link href="/resize-image" className="footer-link" prefetch={false}>
                     Resize Image
                   </Link>
-                  <Link href="/png-to-webp" className="footer-link" prefetch>
+                  <Link href="/png-to-webp" className="footer-link" prefetch={false}>
                     PNG to WebP
                   </Link>
                 </div>
                 <div>
                   <div className="footer-col-title">Site</div>
-                  <Link href="/" className="footer-link" prefetch>
+                  <Link href="/" className="footer-link" prefetch={false}>
                     All tools
                   </Link>
-                  <Link href="/about" className="footer-link" prefetch>
+                  <Link href="/about" className="footer-link" prefetch={false}>
                     About
                   </Link>
-                  <Link href="/blog" className="footer-link" prefetch>
+                  <Link href="/blog" className="footer-link" prefetch={false}>
                     Blog
                   </Link>
-                  <Link href="/image-to-pdf" className="footer-link" prefetch>
+                  <Link href="/image-to-pdf" className="footer-link" prefetch={false}>
                     Image to PDF
                   </Link>
                 </div>
                 <div>
                   <div className="footer-col-title">Utility</div>
-                  <Link href="/feedback" className="footer-link" prefetch>
+                  <Link href="/feedback" className="footer-link" prefetch={false}>
                     Feedback Form
                   </Link>
-                  <Link href="/disclaimer" className="footer-link" prefetch>
+                  <Link href="/disclaimer" className="footer-link" prefetch={false}>
                     Disclaimer
                   </Link>
-                  <Link href="/privacy-policy" className="footer-link" prefetch>
+                  <Link href="/privacy-policy" className="footer-link" prefetch={false}>
                     Privacy Policy
                   </Link>
-                  <Link href="/terms" className="footer-link" prefetch>
+                  <Link href="/terms" className="footer-link" prefetch={false}>
                     Terms of Use
                   </Link>
                   <a href="mailto:support@image-tools.tech" className="footer-link">
@@ -290,9 +291,9 @@ export default function RootLayout({
           <>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="afterInteractive"
+              strategy="lazyOnload"
             />
-            <Script id="ga-gtag" strategy="afterInteractive">
+            <Script id="ga-gtag" strategy="lazyOnload">
               {`window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());

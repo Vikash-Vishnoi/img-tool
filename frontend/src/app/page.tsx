@@ -175,7 +175,7 @@ export default function Home() {
 
   return (
     <div className="mx-auto w-full max-w-[1360px] px-4 pb-10 pt-10 sm:px-6 lg:px-8">
-      <section className="relative overflow-hidden rounded-[24px] border border-[#d4cfc4] bg-[#fffdf9] px-5 py-12 text-center sm:px-8">
+      <section className="relative min-h-[480px] overflow-hidden rounded-[24px] border border-[#d4cfc4] bg-[#fffdf9] px-5 py-12 text-center sm:min-h-[520px] sm:px-8">
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[480px] w-[480px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d4cfc4]/60" />
         <div className="pointer-events-none absolute left-1/2 top-1/2 h-[320px] w-[320px] -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#d4cfc4]/40" />
 
@@ -226,7 +226,7 @@ export default function Home() {
           </div>
           <Link
             href="/image-converter"
-            prefetch
+            prefetch={false}
             className="inline-flex rounded-full border border-[#d4cfc4] bg-[#fffdf9] px-3 py-1.5 text-[11px] font-semibold text-[#6b6760] transition hover:border-[#e8672a] hover:text-[#1c1a14]"
           >
             Open converter
@@ -241,7 +241,7 @@ export default function Home() {
               <Link
                 key={tool.title}
                 href={tool.href}
-                prefetch
+                prefetch={false}
                 className="group flex h-full flex-col rounded-2xl border border-[#d4cfc4] bg-[#f7f3ec] p-5 text-left transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_20px_rgba(28,26,20,0.08)]"
               >
                 <div className="flex items-start justify-between gap-3">
@@ -283,8 +283,8 @@ export default function Home() {
           </div>
           <Link
             href="/image-converter"
-            prefetch
-            className="hidden rounded-full border border-[#e8672a] bg-[#e8672a] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#d4581f] sm:inline-flex"
+            prefetch={false}
+            className="hidden rounded-full border border-[#b84619] bg-[#b84619] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#9f3f19] sm:inline-flex"
           >
             Try it now
           </Link>
@@ -293,12 +293,12 @@ export default function Home() {
         <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
           {howItWorksSteps.map((item) => (
             <div key={item.step} className="rounded-2xl border border-[#edcfbe] bg-white p-4">
-              <div className="inline-flex rounded-full border border-[#f2d9cb] bg-[#fff3ed] px-2.5 py-1 text-[11px] font-bold text-[#c75322] [font-family:var(--font-jetbrains-mono),monospace]">
+              <div className="inline-flex rounded-full border border-[#f2d9cb] bg-[#fff3ed] px-2.5 py-1 text-[11px] font-bold text-[#9f3f19] [font-family:var(--font-jetbrains-mono),monospace]">
                 Step {item.step}
               </div>
               <h3 className="mt-3 text-base font-extrabold tracking-[-0.02em]">{item.title}</h3>
               <p className="mt-1 text-sm leading-6 text-[#6b6760]">{item.description}</p>
-              <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#9a7f6d]">
+              <p className="mt-3 text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6f5648]">
                 {item.detail}
               </p>
             </div>
@@ -307,8 +307,8 @@ export default function Home() {
 
         <Link
           href="/image-converter"
-          prefetch
-          className="mt-4 inline-flex rounded-full border border-[#e8672a] bg-[#e8672a] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#d4581f] sm:hidden"
+          prefetch={false}
+          className="mt-4 inline-flex rounded-full border border-[#b84619] bg-[#b84619] px-4 py-2 text-xs font-bold text-white transition hover:bg-[#9f3f19] sm:hidden"
         >
           Try it now
         </Link>
@@ -378,7 +378,7 @@ export default function Home() {
                     <Link
                       key={tool.slug}
                       href={tool.path}
-                      prefetch
+                      prefetch={false}
                       className="flex items-center gap-2 rounded-xl border border-[#d4cfc4] bg-white px-3 py-3 text-sm font-semibold text-[#1c1a14] transition hover:border-[#e8672a] hover:bg-[#fff7f2]"
                     >
                       <span className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-[#e8e1d6] bg-[#fff7f2] text-[#a34a24]">

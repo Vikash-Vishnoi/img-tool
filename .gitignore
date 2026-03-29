@@ -42,3 +42,4 @@ next-env.d.ts
 
 # seo audit artifacts and scripts
 seo-audit/
+datas/

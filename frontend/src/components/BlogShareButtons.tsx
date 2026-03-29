@@ -130,7 +130,7 @@ export default function BlogShareButtons({ canonicalUrl, title }: BlogShareButto
       await navigator.clipboard.writeText(canonicalUrl);
       setCopied(true);
       window.setTimeout(() => setCopied(false), 1800);
-    } catch (_err) {
+    } catch {
       setCopied(false);
       window.open(canonicalUrl, "_blank", "noopener,noreferrer");
     }

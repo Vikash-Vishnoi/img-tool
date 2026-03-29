@@ -1,0 +1,23 @@
+services:
+  - type: web
+    name: imgtools-frontend
+    runtime: node
+    rootDir: frontend
+    plan: free
+    autoDeploy: true
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20.18.0
+      - key: NEXT_PUBLIC_SITE_URL
+        sync: false
+      - key: NEXT_PUBLIC_GA_ID
+        sync: false
+      - key: NEXT_PUBLIC_GOOGLE_VERIFICATION
+        sync: false
+      - key: NEXT_PUBLIC_TWITTER_CREATOR
+        sync: false
