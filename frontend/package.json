@@ -7,7 +7,8 @@
     "build": "next build --webpack",
     "postbuild": "next-sitemap",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "generate:blog-og": "node scripts/generate-blog-og-svg-files.cjs"
   },
   "dependencies": {
     "@jsquash/avif": "^2.1.1",

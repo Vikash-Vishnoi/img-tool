@@ -4,7 +4,6 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlogReadingProgress from "@/components/BlogReadingProgress";
 import { BLOG_POSTS, type BlogFaq, type BlogPost, getBlogPost } from "@/lib/blog";
-import { getOgSvgPath } from "@/lib/seo";
 
 type BlogPageProps = {
   params: Promise<{ slug: string }>;
@@ -28,6 +27,11 @@ const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
 const META_TITLE_MAX = 60;
 const META_DESCRIPTION_MIN = 120;
 const META_DESCRIPTION_MAX = 160;
+const DEFAULT_FAQ_COUNT = 4;
+
+function getBlogOgImagePath(slug: string): `/${string}` {
+  return `/og/blog/${slug}.png`;
+}
 
 function normalizeText(value: string): string {
   return value.replace(/\s+/g, " ").trim();
@@ -85,35 +89,195 @@ function buildBlogMetaDescription(post: BlogPost): string {
   return description;
 }
 
+function uniqueFaqItems(items: BlogFaq[]): BlogFaq[] {
+  const seenQuestions = new Set<string>();
+  const normalizedItems: BlogFaq[] = [];
+
+  for (const item of items) {
+    const question = normalizeText(item.question);
+    const answer = normalizeText(item.answer);
+
+    if (!question || !answer) {
+      continue;
+    }
+
+    const key = question.toLowerCase();
+    if (seenQuestions.has(key)) {
+      continue;
+    }
+
+    seenQuestions.add(key);
+    normalizedItems.push({ question, answer });
+  }
+
+  return normalizedItems;
+}
+
 function buildFallbackFaq(post: BlogPost): BlogFaq[] {
   const keyword = post.targetKeywords[0] ?? post.title.toLowerCase();
+  const secondaryKeyword = post.targetKeywords[1] ?? "image file preparation";
   const primaryTool = post.toolAnchors[0]?.label ?? "the recommended tool";
+  const secondaryTool = post.toolAnchors[1]?.label ?? primaryTool;
+
+  if (post.cluster === "Image to PDF Hub") {
+    return [
+      {
+        question: `What is the easiest way to handle ${keyword} on phone or desktop?`,
+        answer:
+          `Use ${primaryTool}, arrange pages in the right sequence, and export one final PDF after a readability check at 100% zoom.`,
+      },
+      {
+        question: "Can I combine multiple images into a single PDF without losing order?",
+        answer:
+          "Yes. Add all images together, move them into the required order, and verify the first and last pages before downloading.",
+      },
+      {
+        question: `Which setting is most important for ${secondaryKeyword}?`,
+        answer:
+          "Start with orientation and fit settings, because incorrect page layout causes more rejections than file size in most upload flows.",
+      },
+      {
+        question: `Should I use ${primaryTool} or ${secondaryTool} for this topic?`,
+        answer:
+          `For image-to-PDF tasks, begin with ${primaryTool}. Use ${secondaryTool} only when you need to adjust source files first.`,
+      },
+    ];
+  }
+
+  if (post.cluster === "Compress Image Hub") {
+    return [
+      {
+        question: `How can I hit strict limits while doing ${keyword}?`,
+        answer:
+          `Use ${primaryTool} in small steps, then stop as soon as you reach the target size and text remains readable.`,
+      },
+      {
+        question: "Is one strong compression pass better than multiple small passes?",
+        answer:
+          "Multiple controlled adjustments usually preserve quality better. Extreme one-pass compression often creates visible artifacts.",
+      },
+      {
+        question: `What should I check before uploading a file prepared for ${secondaryKeyword}?`,
+        answer:
+          "Confirm final KB size, preview at full zoom, and verify face or text clarity after export, not before editing.",
+      },
+      {
+        question: "Can I complete compression directly from a mobile browser?",
+        answer:
+          "Yes. Modern mobile browsers handle this workflow well, as long as you run a final visual check before submission.",
+      },
+    ];
+  }
+
+  if (post.cluster === "HEIC to JPG Hub") {
+    return [
+      {
+        question: `Why is ${keyword} still needed if HEIC is newer?`,
+        answer:
+          "HEIC is efficient for storage, but JPG remains more compatible across portals, chat apps, and older systems.",
+      },
+      {
+        question: "Will conversion from HEIC to JPG reduce image quality too much?",
+        answer:
+          "A single clean conversion keeps quality practical for uploads. Avoid repeated re-export to prevent unnecessary loss.",
+      },
+      {
+        question: `Which tool should I open first for ${secondaryKeyword}?`,
+        answer:
+          `Start with ${primaryTool}. If the output is still too large, use ${secondaryTool} to optimize size after conversion.`,
+      },
+      {
+        question: "Can I convert iPhone photos without installing a separate app?",
+        answer:
+          "Yes. Browser-based converters work on iPhone and Android, so you can process files and download JPG directly.",
+      },
+    ];
+  }
+
+  if (post.cluster === "Resize Image and Passport Hub") {
+    return [
+      {
+        question: `How do I avoid rejection while working on ${keyword}?`,
+        answer:
+          "Match exact dimensions first, then tune file size. Most rejections happen when size is correct but dimensions are off.",
+      },
+      {
+        question: "What is the safest order: resize first or compress first?",
+        answer:
+          "Resize to required dimensions first, then compress only as much as needed to stay under size limits.",
+      },
+      {
+        question: `Can ${primaryTool} handle both portrait photos and signature-style uploads?`,
+        answer:
+          `Yes. Use ${primaryTool} with strict width-height settings and verify clarity before final export.`,
+      },
+      {
+        question: `What is a practical quality check for ${secondaryKeyword}?`,
+        answer:
+          "Open the final image at full zoom and ensure facial edges, text labels, and signature strokes remain sharp.",
+      },
+    ];
+  }
+
+  if (post.cluster === "JPG and PNG Hub") {
+    return [
+      {
+        question: `How do I choose the right format for ${keyword}?`,
+        answer:
+          "Use JPG for photos and smaller files, and PNG when transparent backgrounds or crisp graphics are more important.",
+      },
+      {
+        question: "Does PNG always give better quality than JPG?",
+        answer:
+          "PNG preserves details better for graphics and text, but JPG often looks excellent for photos at much smaller file sizes.",
+      },
+      {
+        question: `Which tool should I use first when evaluating ${secondaryKeyword}?`,
+        answer:
+          `Start with ${primaryTool} to produce baseline outputs, then compare alternatives using ${secondaryTool} if needed.`,
+      },
+      {
+        question: "Can format choice improve website speed or upload success?",
+        answer:
+          "Yes. Picking the right format can reduce file size significantly, which improves load time and lowers upload failures.",
+      },
+    ];
+  }
 
   return [
     {
-      question: "What is the fastest way to follow this workflow?",
+      question: `What is the fastest way to complete ${keyword} correctly?`,
       answer:
-        `Use ${primaryTool}, follow the steps in order, and verify the final file once before submission. This avoids most upload and quality errors.`,
+        `Use ${primaryTool}, follow the workflow step by step, and validate the final output before upload or sharing.`,
     },
     {
-      question: "Can I do this on Android or iPhone without installing an app?",
+      question: "Can this workflow be done on Android and iPhone browsers?",
       answer:
-        "Yes. The workflow works in modern mobile browsers, so you can prepare files directly from your phone without installing extra software.",
+        "Yes. The process works in modern mobile browsers, so no extra app is required for most use cases.",
     },
     {
-      question: `How do I avoid rejection when working on ${keyword}?`,
+      question: `How do I reduce errors for ${secondaryKeyword}?`,
       answer:
-        "Match the required dimensions and format first, then adjust file size, and run a final readability check at 100% zoom before uploading.",
+        "Set dimensions and format first, then adjust file size, and run a final readability check at full zoom.",
+    },
+    {
+      question: "What should I verify in the final file before submission?",
+      answer:
+        "Check format, dimensions, file size, and readability. Keeping one backup version also helps with quick retries.",
     },
   ];
 }
 
 function getPostFaq(post: BlogPost): BlogFaq[] {
-  if (post.faq && post.faq.length > 0) {
-    return post.faq;
+  const customFaq = post.faq ?? [];
+  const fallbackFaq = buildFallbackFaq(post);
+  const mergedFaq = uniqueFaqItems([...customFaq, ...fallbackFaq]);
+
+  if (mergedFaq.length <= DEFAULT_FAQ_COUNT) {
+    return mergedFaq;
   }
 
-  return buildFallbackFaq(post);
+  return mergedFaq.slice(0, DEFAULT_FAQ_COUNT);
 }
 
 function formatReadableDate(dateValue: string): string {
@@ -375,7 +539,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
   }
 
   const canonicalPath = `/blog/${post.slug}`;
-  const ogImage = getOgSvgPath(`blog-${post.slug}`);
+  const ogImage = getBlogOgImagePath(post.slug);
   const metaTitle = buildBlogMetaTitle(post);
   const metaDescription = buildBlogMetaDescription(post);
 
@@ -428,7 +592,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   const canonicalPath = `/blog/${post.slug}`;
   const canonicalUrl = `${NORMALIZED_SITE_URL}${canonicalPath}`;
-  const ogImagePath = getOgSvgPath(`blog-${post.slug}`);
+  const ogImagePath = getBlogOgImagePath(post.slug);
   const ogImageUrl = ogImagePath.startsWith("http")
     ? ogImagePath
     : `${NORMALIZED_SITE_URL}${ogImagePath}`;
@@ -723,10 +887,13 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       </section>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs</h2>
+        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs ({faqItems.length})</h2>
         <div className="mt-4 space-y-4">
-          {faqItems.map((item) => (
+          {faqItems.map((item, index) => (
             <div key={item.question} className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <span className="inline-flex rounded-full border border-[#d4cfc4] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#6b6760]">
+                Q{index + 1}
+              </span>
               <h3 className="text-base font-bold text-[#1c1a14]">{item.question}</h3>
               <p className="mt-2 text-sm leading-7 text-[#6b6760]">{item.answer}</p>
             </div>

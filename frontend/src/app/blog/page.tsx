@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { BLOG_POSTS } from "@/lib/blog";
-import { getOgSvgPath } from "@/lib/seo";
 
-const OG_IMAGE = getOgSvgPath("blog");
+const OG_IMAGE = "/og/blog/index.png";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
 const BLOG_TITLE = "Image Tools Blog: Conversion, Compression and Resize Guides";
