@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "heic-vs-jpg-difference",
@@ -10,10 +10,23 @@ export const post: BlogPost = {
     targetKeywords: ["heic vs jpg", "heic vs jpg difference", "which is better heic or jpg"],
     hubToolPaths: ["/heic-to-jpg"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "HEIC is storage-efficient, while JPG is universally accepted. The right choice depends on where your image will be used.",
       "For sharing across different devices and upload portals, JPG remains the safer option today.",
+      "Understanding practical use cases helps you choose faster and avoid conversion mistakes.",
     ],
     sections: [
       {
@@ -31,6 +44,7 @@ export const post: BlogPost = {
           "Personal iPhone library and backups",
           "You need better storage efficiency",
           "You can convert later only when needed",
+          "These use cases prioritize storage over cross-platform compatibility",
         ],
       },
       {
@@ -39,6 +53,7 @@ export const post: BlogPost = {
           "Portal or website rejects HEIC",
           "You are sharing with mixed-device users",
           "You need predictable compatibility with printers and apps",
+          "These use cases prioritize compatibility and upload reliability",
         ],
       },
     ],
@@ -53,3 +68,10 @@ export const post: BlogPost = {
       "jpg-vs-png-which-is-better",
     ],
   };
+
+
+
+
+
+
+

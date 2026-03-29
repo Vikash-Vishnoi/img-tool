@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "convert-multiple-images-to-pdf",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/image-to-pdf"],
     readMinutes: 5,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "If you submit multiple screenshots one by one, review teams may miss pages. A single PDF keeps everything organized and easier to verify.",
       "The important part is ordering pages correctly and keeping all pages readable after merge.",
@@ -58,3 +70,10 @@ export const post: BlogPost = {
       "jpg-vs-pdf-which-is-better",
     ],
   };
+
+
+
+
+
+
+

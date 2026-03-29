@@ -17,6 +17,13 @@ export type BlogFaq = {
   answer: string;
 };
 
+export type BlogProfile = {
+  name: string;
+  role: string;
+  bio: string;
+  profilePath?: `/${string}`;
+};
+
 export type BlogPost = {
   slug: string;
   title: string;
@@ -27,6 +34,8 @@ export type BlogPost = {
   hubToolPaths: Array<`/${string}`>;
   readMinutes: number;
   updatedAt: string;
+  author: BlogProfile;
+  reviewer: BlogProfile;
   intro: string[];
   sections: BlogSection[];
   toolAnchors: BlogLink[];

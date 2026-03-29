@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "resize-photo-for-online-application",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/resize-image", "/resize-image-to-200kb"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "Application portals usually have strict image rules. If your image fails once, repeated trial and error costs time and often reduces quality.",
       "A structured resize flow helps you meet requirements in one attempt.",
@@ -58,3 +70,10 @@ export const post: BlogPost = {
       "compress-image-for-government-form",
     ],
   };
+
+
+
+
+
+
+

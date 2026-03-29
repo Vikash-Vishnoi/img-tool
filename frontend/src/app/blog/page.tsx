@@ -5,6 +5,7 @@ import { BLOG_POSTS } from "@/lib/blog";
 const OG_IMAGE = "/og/blog/index.png";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
+const TWITTER_CREATOR = process.env.NEXT_PUBLIC_TWITTER_CREATOR ?? "@imagetoolstech";
 const BLOG_TITLE = "Image Tools Blog: Conversion, Compression and Resize Guides";
 const BLOG_DESCRIPTION =
   "Actionable tutorials for image-to-PDF, compression, HEIC conversion, and resize workflows with practical checks for form uploads and sharing.";
@@ -106,6 +107,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: BLOG_TITLE,
     description: BLOG_DESCRIPTION,
+    creator: TWITTER_CREATOR,
     images: [OG_IMAGE],
   },
 };

@@ -19,6 +19,7 @@ const SITE_DESCRIPTION =
   "Free image converter tools: compress, resize, and convert images with no upload. Works on mobile and helps meet government form upload limits.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
+const TWITTER_CREATOR = process.env.NEXT_PUBLIC_TWITTER_CREATOR ?? "@imagetoolstech";
 const HOME_OG_IMAGE = getOgSvgPath("home");
 
 export const metadata: Metadata = {
@@ -74,6 +75,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: SITE_TITLE,
     description: SITE_DESCRIPTION,
+    creator: TWITTER_CREATOR,
     images: [HOME_OG_IMAGE],
   },
   icons: {

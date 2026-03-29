@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "jpg-vs-png-which-is-better",
@@ -10,7 +10,19 @@ export const post: BlogPost = {
     targetKeywords: ["jpg vs png difference", "jpg vs png which is better", "png or jpg"],
     hubToolPaths: ["/jpg-to-png", "/png-to-jpg"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "JPG and PNG are both common, but they solve different problems. JPG is efficient for photos. PNG is better when you need transparency and sharp graphic edges.",
       "Choosing the wrong one can increase file size or reduce visual quality unnecessarily.",
@@ -53,3 +65,10 @@ export const post: BlogPost = {
       "heic-vs-jpg-difference",
     ],
   };
+
+
+
+
+
+
+

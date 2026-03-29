@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "how-to-compress-image-under-200kb",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/compress-image", "/resize-image-to-200kb"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "Many Indian portals reject files that are even slightly above the size limit. A 218KB photo can fail when the requirement is 200KB max.",
       "The fastest approach is controlled compression: reduce quality gradually, keep dimensions practical, and verify clarity before upload.",
@@ -70,3 +82,10 @@ export const post: BlogPost = {
       },
     ],
   };
+
+
+
+
+
+
+

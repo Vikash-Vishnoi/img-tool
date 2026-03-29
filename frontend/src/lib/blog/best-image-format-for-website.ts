@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "best-image-format-for-website",
@@ -7,12 +7,24 @@ export const post: BlogPost = {
       "How to choose the best image format for speed, compatibility, and quality across modern websites.",
     phase: 2,
     cluster: "JPG and PNG Hub",
-    targetKeywords: ["best image format for website", "web image format comparison"],
+    targetKeywords: ["best web image type", "web format comparison"],
     hubToolPaths: ["/jpg-to-png", "/png-to-jpg", "/jpg-to-webp", "/jpg-to-avif"],
     readMinutes: 7,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
-      "There is no one best format for every page. The right strategy combines format type with image purpose: photo, graphic, or transparent asset.",
+      "There is no one best format for every page. The right strategy combines file type with image purpose: photo, graphic, or transparent asset.",
       "Good format decisions can improve Core Web Vitals and reduce bandwidth costs.",
     ],
     sections: [
@@ -54,3 +66,10 @@ export const post: BlogPost = {
       "heic-vs-jpg-difference",
     ],
   };
+
+
+
+
+
+
+

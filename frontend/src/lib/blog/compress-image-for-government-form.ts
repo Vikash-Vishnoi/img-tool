@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "compress-image-for-government-form",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/compress-image", "/resize-image-to-200kb"],
     readMinutes: 7,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "Most upload errors happen because users optimize only one parameter. Portals often check both file size and dimensions, and sometimes format too.",
       "If you compress with a checklist-based approach, you can avoid repeated rejection loops and submit confidently.",
@@ -60,3 +72,10 @@ export const post: BlogPost = {
       "aadhaar-photo-size-requirements",
     ],
   };
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "compress-image-for-whatsapp",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/compress-image", "/resize-whatsapp-dp"],
     readMinutes: 5,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "WhatsApp often re-compresses photos during transfer, which can make already compressed files look worse. A better approach is pre-optimizing with controlled settings.",
       "This gives better visual quality at a share-friendly file size.",
@@ -57,3 +69,10 @@ export const post: BlogPost = {
       "how-to-convert-iphone-photos-to-jpg",
     ],
   };
+
+
+
+
+
+
+

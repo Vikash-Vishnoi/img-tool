@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "what-is-heic-file-how-to-open",
@@ -14,7 +14,19 @@ export const post: BlogPost = {
     ],
     hubToolPaths: ["/heic-to-jpg"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "HEIC is a modern image format used by iPhone to save storage while maintaining good quality. The problem is compatibility: many apps and portals still prefer JPG.",
       "If a HEIC photo does not open on your device, converting it to JPG is usually the quickest fix.",
@@ -57,3 +69,10 @@ export const post: BlogPost = {
       "best-image-format-for-website",
     ],
   };
+
+
+
+
+
+
+

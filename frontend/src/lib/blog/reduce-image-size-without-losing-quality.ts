@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "reduce-image-size-without-losing-quality",
@@ -8,13 +8,25 @@ export const post: BlogPost = {
     phase: 2,
     cluster: "Compress Image Hub",
     targetKeywords: [
-      "reduce image size without losing quality",
+      "compress image without losing quality",
       "best image compression settings",
       "compress image high quality",
     ],
     hubToolPaths: ["/compress-image"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "Zero quality loss is not realistic with lossy formats, but visible quality loss can be minimized. The goal is to reduce KB while keeping human-visible detail intact.",
       "A balanced workflow gives much better outcomes than extreme one-click compression.",
@@ -47,7 +59,7 @@ export const post: BlogPost = {
       },
     ],
     toolAnchors: [
-      { label: "reduce image size online", href: "/compress-image" },
+      { label: "compress image online", href: "/compress-image" },
       { label: "compress image without heavy blur", href: "/compress-image" },
       { label: "target size compression tool", href: "/resize-image-to-200kb" },
     ],
@@ -57,3 +69,10 @@ export const post: BlogPost = {
       "compress-image-for-government-form",
     ],
   };
+
+
+
+
+
+
+

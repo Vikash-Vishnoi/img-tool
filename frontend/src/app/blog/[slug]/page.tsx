@@ -3,6 +3,7 @@ import { Link2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlogReadingProgress from "@/components/BlogReadingProgress";
+import BlogShareButtons from "@/components/BlogShareButtons";
 import { BLOG_POSTS, type BlogFaq, type BlogPost, getBlogPost } from "@/lib/blog";
 
 type BlogPageProps = {
@@ -24,6 +25,7 @@ type ClusterUseCaseCopy = {
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
+const TWITTER_CREATOR = process.env.NEXT_PUBLIC_TWITTER_CREATOR ?? "@imagetoolstech";
 const META_TITLE_MAX = 60;
 const META_DESCRIPTION_MIN = 120;
 const META_DESCRIPTION_MAX = 160;
@@ -35,6 +37,15 @@ function getBlogOgImagePath(slug: string): `/${string}` {
 
 function normalizeText(value: string): string {
   return value.replace(/\s+/g, " ").trim();
+}
+
+function slugifyHeading(value: string): string {
+  return normalizeText(value)
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
 }
 
 function trimToWord(value: string, maxLength: number): string {
@@ -570,6 +581,7 @@ export async function generateMetadata({ params }: BlogPageProps): Promise<Metad
       card: "summary_large_image",
       title: metaTitle,
       description: metaDescription,
+      creator: TWITTER_CREATOR,
       images: [ogImage],
     },
     keywords: post.targetKeywords,
@@ -601,6 +613,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const relatedPosts = getRelatedPosts(post);
   const formattedUpdatedAt = formatReadableDate(post.updatedAt);
   const useCaseCopy = getUseCaseCopy(post);
+  const sectionToc = post.sections.map((section, index) => ({
+    id: `${slugifyHeading(section.heading) || "section"}-${index + 1}`,
+    heading: section.heading,
+  }));
 
   const articleJsonLd = {
     "@context": "https://schema.org",
@@ -618,8 +634,20 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       },
     ],
     author: {
-      "@type": "Organization",
-      name: "Image Tools",
+      "@type": "Person",
+      name: post.author.name,
+      url: `${NORMALIZED_SITE_URL}${post.author.profilePath ?? "/about"}`,
+      worksFor: {
+        "@type": "Organization",
+        name: "Image Tools",
+      },
+      description: post.author.bio,
+    },
+    editor: {
+      "@type": "Person",
+      name: post.reviewer.name,
+      url: `${NORMALIZED_SITE_URL}${post.reviewer.profilePath ?? "/about"}`,
+      description: post.reviewer.bio,
     },
     publisher: {
       "@type": "Organization",
@@ -748,6 +776,31 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           Updated <time dateTime={post.updatedAt}>{formattedUpdatedAt}</time>
         </p>
 
+        <section
+          aria-label="Author and reviewer information"
+          className="mt-4 rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4"
+        >
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="rounded-xl border border-[#e8e1d6] bg-white p-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6b6760]">Author</p>
+              <p className="mt-1 text-sm font-bold text-[#1c1a14]">{post.author.name}</p>
+              <p className="mt-1 text-xs text-[#6b6760]">{post.author.role}</p>
+            </div>
+            <div className="rounded-xl border border-[#e8e1d6] bg-white p-3">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.08em] text-[#6b6760]">Reviewed By</p>
+              <p className="mt-1 text-sm font-bold text-[#1c1a14]">{post.reviewer.name}</p>
+              <p className="mt-1 text-xs text-[#6b6760]">{post.reviewer.role}</p>
+            </div>
+          </div>
+          <p className="mt-3 text-xs leading-6 text-[#6b6760]">
+            {post.author.bio} Every guide is reviewed for technical accuracy, practical upload constraints, and cross-device compatibility before publication updates.
+            <Link href="/about" prefetch className="ml-1 font-semibold text-[#1c1a14] underline-offset-2 hover:underline">
+              Learn about the editorial process
+            </Link>
+            .
+          </p>
+        </section>
+
         <div className="mt-5 rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#6b6760]">
             Target keywords
@@ -766,19 +819,34 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       </header>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+        <nav id="toc" aria-label="table of contents" className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#6b6760]">
+            Table of Contents
+          </p>
+          <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-sm text-[#1c1a14]">
+            {sectionToc.map((item) => (
+              <li key={item.id}>
+                <a href={`#${item.id}`} className="hover:text-[#c75322] hover:underline">
+                  {item.heading}
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+
         {post.intro.map((paragraph, index) => (
           <p
             key={`${post.slug}-intro-${index}`}
-            className={index === 0 ? "text-sm leading-7 text-[#1c1a14] sm:text-base" : "mt-4 text-sm leading-7 text-[#6b6760] sm:text-base"}
+            className={index === 0 ? "mt-6 text-sm leading-7 text-[#1c1a14] sm:text-base" : "mt-4 text-sm leading-7 text-[#6b6760] sm:text-base"}
           >
             {paragraph}
           </p>
         ))}
 
         <div className="mt-7 space-y-7">
-          {post.sections.map((section) => (
+          {post.sections.map((section, index) => (
             <section key={`${post.slug}-${section.heading}`}>
-              <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">
+              <h2 id={sectionToc[index]?.id} className="scroll-mt-28 text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">
                 {section.heading}
               </h2>
 
@@ -884,6 +952,14 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           time. A controlled retry process usually resolves the issue faster than repeating the full
           workflow from the beginning.
         </p>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Share this guide</h2>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          Share this guide with teammates or friends who need the same workflow.
+        </p>
+        <BlogShareButtons canonicalUrl={canonicalUrl} title={post.title} />
       </section>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">

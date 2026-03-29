@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "passport-photo-size-requirements-india",
@@ -8,13 +8,25 @@ export const post: BlogPost = {
     phase: 1,
     cluster: "Resize Image and Passport Hub",
     targetKeywords: [
-      "passport photo size in india",
+      "passport photo requirements india",
       "passport photo dimensions india",
       "passport size photo online",
     ],
     hubToolPaths: ["/resize-passport-photo", "/resize-image"],
     readMinutes: 7,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "A passport photo can be rejected even when the face looks correct. Most rejections happen because dimensions, background, or file specs do not match the form rules.",
       "This quick guide focuses on practical dimensions and upload-ready preparation for India-focused workflows.",
@@ -50,7 +62,7 @@ export const post: BlogPost = {
       },
     ],
     toolAnchors: [
-      { label: "passport photo size resizer", href: "/resize-passport-photo" },
+      { label: "passport photo resizer", href: "/resize-passport-photo" },
       { label: "resize image for forms", href: "/resize-image" },
       { label: "compress final passport photo", href: "/compress-image" },
     ],
@@ -60,3 +72,10 @@ export const post: BlogPost = {
       "compress-image-for-government-form",
     ],
   };
+
+
+
+
+
+
+

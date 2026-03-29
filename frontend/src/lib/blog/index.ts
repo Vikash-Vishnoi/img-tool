@@ -17,7 +17,7 @@ import { post as post_best_image_format_for_website } from "./best-image-format-
 import { post as post_jpg_vs_pdf_which_is_better } from "./jpg-vs-pdf-which-is-better";
 import { post as post_avif_vs_webp_vs_jpg_comparison } from "./avif-vs-webp-vs-jpg-comparison";
 
-export type { BlogFaq, BlogLink, BlogPhase, BlogPost, BlogSection } from "./types";
+export type { BlogFaq, BlogLink, BlogPhase, BlogPost, BlogProfile, BlogSection } from "./types";
 
 export const BLOG_PHASE_LABELS: Record<BlogPhase, string> = {
   1: "Phase 1 - Highest intent and fastest wins",

@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "how-to-convert-image-to-pdf",
@@ -10,7 +10,19 @@ export const post: BlogPost = {
     targetKeywords: ["how to convert image to pdf", "image to pdf online"],
     hubToolPaths: ["/image-to-pdf"],
     readMinutes: 6,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "If a website asks for PDF but your file is in JPG or PNG, you do not need to install any app. You can convert images directly from your browser in less than a minute.",
       "This method works well for college forms, job applications, government portals, and document sharing. The key is to keep page order correct and export a clean PDF with readable text.",
@@ -68,3 +80,10 @@ export const post: BlogPost = {
       },
     ],
   };
+
+
+
+
+
+
+

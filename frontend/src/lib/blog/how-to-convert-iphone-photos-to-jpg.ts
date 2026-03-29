@@ -1,4 +1,4 @@
-import type { BlogPost } from "./types";
+﻿import type { BlogPost } from "./types";
 
 export const post: BlogPost = {
     slug: "how-to-convert-iphone-photos-to-jpg",
@@ -8,13 +8,25 @@ export const post: BlogPost = {
     phase: 1,
     cluster: "HEIC to JPG Hub",
     targetKeywords: [
-      "how to convert iphone photos to jpg",
+      "iphone heic to jpg conversion",
       "iphone heic to jpg",
       "convert iphone image format",
     ],
     hubToolPaths: ["/heic-to-jpg", "/compress-image"],
     readMinutes: 5,
-    updatedAt: "2026-03-29",
+        updatedAt: "2026-03-29",
+    author: {
+      name: "Image Tools Editorial Team",
+      role: "Content Team",
+      bio: "The Image Tools Editorial Team creates practical, tested guides for image conversion, compression, resizing, and submission workflows.",
+      profilePath: "/about",
+    },
+    reviewer: {
+      name: "Image Tools QA Team",
+      role: "Technical Review Team",
+      bio: "The Image Tools QA Team reviews each guide for technical accuracy, workflow clarity, and real-world upload reliability.",
+      profilePath: "/about",
+    },
     intro: [
       "iPhone photos are often saved as HEIC. That is efficient for storage, but many upload systems ask for JPG and reject HEIC files.",
       "A browser converter solves this in minutes and works on phone or desktop without complex setup.",
@@ -47,7 +59,7 @@ export const post: BlogPost = {
       },
     ],
     toolAnchors: [
-      { label: "convert iPhone photos to JPG", href: "/heic-to-jpg" },
+      { label: "convert HEIC photos to JPG", href: "/heic-to-jpg" },
       { label: "HEIC to JPG online tool", href: "/heic-to-jpg" },
       { label: "compress converted JPG", href: "/compress-image" },
     ],
@@ -57,3 +69,10 @@ export const post: BlogPost = {
       "compress-image-for-whatsapp",
     ],
   };
+
+
+
+
+
+
+
