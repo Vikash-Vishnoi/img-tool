@@ -764,7 +764,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           <span className="rounded-full border border-[#edcfbe] bg-[#fff3ed] px-2.5 py-1 text-[11px] font-semibold text-[#a34a24]">
             {post.cluster}
           </span>
-          <span className="rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-2.5 py-1 text-[11px] font-semibold text-[#2a7a5e]">
+          <span className="rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-2.5 py-1 text-[11px] font-semibold text-[var(--forest-ink)]">
             {post.readMinutes} min read
           </span>
         </div>

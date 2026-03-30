@@ -201,7 +201,7 @@ export default function Home() {
             return (
               <span
                 key={pill.label}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-3 py-1.5 text-xs font-semibold text-[#2a7a5e]"
+                className="inline-flex items-center gap-1.5 rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-3 py-1.5 text-xs font-semibold text-[var(--forest-ink)]"
               >
                 <Icon className="h-3.5 w-3.5" strokeWidth={2.1} aria-hidden="true" />
                 {pill.label}
@@ -257,7 +257,7 @@ export default function Home() {
                   {tool.description}
                 </p>
                 <div className="mt-auto flex items-center justify-between gap-2 border-t border-[#e8e1d6] pt-3">
-                  <span className="rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-2.5 py-1 text-[11px] font-semibold text-[#2a7a5e]">
+                  <span className="rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-2.5 py-1 text-[11px] font-semibold text-[var(--forest-ink)]">
                     {tool.meta}
                   </span>
                   <span className="text-[11px] font-bold uppercase tracking-[0.08em] text-[#a34a24] transition group-hover:translate-x-0.5">

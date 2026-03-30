@@ -1,4 +1,4 @@
-import { createPdfToolPage } from "@/lib/pageFactories";
+import { createPdfToolPage } from "@/lib/pageFactories/pdfToolPageFactory";
 
 const { metadata, Page } = createPdfToolPage("image-to-pdf");
 

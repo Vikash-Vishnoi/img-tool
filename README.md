@@ -40,3 +40,4 @@ Recommended setup:
 	- `NEXT_PUBLIC_GA_ID` (optional)
 	- `NEXT_PUBLIC_GOOGLE_VERIFICATION` (optional)
 	- `NEXT_PUBLIC_TWITTER_CREATOR` (optional)
+

@@ -709,8 +709,8 @@ export function CompressImageClient({
                 {conversion.status === "success" && conversion.outputs.length > 0 ? (
                   <div className="mt-5 space-y-3">
                     <div className="rounded-xl border border-[#b8ddc9] bg-[#e8f5ee] p-4">
-                      <div className="text-sm font-semibold text-[#2a7a5e]">Result</div>
-                      <div className="mt-2 text-sm text-[#2a7a5e]">
+                      <div className="text-sm font-semibold text-[var(--forest-ink)]">Result</div>
+                      <div className="mt-2 text-sm text-[var(--forest-ink)]">
                         <span className="font-semibold text-[#1c1a14]">
                           {formatFileSize(beforeBytes)}
                         </span>{" "}
@@ -720,7 +720,7 @@ export function CompressImageClient({
                         </span>{" "}
                         ({reductionPercent}% reduction)
                       </div>
-                      <div className="mt-2 text-sm font-semibold text-[#2a7a5e]">
+                      <div className="mt-2 text-sm font-semibold text-[var(--forest-ink)]">
                         🎉 {reductionPercent}% smaller!
                       </div>
                     </div>

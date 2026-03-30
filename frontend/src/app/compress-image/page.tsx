@@ -1,4 +1,4 @@
-import { createCompressToolPage } from "@/lib/pageFactories";
+import { createCompressToolPage } from "@/lib/pageFactories/compressToolPageFactory";
 
 const { metadata, Page } = createCompressToolPage("compress-image");
 

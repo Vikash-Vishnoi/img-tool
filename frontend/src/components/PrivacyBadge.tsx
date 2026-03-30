@@ -12,10 +12,10 @@ export function PrivacyBadge({ className }: PrivacyBadgeProps) {
       role="note"
       aria-label="Privacy"
     >
-      <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[#2a7a5e]">
+      <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-[var(--forest-ink)]">
         <span>🔒</span>
         <span>Files never leave your device</span>
-        <span className="text-[#2a7a5e]/75">No upload, fully browser-based processing.</span>
+        <span>No upload, fully browser-based processing.</span>
       </div>
     </div>
   );

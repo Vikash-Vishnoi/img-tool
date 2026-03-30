@@ -6,7 +6,6 @@ import { FileUploader } from "@/components/FileUploader";
 import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
 import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
-import { resizeImage, resizeImageToTargetBytes } from "@/lib/resizeImage";
 import { downloadBlob, formatFileSize, shareFileToWhatsApp } from "@/lib/utils";
 
 type PresetKey =
@@ -35,46 +34,6 @@ const MAX_SIZE_BYTES = 100 * 1024 * 1024;
 
 function mmToPx(mm: number, dpi: number): number {
   return Math.round((mm * dpi) / 25.4);
-}
-
-function outputTypeForFile(file: File): "image/jpeg" | "image/png" | "image/webp" {
-  const type = file.type.toLowerCase();
-  if (type === "image/png") return "image/png";
-  if (type === "image/webp") return "image/webp";
-  return "image/jpeg";
-}
-
-function isHeicLike(file: File): boolean {
-  const name = file.name.toLowerCase();
-  if (name.endsWith(".heic") || name.endsWith(".heif")) return true;
-
-  const type = file.type.toLowerCase();
-  return type === "image/heic" || type === "image/heif";
-}
-
-async function normalizeResizeInputFile(args: {
-  file: File;
-  signal: AbortSignal;
-}): Promise<File> {
-  const { file, signal } = args;
-  if (!isHeicLike(file)) return file;
-  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
-
-  const { default: heic2any } = await import("heic2any");
-  const converted = await heic2any({
-    blob: file,
-    toType: "image/png",
-  });
-
-  if (signal.aborted) throw new DOMException("Aborted", "AbortError");
-
-  const blob = Array.isArray(converted) ? converted[0] : converted;
-  if (!(blob instanceof Blob)) {
-    throw new Error(`Could not convert HEIC file: ${file.name}`);
-  }
-
-  const baseName = file.name.replace(/\.(heic|heif)$/i, "") || "image";
-  return new File([blob], `${baseName}.png`, { type: "image/png" });
 }
 
 async function getImageDimensions(file: File): Promise<{ width: number; height: number } | null> {
@@ -620,74 +579,17 @@ export function ResizeImageClient({
                     disabled={!conversion.canRun}
                     onClick={async () => {
                       await conversion.run(async ({ files, signal, onProgress }) => {
-                        const total = Math.max(1, files.length);
+                        const { runResizeConversion } = await import("@/lib/resizeImageRuntime");
 
-                        if (usesTargetSize) {
-                          const outputs = [];
-                          for (let i = 0; i < files.length; i += 1) {
-                            const file = files[i]!;
-                            const normalizedFile = await normalizeResizeInputFile({
-                              file,
-                              signal,
-                            });
-                            const result = await resizeImageToTargetBytes({
-                              file: normalizedFile,
-                              width: target.width,
-                              height: target.height,
-                              targetBytes: Math.round(parsedTargetKb * 1024),
-                              signal,
-                              maxIterations: 12,
-                              onProgress: (percent) => {
-                                const done = i + percent / 100;
-                                onProgress(Math.round((done / total) * 100));
-                              },
-                            });
-
-                            outputs.push({
-                              blob: result.blob,
-                              filename: result.filename,
-                              mimeType: result.mimeType,
-                              originalBytes: result.originalBytes,
-                              originalName: file.name,
-                            });
-                          }
-
-                          return outputs;
-                        }
-
-                        const outputs = [];
-                        for (let i = 0; i < files.length; i += 1) {
-                          const file = files[i]!;
-                          const normalizedFile = await normalizeResizeInputFile({
-                            file,
-                            signal,
-                          });
-                          // Keep original format/quality by default; explicit target-size mode does compression.
-                          const outputType = outputTypeForFile(normalizedFile);
-                          const result = await resizeImage({
-                            file: normalizedFile,
-                            options: {
-                              width: target.width,
-                              height: target.height,
-                              outputType,
-                              quality: outputType === "image/png" ? undefined : 1,
-                              enhanceDownscale: true,
-                              sharpenAmount: 0.4,
-                            },
-                            signal,
-                          });
-
-                          outputs.push({
-                            blob: result.blob,
-                            filename: result.filename,
-                            mimeType: result.mimeType,
-                            originalBytes: result.originalBytes,
-                            originalName: file.name,
-                          });
-                          onProgress(Math.round(((i + 1) / total) * 100));
-                        }
-
-                        return outputs;
+                        return await runResizeConversion({
+                          files,
+                          width: target.width,
+                          height: target.height,
+                          useTargetSize: usesTargetSize,
+                          targetKb: parsedTargetKb,
+                          signal,
+                          onProgress,
+                        });
                       });
                     }}
                     className="inline-flex items-center justify-center rounded-full bg-[#e8672a] px-9 py-3.5 text-lg font-semibold text-white transition hover:bg-[#ff8c5a] disabled:cursor-not-allowed disabled:opacity-60"
@@ -732,15 +634,15 @@ export function ResizeImageClient({
                 {conversion.status === "success" && conversion.outputs.length > 0 ? (
                   <div className="mt-5 space-y-3">
                     <div className="rounded-xl border border-[#b8ddc9] bg-[#e8f5ee] p-4">
-                      <div className="text-sm font-semibold text-[#2a7a5e]">Result</div>
-                      <div className="mt-2 text-sm text-[#2a7a5e]">
+                      <div className="text-sm font-semibold text-[var(--forest-ink)]">Result</div>
+                      <div className="mt-2 text-sm text-[var(--forest-ink)]">
                         {formatFileSize(beforeBytes)} → {formatFileSize(afterBytes)}
                       </div>
-                      <div className="mt-1 text-sm text-[#2a7a5e]">
+                      <div className="mt-1 text-sm text-[var(--forest-ink)]">
                         Output dimensions: {target.width}×{target.height}px
                       </div>
                       {usesTargetSize ? (
-                        <div className="mt-1 text-xs text-[#2a7a5e]">
+                        <div className="mt-1 text-xs text-[var(--forest-ink)]">
                           Target: {formatFileSize(Math.round(parsedTargetKb * 1024))} (JPEG)
                         </div>
                       ) : null}
