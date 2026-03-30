@@ -25,10 +25,12 @@ export function ToolPageShell({
       <ToolSchema tool={tool} />
       {children}
       <div className={`mx-auto w-full max-w-6xl px-4 ${footerPaddingClassName} sm:px-6 lg:px-8`}>
-        <DeferredRender placeholderClassName="mt-8 min-h-[180px] rounded-2xl border border-[#e8e1d6] bg-[#faf7f2]">
-          {showFaq ? <ToolFaqSection faqs={faqs} heading={tool.faqHeading} /> : null}
-          <RelatedTools currentSlug={tool.slug} />
-        </DeferredRender>
+        <div className="mt-16 sm:mt-10">
+          <DeferredRender>
+            {showFaq ? <ToolFaqSection faqs={faqs} heading={tool.faqHeading} /> : null}
+            <RelatedTools currentSlug={tool.slug} />
+          </DeferredRender>
+        </div>
       </div>
     </>
   );

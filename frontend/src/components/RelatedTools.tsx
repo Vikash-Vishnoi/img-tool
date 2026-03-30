@@ -28,7 +28,7 @@ export function RelatedTools({ currentSlug }: RelatedToolsProps) {
           <li key={tool.slug}>
             <Link
               href={tool.path}
-              prefetch
+              prefetch={false}
               className="block rounded-xl border border-[#d4cfc4] bg-white px-3 py-2 text-sm font-semibold text-[#1c1a14] transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_18px_rgba(28,26,20,0.08)]"
             >
               {tool.title.split("—")[0].trim()}

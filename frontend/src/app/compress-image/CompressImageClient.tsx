@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
+import { LazyAppDropdown as AppDropdown } from "@/components/LazyAppDropdown";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
 import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
@@ -324,7 +324,7 @@ export function CompressImageClient({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="space-y-3 text-center">
+      <header className="space-y-2 text-center sm:space-y-3">
         <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#d4cfc4] bg-[#ede8df] px-4 py-2 text-xs font-semibold text-[#6b6760]">
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#e8672a] text-white">✦</span>
           Fast image compression · no upload
@@ -332,7 +332,7 @@ export function CompressImageClient({
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
           {title}
         </h1>
-        <p className="mx-auto max-w-3xl text-pretty text-base leading-7 text-[#6b6760]">
+        <p className="mx-auto hidden max-w-3xl text-pretty text-base leading-7 text-[#6b6760] sm:block">
           {description}
         </p>
       </header>

@@ -10,6 +10,8 @@ export type FileUploaderProps = {
   disabled?: boolean;
   label?: string;
   helperText?: string;
+  mobileHelperText?: string;
+  hideHelperTextOnMobile?: boolean;
   onFiles: (files: File[]) => void;
 };
 
@@ -88,6 +90,8 @@ export function FileUploader({
   disabled = false,
   label = "Upload images",
   helperText = "Drag & drop, tap to choose, or paste from clipboard.",
+  mobileHelperText = "Tap to choose or paste.",
+  hideHelperTextOnMobile = false,
   onFiles,
 }: FileUploaderProps) {
   const inputId = useId();
@@ -152,6 +156,8 @@ export function FileUploader({
     return () => window.removeEventListener("paste", onPaste);
   }, [onPaste]);
 
+  const resolvedMobileHelperText = mobileHelperText.trim().length > 0 ? mobileHelperText : helperText;
+
   return (
     <div className="w-full">
       <div className="mb-2 flex items-center justify-between gap-4">
@@ -209,7 +215,10 @@ export function FileUploader({
           📁
         </div>
         <div className="text-sm font-bold text-[#1c1a14]">Drop your image here</div>
-        <div className="text-xs text-[#6b6760]">{helperText}</div>
+        {!hideHelperTextOnMobile ? (
+          <div className="w-full max-w-[19rem] truncate text-[11px] leading-4 text-[#6b6760] sm:hidden">{resolvedMobileHelperText}</div>
+        ) : null}
+        <div className="hidden text-xs text-[#6b6760] sm:block">{helperText}</div>
         <div className="mt-2 inline-flex items-center rounded-full bg-[#1c1a14] px-3 py-1.5 text-xs font-semibold text-[#f7f3ec]">
           Choose files
         </div>

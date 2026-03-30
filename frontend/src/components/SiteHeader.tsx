@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 type HeaderDropdown = {
@@ -63,6 +62,43 @@ const HEADER_DROPDOWNS: HeaderDropdown[] = [
     ],
   },
 ];
+
+type HeaderIconProps = {
+  className?: string;
+};
+
+function ChevronDownIcon({ className }: HeaderIconProps) {
+  return (
+    <svg viewBox="0 0 16 16" className={className} fill="none" aria-hidden="true">
+      <path
+        d="M4 6.5L8 10L12 6.5"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function MenuIcon({ className }: HeaderIconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path d="M4 7H20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M4 12H20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M4 17H20" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function CloseIcon({ className }: HeaderIconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" aria-hidden="true">
+      <path d="M6 6L18 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M18 6L6 18" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />
+    </svg>
+  );
+}
 
 export default function SiteHeader() {
   const pathname = usePathname();
@@ -165,7 +201,7 @@ export default function SiteHeader() {
                 aria-haspopup="menu"
               >
                 {group.label}
-                <ChevronDown className="h-3.5 w-3.5" aria-hidden="true" />
+                <ChevronDownIcon className="h-3.5 w-3.5" />
               </button>
 
               {openDropdown === group.key ? (
@@ -236,7 +272,7 @@ export default function SiteHeader() {
             aria-controls="mobile-main-nav"
             aria-label={isMobileMenuOpen ? "Close navigation menu" : "Open navigation menu"}
           >
-            {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            {isMobileMenuOpen ? <CloseIcon className="h-4 w-4" /> : <MenuIcon className="h-4 w-4" />}
           </button>
         </div>
       </nav>

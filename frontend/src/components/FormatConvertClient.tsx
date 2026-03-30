@@ -1,20 +1,21 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { AppDropdown } from "@/components/AppDropdown";
 import { FileUploader } from "@/components/FileUploader";
+import { LazyAppDropdown as AppDropdown } from "@/components/LazyAppDropdown";
 import { PrivacyBadge } from "@/components/PrivacyBadge";
-import { RemoveButton } from "@/components/RemoveButton";
 import { useConversion } from "@/hooks/useConversion";
 import { useUploadFlowScroll } from "@/hooks/useUploadFlowScroll";
-import {
-  convertImageFiles,
-  formatLabel,
-  type RasterFormat,
-} from "@/lib/formatConvert";
+import type { RasterFormat } from "@/lib/formatConvert";
 import { downloadBlob, formatFileSize, shareFileToWhatsApp } from "@/lib/utils";
 
 const MAX_SIZE_BYTES = 100 * 1024 * 1024;
+
+const RemoveButton = dynamic(
+  () => import("@/components/RemoveButton").then((mod) => mod.RemoveButton),
+  { ssr: false }
+);
 
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, value));
@@ -23,6 +24,21 @@ function clamp(value: number, min: number, max: number): number {
 function toPercentChange(beforeBytes: number, afterBytes: number): number {
   if (beforeBytes <= 0) return 0;
   return Math.round(((beforeBytes - afterBytes) / beforeBytes) * 100);
+}
+
+function formatLabel(format: RasterFormat): string {
+  switch (format) {
+    case "jpg":
+      return "JPG";
+    case "png":
+      return "PNG";
+    case "webp":
+      return "WebP";
+    case "avif":
+      return "AVIF";
+    default:
+      return format;
+  }
 }
 
 export type FormatConvertClientProps = {
@@ -82,6 +98,7 @@ export function FormatConvertClient({
 
   const runConversion = useCallback(async () => {
     await conversion.run(async ({ files, signal, onProgress }) => {
+      const { convertImageFiles } = await import("@/lib/formatConvert");
       const outputs = await convertImageFiles({
         files,
         to: outputFormat,
@@ -130,7 +147,7 @@ export function FormatConvertClient({
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
-      <header className="space-y-3 text-center">
+      <header className="space-y-2 text-center sm:space-y-3">
         <div className="mx-auto inline-flex items-center gap-2 rounded-full border border-[#d4cfc4] bg-[#ede8df] px-4 py-2 text-xs font-semibold text-[#6b6760]">
           <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#e8672a] text-white">✦</span>
           Browser-only conversion · private by default
@@ -138,7 +155,7 @@ export function FormatConvertClient({
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
           {title}
         </h1>
-        <p className="mx-auto max-w-3xl text-pretty text-base leading-7 text-[#6b6760]">
+        <p className="mx-auto hidden max-w-3xl text-pretty text-base leading-7 text-[#6b6760] sm:block">
           {description}
         </p>
       </header>
@@ -391,9 +408,7 @@ export function FormatConvertClient({
                               await shareFileToWhatsApp(fileToShare);
                             }}
                           >
-                            <svg viewBox="0 0 24 24" aria-hidden="true" className="h-3.5 w-3.5 text-[#25D366]" fill="currentColor">
-                              <path d="M20.52 3.48A11.85 11.85 0 0 0 12.08 0C5.5 0 .15 5.34.15 11.9c0 2.1.55 4.16 1.6 5.98L0 24l6.31-1.65a11.9 11.9 0 0 0 5.77 1.47h.01c6.57 0 11.92-5.34 11.92-11.9a11.8 11.8 0 0 0-3.49-8.44Zm-8.44 18.32h-.01a9.93 9.93 0 0 1-5.06-1.39l-.36-.21-3.75.98 1-3.65-.24-.37a9.9 9.9 0 0 1-1.53-5.24c0-5.5 4.49-9.98 10-9.98 2.67 0 5.18 1.04 7.06 2.92a9.9 9.9 0 0 1 2.93 7.06c0 5.5-4.49 9.98-10.01 9.98Zm5.47-7.47c-.3-.15-1.77-.88-2.04-.98-.27-.1-.47-.15-.67.15-.2.3-.77.98-.94 1.18-.17.2-.35.22-.65.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.74-1.64-2.04-.17-.3-.02-.46.13-.61.14-.14.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.48-.5-.67-.5h-.57c-.2 0-.52.07-.8.37-.27.3-1.05 1.03-1.05 2.52 0 1.48 1.08 2.92 1.23 3.12.15.2 2.12 3.24 5.14 4.54.72.31 1.28.5 1.71.64.72.23 1.38.2 1.9.12.58-.09 1.77-.72 2.03-1.42.25-.7.25-1.29.17-1.42-.07-.12-.27-.2-.57-.35Z" />
-                            </svg>
+                            <span aria-hidden="true" className="inline-flex h-4 min-w-4 items-center justify-center rounded-full bg-[#25D366] px-1 text-[10px] font-bold leading-none text-white">W</span>
                             Share
                           </button>
                           <button
