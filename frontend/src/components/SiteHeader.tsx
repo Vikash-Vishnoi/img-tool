@@ -116,8 +116,9 @@ export default function SiteHeader() {
   }, []);
 
   useEffect(() => {
+    if (!openDropdown) return;
+
     const onPointerDown = (event: MouseEvent) => {
-      if (!openDropdown) return;
       const target = event.target as Node;
       if (navRef.current?.contains(target)) return;
       setOpenDropdown(null);
@@ -212,7 +213,7 @@ export default function SiteHeader() {
                       href={link.href}
                       prefetch={false}
                       className={`block rounded-lg px-3 py-2 text-sm font-semibold text-[#1c1a14] transition hover:bg-[#fff7f2] ${
-                        pathname === link.href ? "bg-[#fff7f2] text-[#e8672a]" : ""
+                        pathname === link.href ? "bg-[#fff7f2] text-[var(--ember-ink)]" : ""
                       }`}
                       onClick={() => setOpenDropdown(null)}
                     >
@@ -281,68 +282,70 @@ export default function SiteHeader() {
         id="mobile-main-nav"
         className={`site-mobile-menu ${isMobileMenuOpen ? "open" : ""}`}
       >
-        <div className="site-mobile-menu-inner mx-auto w-full max-w-7xl px-3 sm:px-5">
-          <Link
-            href="/"
-            prefetch={false}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`site-mobile-link ${pathname === "/" ? "active" : ""}`}
-            aria-current={pathname === "/" ? "page" : undefined}
-          >
-            Home
-          </Link>
+        {isMobileMenuOpen ? (
+          <div className="site-mobile-menu-inner mx-auto w-full max-w-7xl px-3 sm:px-5">
+            <Link
+              href="/"
+              prefetch={false}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`site-mobile-link ${pathname === "/" ? "active" : ""}`}
+              aria-current={pathname === "/" ? "page" : undefined}
+            >
+              Home
+            </Link>
 
-          {HEADER_DROPDOWNS.map((group) => (
-            <div key={group.key} className="mt-2">
-              <div className="px-1 py-1 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">
-                {group.label}
+            {HEADER_DROPDOWNS.map((group) => (
+              <div key={group.key} className="mt-2">
+                <div className="px-1 py-1 text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">
+                  {group.label}
+                </div>
+                <div className="space-y-1">
+                  {group.links.map((link) => (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      prefetch={false}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                      className={`site-mobile-link ${pathname === link.href ? "active" : ""}`}
+                      aria-current={pathname === link.href ? "page" : undefined}
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="space-y-1">
-                {group.links.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    prefetch={false}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={`site-mobile-link ${pathname === link.href ? "active" : ""}`}
-                    aria-current={pathname === link.href ? "page" : undefined}
-                  >
-                    {link.label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
 
-          <Link
-            href="/blog"
-            prefetch={false}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`site-mobile-link ${pathname === "/blog" || pathname.startsWith("/blog/") ? "active" : ""}`}
-            aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined}
-          >
-            Blog
-          </Link>
+            <Link
+              href="/blog"
+              prefetch={false}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`site-mobile-link ${pathname === "/blog" || pathname.startsWith("/blog/") ? "active" : ""}`}
+              aria-current={pathname === "/blog" || pathname.startsWith("/blog/") ? "page" : undefined}
+            >
+              Blog
+            </Link>
 
-          <Link
-            href="/about"
-            prefetch={false}
-            onClick={() => setIsMobileMenuOpen(false)}
-            className={`site-mobile-link ${pathname === "/about" ? "active" : ""}`}
-            aria-current={pathname === "/about" ? "page" : undefined}
-          >
-            About
-          </Link>
+            <Link
+              href="/about"
+              prefetch={false}
+              onClick={() => setIsMobileMenuOpen(false)}
+              className={`site-mobile-link ${pathname === "/about" ? "active" : ""}`}
+              aria-current={pathname === "/about" ? "page" : undefined}
+            >
+              About
+            </Link>
 
-          <Link
-            href="/#all-tools"
-            className="site-mobile-link site-mobile-link-cta"
-            prefetch={false}
-            onClick={() => setIsMobileMenuOpen(false)}
-          >
-            All tools
-          </Link>
-        </div>
+            <Link
+              href="/#all-tools"
+              className="site-mobile-link site-mobile-link-cta"
+              prefetch={false}
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              All tools
+            </Link>
+          </div>
+        ) : null}
       </div>
     </header>
   );

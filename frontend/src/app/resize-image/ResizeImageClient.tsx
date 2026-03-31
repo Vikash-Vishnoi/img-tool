@@ -327,7 +327,7 @@ export function ResizeImageClient({
       </header>
 
       <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
-        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 1</div>
 
         <div className="mx-auto max-w-5xl">
           {conversion.inputFiles.length === 0 ? (
@@ -418,7 +418,7 @@ export function ResizeImageClient({
           )}
         </div>
 
-        {conversion.inputFiles.length > 0 ? <div className="mt-6 mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div> : null}
+  {conversion.inputFiles.length > 0 ? <div className="mt-6 mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 2</div> : null}
 
         {conversion.inputFiles.length > 0 ? (
         <div ref={optionsRef} className="mt-6 mx-auto grid max-w-5xl grid-cols-1 gap-6">
@@ -592,7 +592,7 @@ export function ResizeImageClient({
           </div>
 
           <div>
-            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 3</div>
             <div className="mt-5">
                 <div className="flex flex-wrap items-center justify-center gap-3">
                   <button

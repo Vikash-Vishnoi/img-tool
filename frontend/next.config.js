@@ -5,6 +5,21 @@ const nextConfig = {
   images: { formats: ['image/avif', 'image/webp'] },
   compress: true,
   poweredByHeader: false,
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Keep modern-browser support and skip shipping the legacy nomodule polyfill bundle.
+      config.plugins = config.plugins.filter((plugin) => {
+        if (!plugin || plugin.constructor?.name !== 'CopyFilePlugin') {
+          return true
+        }
+
+        const filePath = typeof plugin.filePath === 'string' ? plugin.filePath : ''
+        return !filePath.includes('polyfill-nomodule')
+      })
+    }
+
+    return config
+  },
   async headers() {
     const scriptSrc = [
       "'self'",

@@ -10,6 +10,12 @@
     "lint": "eslint",
     "generate:blog-og": "node scripts/generate-blog-og-svg-files.cjs"
   },
+  "browserslist": [
+    "chrome 111",
+    "edge 111",
+    "firefox 111",
+    "safari 16.4"
+  ],
   "dependencies": {
     "@jsquash/avif": "^2.1.1",
     "browser-image-compression": "^2.0.2",

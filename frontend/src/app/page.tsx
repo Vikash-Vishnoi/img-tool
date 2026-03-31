@@ -188,7 +188,7 @@ export default function Home() {
 
         <h1 className="relative z-10 mt-6 text-balance text-4xl font-extrabold leading-[0.98] tracking-[-0.04em] sm:text-6xl">
           Convert and compress images.
-          <span className="block text-[#e8672a]">Instantly.</span>
+          <span className="block text-[var(--ember-ink)]">Instantly.</span>
         </h1>
         <p className="relative z-10 mt-3 text-lg italic text-[#6b6760] [font-family:Georgia,'Times New Roman',serif]">
           Your files never leave your device.

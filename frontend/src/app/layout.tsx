@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import Link from "next/link";
 import { Syne } from "next/font/google";
-import Script from "next/script";
-import { Suspense } from "react";
-import GoogleAnalyticsPageView from "@/components/GoogleAnalyticsPageView";
+import { DeferredAnalytics } from "../components/DeferredAnalytics";
+import { DeferredFooterStyles } from "@/components/DeferredFooterStyles";
 import SiteHeader from "@/components/SiteHeader";
 import { getOgSvgPath } from "@/lib/seo";
 import "./globals.css";
@@ -217,6 +216,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
 
         <footer className="site-footer mt-14">
+          <DeferredFooterStyles />
           <div className="mx-auto w-full max-w-7xl px-3 py-10 sm:px-5 lg:px-6">
             <div className="footer-top">
               <div>
@@ -288,21 +288,7 @@ export default function RootLayout({
         </footer>
 
         {hasValidGaId ? (
-          <>
-            <Script
-              src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
-              strategy="lazyOnload"
-            />
-            <Script id="ga-gtag" strategy="lazyOnload">
-              {`window.dataLayer = window.dataLayer || [];
-function gtag(){dataLayer.push(arguments);}
-gtag('js', new Date());
-gtag('config', '${gaId}', { anonymize_ip: true });`}
-            </Script>
-            <Suspense fallback={null}>
-              <GoogleAnalyticsPageView gaId={gaId} />
-            </Suspense>
-          </>
+          <DeferredAnalytics gaId={gaId} />
         ) : null}
       </body>
     </html>

@@ -46,3 +46,8 @@ datas/
 
 # pagespeed PDF artifacts (local downloads)
 blog/*.pdf
+/testing_result
+
+
+/linkedin banner aand thumbnail artifacts
+/linkedin-banner.png

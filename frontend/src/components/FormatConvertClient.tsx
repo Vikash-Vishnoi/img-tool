@@ -168,7 +168,7 @@ export function FormatConvertClient({
       >
         <PrivacyBadge className="mb-5" />
 
-        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 1</div>
+        <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 1</div>
 
         {conversion.inputFiles.length === 0 ? (
           <FileUploader
@@ -261,7 +261,7 @@ export function FormatConvertClient({
 
         {conversion.inputFiles.length > 0 ? (
         <div ref={optionsRef} className="mb-5 mt-6">
-          <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 2</div>
+          <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 2</div>
           <div className="rounded-xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
             <div className="flex items-center justify-between gap-3">
               <div className="text-xs font-bold uppercase tracking-[0.08em] text-[#6b6760]">Output format</div>
@@ -318,7 +318,7 @@ export function FormatConvertClient({
 
         {conversion.inputFiles.length > 0 ? (
           <div className="mt-6">
-            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[#e8672a]">Step 3</div>
+            <div className="mb-2 text-[11px] font-bold uppercase tracking-[0.1em] text-[var(--ember-ink)]">Step 3</div>
 
             <div className="mt-5 flex flex-wrap items-center justify-center gap-3">
               <button
