@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
 import { Link2 } from "lucide-react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DeferredBlogReadingProgress from "@/components/DeferredBlogReadingProgress";
+import DeferredBlogShareButtons from "@/components/DeferredBlogShareButtons";
+import DeferredOnVisible from "@/components/DeferredOnVisible";
 import { BLOG_POSTS, type BlogFaq, type BlogPost, getBlogPost } from "@/lib/blog";
-
-const BlogReadingProgress = dynamic(() => import("@/components/BlogReadingProgress"));
-
-const BlogShareButtons = dynamic(() => import("@/components/BlogShareButtons"));
 
 type BlogPageProps = {
   params: Promise<{ slug: string }>;
@@ -706,7 +704,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <>
-      <BlogReadingProgress targetId="blog-article-content" topOffset={62} />
+      <DeferredBlogReadingProgress targetId="blog-article-content" topOffset={62} />
 
       <article
         id="blog-article-content"
@@ -929,7 +927,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
                 prefetch
                 className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#edcfbe] bg-[#fff7f2] px-3 py-1.5 text-sm font-semibold text-[#a34a24] transition hover:border-[#e8672a] hover:bg-[#fff0e8] hover:text-[#c75322]"
               >
-                <Link2 className="h-3.5 w-3.5 shrink-0 text-[#e8672a]" aria-hidden="true" />
+                <Link2 className="h-3.5 w-3.5 shrink-0 text-[var(--ember-ink)]" aria-hidden="true" />
                 <span>{anchor.label}</span>
               </Link>
             </li>
@@ -962,41 +960,45 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         <p className="mt-3 text-sm leading-7 text-[#6b6760]">
           Share this guide with teammates or friends who need the same workflow.
         </p>
-        <BlogShareButtons canonicalUrl={canonicalUrl} title={post.title} />
+        <DeferredBlogShareButtons canonicalUrl={canonicalUrl} title={post.title} />
       </section>
 
-      <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs ({faqItems.length})</h2>
-        <div className="mt-4 space-y-4">
-          {faqItems.map((item, index) => (
-            <div key={item.question} className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-              <span className="inline-flex rounded-full border border-[#d4cfc4] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#6b6760]">
-                Q{index + 1}
-              </span>
-              <h3 className="text-base font-bold text-[#1c1a14]">{item.question}</h3>
-              <p className="mt-2 text-sm leading-7 text-[#6b6760]">{item.answer}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {relatedPosts.length > 0 ? (
+      <DeferredOnVisible placeholderMinHeight={360}>
         <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-          <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Related posts</h2>
-          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {relatedPosts.map((relatedPost) => (
-              <Link
-                key={relatedPost.slug}
-                href={`/blog/${relatedPost.slug}`}
-                prefetch
-                className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4 transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_24px_rgba(28,26,20,0.08)]"
-              >
-                <h3 className="text-sm font-bold leading-6 text-[#1c1a14]">{relatedPost.title}</h3>
-                <p className="mt-2 text-xs leading-6 text-[#6b6760]">{relatedPost.description}</p>
-              </Link>
+          <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs ({faqItems.length})</h2>
+          <div className="mt-4 space-y-4">
+            {faqItems.map((item, index) => (
+              <div key={item.question} className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+                <span className="inline-flex rounded-full border border-[#d4cfc4] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#6b6760]">
+                  Q{index + 1}
+                </span>
+                <h3 className="text-base font-bold text-[#1c1a14]">{item.question}</h3>
+                <p className="mt-2 text-sm leading-7 text-[#6b6760]">{item.answer}</p>
+              </div>
             ))}
           </div>
         </section>
+      </DeferredOnVisible>
+
+      {relatedPosts.length > 0 ? (
+        <DeferredOnVisible placeholderMinHeight={240}>
+          <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+            <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Related posts</h2>
+            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {relatedPosts.map((relatedPost) => (
+                <Link
+                  key={relatedPost.slug}
+                  href={`/blog/${relatedPost.slug}`}
+                  prefetch
+                  className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4 transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_24px_rgba(28,26,20,0.08)]"
+                >
+                  <h3 className="text-sm font-bold leading-6 text-[#1c1a14]">{relatedPost.title}</h3>
+                  <p className="mt-2 text-xs leading-6 text-[#6b6760]">{relatedPost.description}</p>
+                </Link>
+              ))}
+            </div>
+          </section>
+        </DeferredOnVisible>
       ) : null}
       </article>
     </>
