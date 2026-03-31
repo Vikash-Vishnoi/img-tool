@@ -35,6 +35,18 @@ function truncate(text, max) {
   return `${normalized.slice(0, Math.max(0, max - 3)).trimEnd()}...`;
 }
 
+function normalizeOgTitle(title) {
+  return String(title || "")
+    .replace(/\s*[\-–—]\s*$/g, "")
+    .trim();
+}
+
+function stripTrailingDash(text) {
+  return String(text || "")
+    .replace(/\s*[\-–—]\s*$/g, "")
+    .trim();
+}
+
 function wrapText(input, maxCharsPerLine, maxLines) {
   const words = String(input || "")
     .replace(/\s+/g, " ")
@@ -84,30 +96,22 @@ function wrapText(input, maxCharsPerLine, maxLines) {
   return lines;
 }
 
-function createSvg({ title, description }) {
-  const titleLines = wrapText(title, 34, 2);
-  const subtitleLines = wrapText(description, 60, 2);
+function createSvg({ title }) {
+  const safeTitle = normalizeOgTitle(title);
+  const titleLines = wrapText(safeTitle, 34, 2).map(stripTrailingDash);
 
-  const titleYStart = titleLines.length > 1 ? 262 : 292;
-  const subtitleYStart = titleYStart + titleLines.length * 58 + 24;
+  const titleYStart = titleLines.length > 1 ? 330 : 360;
 
   const titleText = titleLines
     .map((line, index) => {
       const y = titleYStart + index * 58;
-      return `<text x=\"120\" y=\"${y}\" fill=\"#1c1a14\" font-size=\"52\" font-family=\"Syne, Georgia, serif\" font-weight=\"700\">${escapeXml(line)}</text>`;
-    })
-    .join("\n  ");
-
-  const subtitleText = subtitleLines
-    .map((line, index) => {
-      const y = subtitleYStart + index * 40;
-      return `<text x=\"120\" y=\"${y}\" fill=\"#6b6760\" font-size=\"31\" font-family=\"Georgia, 'Times New Roman', serif\">${escapeXml(line)}</text>`;
+      return `<text x=\"600\" y=\"${y}\" fill=\"#1c1a14\" font-size=\"52\" font-family=\"Syne, Georgia, serif\" font-weight=\"700\" text-anchor=\"middle\">${escapeXml(line)}</text>`;
     })
     .join("\n  ");
 
   return `<?xml version=\"1.0\" encoding=\"UTF-8\"?>
 <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"1200\" height=\"630\" viewBox=\"0 0 1200 630\" role=\"img\" aria-label=\"${escapeXml(
-    title
+  safeTitle
   )}\">
   <defs>
     <linearGradient id=\"bg\" x1=\"0\" y1=\"0\" x2=\"1\" y2=\"1\">
@@ -119,18 +123,17 @@ function createSvg({ title, description }) {
   <rect width=\"1200\" height=\"630\" fill=\"url(#bg)\" />
   <rect x=\"70\" y=\"70\" width=\"1060\" height=\"490\" rx=\"28\" fill=\"#ffffff\" stroke=\"#d4cfc4\" stroke-width=\"2\" />
 
-  <text x=\"240\" y=\"188\" fill=\"#1c1a14\" font-size=\"74\" font-family=\"Arial Black, Syne, Arial, sans-serif\" font-weight=\"900\" letter-spacing=\"-2.2\">image</text>
-  <circle cx=\"498\" cy=\"166\" r=\"15\" fill=\"#e8672a\" />
-  <text x=\"516\" y=\"188\" fill=\"#1c1a14\" font-size=\"74\" font-family=\"Arial Black, Syne, Arial, sans-serif\" font-weight=\"900\" letter-spacing=\"-2.2\">tools</text>
+  <text x=\"570\" y=\"248\" fill=\"#1c1a14\" font-size=\"104\" font-family=\"Arial Black, Syne, Arial, sans-serif\" font-weight=\"900\" letter-spacing=\"-2.4\" text-anchor=\"end\">image</text>
+  <circle cx=\"600\" cy=\"216\" r=\"22\" fill=\"#e8672a\" />
+  <text x=\"630\" y=\"248\" fill=\"#1c1a14\" font-size=\"104\" font-family=\"Arial Black, Syne, Arial, sans-serif\" font-weight=\"900\" letter-spacing=\"-2.4\" text-anchor=\"start\">tools</text>
 
   ${titleText}
-  ${subtitleText}
 
-  <rect x=\"120\" y=\"472\" width=\"230\" height=\"58\" rx=\"29\" fill=\"#ede8df\" stroke=\"#d4cfc4\" />
-  <text x=\"152\" y=\"511\" fill=\"#6b6760\" font-size=\"26\" font-family=\"Syne, Georgia, serif\" font-weight=\"600\">Blog guide</text>
+  <rect x=\"395\" y=\"452\" width=\"230\" height=\"58\" rx=\"29\" fill=\"#ede8df\" stroke=\"#d4cfc4\" />
+  <text x=\"510\" y=\"491\" fill=\"#6b6760\" font-size=\"26\" font-family=\"Syne, Georgia, serif\" font-weight=\"600\" text-anchor=\"middle\">Blog guide</text>
 
-  <rect x=\"368\" y=\"472\" width=\"278\" height=\"58\" rx=\"29\" fill=\"#e8f5ee\" stroke=\"#b8ddc9\" />
-  <text x=\"404\" y=\"511\" fill=\"#2a7a5e\" font-size=\"26\" font-family=\"Syne, Georgia, serif\" font-weight=\"600\">Practical steps</text>
+  <rect x=\"643\" y=\"452\" width=\"278\" height=\"58\" rx=\"29\" fill=\"#e8f5ee\" stroke=\"#b8ddc9\" />
+  <text x=\"782\" y=\"491\" fill=\"#2a7a5e\" font-size=\"26\" font-family=\"Syne, Georgia, serif\" font-weight=\"600\" text-anchor=\"middle\">Practical steps</text>
 </svg>`;
 }
 

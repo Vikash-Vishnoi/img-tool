@@ -5,15 +5,61 @@ const sharp = require("sharp");
 
 const repoRoot = path.resolve(__dirname, "..", "..");
 const auditPath = path.join(repoRoot, "seo-audit", "seo-audit.js");
-const auditSource = fs.readFileSync(auditPath, "utf8");
 const seoSource = fs.readFileSync(path.join(repoRoot, "frontend", "src", "lib", "seo.ts"), "utf8");
 
-const routesMatch = auditSource.match(/const ROUTES = \[([\s\S]*?)\];/);
-if (!routesMatch) {
-  throw new Error("Could not find ROUTES array in seo-audit.js");
-}
+const parseRoutesFromAuditSource = (auditSource) => {
+  const routesMatch = auditSource.match(/const ROUTES = \[([\s\S]*?)\];/);
+  if (!routesMatch) {
+    throw new Error("Could not find ROUTES array in seo-audit.js");
+  }
 
-const routes = [...routesMatch[1].matchAll(/^(?!\s*\/\/)\s*"([^"]+)"\s*,?/gm)].map((m) => m[1]);
+  return [...routesMatch[1].matchAll(/^(?!\s*\/\/)\s*"([^"]+)"\s*,?/gm)].map((m) => m[1]);
+};
+
+const discoverRoutesFromApp = () => {
+  const appDir = path.join(repoRoot, "frontend", "src", "app");
+  const routes = new Set();
+
+  const walk = (dirPath, segments) => {
+    const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    const hasPage = entries.some((entry) => entry.isFile() && entry.name === "page.tsx");
+
+    if (hasPage) {
+      const route = segments.length === 0 ? "/" : `/${segments.join("/")}`;
+      routes.add(route);
+    }
+
+    for (const entry of entries) {
+      if (!entry.isDirectory()) {
+        continue;
+      }
+
+      const name = entry.name;
+      if (name === "api" || name.startsWith("[")) {
+        continue;
+      }
+
+      const nextPath = path.join(dirPath, name);
+      if (name.startsWith("(") && name.endsWith(")")) {
+        walk(nextPath, segments);
+        continue;
+      }
+
+      walk(nextPath, [...segments, name]);
+    }
+  };
+
+  walk(appDir, []);
+  return [...routes].sort((a, b) => {
+    if (a === "/") return -1;
+    if (b === "/") return 1;
+    return a.localeCompare(b);
+  });
+};
+
+const routes = fs.existsSync(auditPath)
+  ? parseRoutesFromAuditSource(fs.readFileSync(auditPath, "utf8"))
+  : discoverRoutesFromApp();
 const ogDir = path.join(repoRoot, "frontend", "public", "og");
 
 fs.mkdirSync(ogDir, { recursive: true });
@@ -80,7 +126,10 @@ const normalizeTitle = (title) =>
   title
     .replace(/\s+[·-]\s+Image Tools$/i, "")
     .replace(/\s+-\s+Image Tools$/i, "")
+    .replace(/\s*[\-–—]\s*$/g, "")
     .trim();
+
+const stripTrailingDash = (text) => String(text || "").replace(/\s*[\-–—]\s*$/g, "").trim();
 
 const normalizeDescription = (description) =>
   description
@@ -133,17 +182,25 @@ const getCopyForSlug = (slug) => {
   };
 };
 
-const getSecondaryBadge = (slug) => {
-  if (slug === "home") return "Popular tools";
-  if (slug.startsWith("resize-")) return "Preset sizes built-in";
-  if (slug.startsWith("compress-")) return "Quality control";
+const getBadgePairForSlug = (slug) => {
+  if (slug === "home") return ["No upload", "Popular tools"];
+  if (slug === "about") return ["Privacy-first", "Browser-only"];
+  if (slug === "feedback") return ["Feature requests", "Fast support"];
+  if (slug === "privacy-policy" || slug === "terms") return ["Trust & safety", "Policy details"];
+
+  if (slug.startsWith("resize-")) return ["Preset sizes", "Exact dimensions"];
+  if (slug.startsWith("compress-")) return ["Quality control", "Size target"];
+
   if (slug.startsWith("pdf-to-") || slug.includes("-to-pdf") || slug === "image-to-pdf") {
-    return "Document-ready";
+    return ["Document-ready", "Secure export"];
   }
-  if (slug.includes("-to-")) return "Instant conversion";
-  if (slug === "privacy-policy" || slug === "terms" || slug === "feedback") return "Trust & safety";
-  return "Fast workflow";
+
+  if (slug.includes("-to-")) return ["No upload", "Instant conversion"];
+
+  return ["No upload", "Fast workflow"];
 };
+
+const getBadgeWidth = (text) => Math.max(190, Math.min(360, 140 + text.length * 9));
 
 const wrapText = (input, maxCharsPerLine, maxLines) => {
   const words = input.trim().split(/\s+/).filter(Boolean);
@@ -190,11 +247,16 @@ async function main() {
     const slug = route === "/" ? "home" : route.replace(/^\//, "");
 
     const copy = getCopyForSlug(slug);
-    const titleLine = wrapText(copy.title, 34, 1)[0] || copy.title;
-    const subtitleLine = wrapText(copy.description, 58, 1)[0] || copy.description;
-    const secondaryBadge = getSecondaryBadge(slug);
-    const secondaryBadgeWidth = Math.max(225, Math.min(350, 170 + secondaryBadge.length * 8));
-    const secondaryBadgeTextX = 350 + Math.floor((secondaryBadgeWidth - secondaryBadge.length * 13) / 2);
+    const titleLine = stripTrailingDash(wrapText(copy.title, 34, 1)[0] || copy.title);
+    const [primaryBadge, secondaryBadge] = getBadgePairForSlug(slug);
+    const primaryBadgeWidth = getBadgeWidth(primaryBadge);
+    const secondaryBadgeWidth = getBadgeWidth(secondaryBadge);
+    const badgeGap = 18;
+    const totalBadgeWidth = primaryBadgeWidth + badgeGap + secondaryBadgeWidth;
+    const primaryBadgeX = Math.floor((1200 - totalBadgeWidth) / 2);
+    const secondaryBadgeX = primaryBadgeX + primaryBadgeWidth + badgeGap;
+    const primaryBadgeCenterX = primaryBadgeX + Math.floor(primaryBadgeWidth / 2);
+    const secondaryBadgeCenterX = secondaryBadgeX + Math.floor(secondaryBadgeWidth / 2);
 
     const svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="${escapeXml(copy.title)}">
@@ -208,17 +270,21 @@ async function main() {
   <rect width="1200" height="630" fill="url(#bg)" />
   <rect x="70" y="70" width="1060" height="490" rx="28" fill="#ffffff" stroke="#d4cfc4" stroke-width="2" />
 
-  <circle cx="195" cy="165" r="22" fill="#e8672a" />
-  <text x="240" y="180" fill="#1c1a14" font-size="62" font-family="Syne, Georgia, serif" font-weight="700">image tools</text>
+  <text x="570" y="248" fill="#1c1a14" font-size="104" font-family="Arial Black, Syne, Arial, sans-serif" font-weight="900" letter-spacing="-2.4" text-anchor="end">image</text>
+  <circle cx="600" cy="216" r="22" fill="#e8672a" />
+  <text x="630" y="248" fill="#1c1a14" font-size="104" font-family="Arial Black, Syne, Arial, sans-serif" font-weight="900" letter-spacing="-2.4" text-anchor="start">tools</text>
 
-  <text x="120" y="300" fill="#1c1a14" font-size="52" font-family="Syne, Georgia, serif" font-weight="700">${escapeXml(titleLine)}</text>
-  <text x="120" y="360" fill="#6b6760" font-size="32" font-family="Georgia, 'Times New Roman', serif">${escapeXml(subtitleLine)}</text>
+  <text x="600" y="350" fill="#1c1a14" font-size="52" font-family="Syne, Georgia, serif" font-weight="700" text-anchor="middle">${escapeXml(titleLine)}</text>
 
-  <rect x="120" y="410" width="210" height="58" rx="29" fill="#ede8df" stroke="#d4cfc4" />
-  <text x="150" y="449" fill="#6b6760" font-size="26" font-family="Syne, Georgia, serif" font-weight="600">No upload</text>
+  <rect x="${primaryBadgeX}" y="430" width="${primaryBadgeWidth}" height="58" rx="29" fill="#ede8df" stroke="#d4cfc4" />
+  <text x="${primaryBadgeCenterX}" y="469" fill="#6b6760" font-size="26" font-family="Syne, Georgia, serif" font-weight="600" text-anchor="middle">${escapeXml(
+      primaryBadge
+    )}</text>
 
-  <rect x="350" y="410" width="${secondaryBadgeWidth}" height="58" rx="29" fill="#e8f5ee" stroke="#b8ddc9" />
-  <text x="${secondaryBadgeTextX}" y="449" fill="#2a7a5e" font-size="26" font-family="Syne, Georgia, serif" font-weight="600">${escapeXml(secondaryBadge)}</text>
+  <rect x="${secondaryBadgeX}" y="430" width="${secondaryBadgeWidth}" height="58" rx="29" fill="#e8f5ee" stroke="#b8ddc9" />
+  <text x="${secondaryBadgeCenterX}" y="469" fill="#2a7a5e" font-size="26" font-family="Syne, Georgia, serif" font-weight="600" text-anchor="middle">${escapeXml(
+      secondaryBadge
+    )}</text>
 </svg>`;
 
     await sharp(Buffer.from(svg)).png().toFile(path.join(ogDir, `${slug}.png`));
