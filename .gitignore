@@ -43,3 +43,6 @@ next-env.d.ts
 # seo audit artifacts and scripts
 seo-audit/
 datas/
+
+# pagespeed PDF artifacts (local downloads)
+blog/*.pdf

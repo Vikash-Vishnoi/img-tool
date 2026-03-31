@@ -44,6 +44,8 @@ export function AppDropdown<T extends string>({
   );
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const onPointerDown = (event: MouseEvent) => {
       if (!rootRef.current) return;
       if (rootRef.current.contains(event.target as Node)) return;
@@ -62,7 +64,7 @@ export function AppDropdown<T extends string>({
       document.removeEventListener("mousedown", onPointerDown);
       document.removeEventListener("keydown", onKeyDown);
     };
-  }, []);
+  }, [isOpen]);
 
   if (!selected) return null;
 
