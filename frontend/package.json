@@ -3,9 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
+    "check:canonical-host": "node scripts/check-canonical-host.mjs",
+    "check:canonical-drift": "node scripts/check-canonical-drift.mjs",
+    "check:blog-link-coverage": "node scripts/check-blog-link-coverage.mjs",
+    "check:metadata-quality": "node scripts/check-metadata-quality.mjs",
+    "check:cwv-mobile": "node scripts/check-cwv-mobile.mjs",
+    "check:js-loading-strategy": "node scripts/check-js-loading-strategy.mjs",
+    "check:structured-data-rich-results": "node scripts/check-structured-data-rich-results.mjs",
+    "check:route-completion": "node scripts/check-route-completion-tracker.mjs",
+    "check:route-completion:update": "node scripts/check-route-completion-tracker.mjs --update-checklist",
     "build": "next build --webpack",
     "postbuild": "next-sitemap",
+    "start:prod": "next start",
     "start": "next start",
     "lint": "eslint",
     "generate:blog-og": "node scripts/generate-blog-og-svg-files.cjs"
@@ -25,6 +35,7 @@
     "next": "16.2.1",
     "next-sitemap": "^4.2.3",
     "pdfjs-dist": "^5.5.207",
+    "puppeteer": "^24.40.0",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },

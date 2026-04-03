@@ -4,7 +4,7 @@ module.exports = {
       name: 'imgtools-frontend',
       cwd: './frontend',
       script: 'npm',
-      args: 'start',
+      args: 'run start:prod',
       env: {
         NODE_ENV: 'production',
         PORT: 3030,

@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Vikash-Vishnoi/img-tool/issues"
   },
-  "homepage": "https://github.com/Vikash-Vishnoi/img-tool#readme"
+  "homepage": "https://github.com/Vikash-Vishnoi/img-tool#readme",
+  "dependencies": {
+    "jsdom": "^29.0.1",
+    "node-fetch": "^3.3.2",
+    "puppeteer": "^24.40.0"
+  }
 }

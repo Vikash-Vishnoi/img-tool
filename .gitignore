@@ -41,13 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 # seo audit artifacts and scripts
-seo-audit/
-datas/
-
-# pagespeed PDF artifacts (local downloads)
-blog/*.pdf
-/testing_result
-
-
+audit-artifacts/
+seo/
+operations/
+checklist.md
 /linkedin banner aand thumbnail artifacts
 /linkedin-banner.png

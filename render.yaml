@@ -5,8 +5,8 @@ services:
     rootDir: frontend
     plan: free
     autoDeploy: true
-    buildCommand: npm ci && npm run build
-    startCommand: npm run start
+    buildCommand: npm ci && npm run check:canonical-host && npm run build
+    startCommand: npm run start:prod
     healthCheckPath: /
     envVars:
       - key: NODE_ENV
@@ -14,7 +14,7 @@ services:
       - key: NODE_VERSION
         value: 20.18.0
       - key: NEXT_PUBLIC_SITE_URL
-        sync: false
+        value: https://image-tools.tech
       - key: NEXT_PUBLIC_GA_ID
         sync: false
       - key: NEXT_PUBLIC_GOOGLE_VERIFICATION
