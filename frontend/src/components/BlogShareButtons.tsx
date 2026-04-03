@@ -137,7 +137,7 @@ export default function BlogShareButtons({ canonicalUrl, title }: BlogShareButto
   }
 
   return (
-    <div className="mt-4 flex flex-wrap gap-2">
+    <div className="share-buttons mt-4 flex flex-wrap gap-2">
       {shareLinks.map(({ label, href, Icon }) => (
         <a
           key={label}

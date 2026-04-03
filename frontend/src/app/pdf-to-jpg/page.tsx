@@ -9,7 +9,7 @@ export const metadata: Metadata = generateToolMetadata(tool);
 
 export default function PdfToJpgPage() {
   return (
-    <ToolPageShell tool={tool}>
+    <ToolPageShell tool={tool} showFaq>
       <PdfToImageClient
         title="PDF to JPG Converter"
         description="Convert each PDF page to JPG in your browser with no upload. Download page-by-page or all at once."

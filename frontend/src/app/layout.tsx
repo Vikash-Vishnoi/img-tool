@@ -10,6 +10,7 @@ import "./globals.css";
 const syne = Syne({
   variable: "--font-syne",
   subsets: ["latin"],
+  preload: true,
   display: "optional",
   fallback: ["Segoe UI", "Arial", "sans-serif"],
 });
@@ -100,6 +101,12 @@ export default function RootLayout({
   const gaId = (process.env.NEXT_PUBLIC_GA_ID ?? "").trim();
   const hasValidGaId = /^G-[A-Z0-9]+$/i.test(gaId);
   const currentYear = new Date().getFullYear();
+  const twitterProfile = TWITTER_CREATOR.startsWith("@")
+    ? `https://x.com/${TWITTER_CREATOR.slice(1)}`
+    : TWITTER_CREATOR.startsWith("http")
+      ? TWITTER_CREATOR
+      : undefined;
+  const organizationSameAs = twitterProfile ? [twitterProfile] : [];
 
   const websiteJsonLd = {
     "@context": "https://schema.org",
@@ -121,7 +128,7 @@ export default function RootLayout({
     name: "Image Tools",
     url: NORMALIZED_SITE_URL,
     logo: `${NORMALIZED_SITE_URL}/icon.png`,
-    sameAs: [],
+    sameAs: organizationSameAs,
   };
 
   const webApplicationJsonLd = {
@@ -187,6 +194,15 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${syne.variable} h-full antialiased`}
     >
+      <head>
+        <link
+          rel="preload"
+          href="https://fonts.gstatic.com/s/syne/v22/8vIS7w4qzmVxsWxjBZRjrA.woff2"
+          as="font"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="site-body min-h-full flex flex-col bg-background text-foreground">
         <script
           id="schema-website"

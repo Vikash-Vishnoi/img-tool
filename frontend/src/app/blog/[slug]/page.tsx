@@ -2,9 +2,8 @@ import type { Metadata } from "next";
 import { Link2 } from "lucide-react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import DeferredBlogReadingProgress from "@/components/DeferredBlogReadingProgress";
-import DeferredBlogShareButtons from "@/components/DeferredBlogShareButtons";
-import DeferredOnVisible from "@/components/DeferredOnVisible";
+import BlogReadingProgress from "@/components/BlogReadingProgress";
+import BlogShareButtons from "@/components/BlogShareButtons";
 import { BLOG_POSTS, type BlogFaq, type BlogPost, getBlogPost } from "@/lib/blog";
 
 type BlogPageProps = {
@@ -28,9 +27,13 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
 const NORMALIZED_SITE_URL = SITE_URL.replace(/\/$/, "");
 const TWITTER_CREATOR = process.env.NEXT_PUBLIC_TWITTER_CREATOR ?? "@imagetoolstech";
 const META_TITLE_MAX = 60;
-const META_DESCRIPTION_MIN = 120;
-const META_DESCRIPTION_MAX = 160;
-const DEFAULT_FAQ_COUNT = 4;
+const META_DESCRIPTION_MIN = 140;
+const META_DESCRIPTION_MAX = 165;
+const DEFAULT_FAQ_COUNT = 6;
+const BLOG_H1_OVERRIDES: Record<string, string> = {
+  "image-to-pdf-without-losing-quality": "High Quality Image to PDF: Convert Without Losing Clarity",
+  "reduce-image-size-without-losing-quality": "Compress Image Without Losing Quality: Practical Settings",
+};
 
 function getBlogOgImagePath(slug: string): `/${string}` {
   return `/og/blog/${slug}.png`;
@@ -62,7 +65,7 @@ function trimToWord(value: string, maxLength: number): string {
 }
 
 function buildBlogMetaTitle(post: BlogPost): string {
-  const compactTitle = normalizeText(post.title)
+  let compactTitle = normalizeText(post.title)
     .replace(/\s*\|\s*image tools blog\s*$/i, "")
     .replace(/\s*\(latest practical guide\)\s*/i, "")
     .replace(/\bDetailed\b/gi, "")
@@ -70,11 +73,20 @@ function buildBlogMetaTitle(post: BlogPost): string {
     .replace(/\s+/g, " ")
     .trim();
 
-  if (compactTitle.length <= META_TITLE_MAX) {
-    return compactTitle;
+  const hasSeoSignal = /202[0-9]|india|free|guide|how to/i.test(compactTitle);
+  if (!hasSeoSignal) {
+    compactTitle = `India Guide: ${compactTitle}`;
   }
 
-  return trimToWord(compactTitle, META_TITLE_MAX);
+  if (compactTitle.length > META_TITLE_MAX) {
+    compactTitle = trimToWord(compactTitle, META_TITLE_MAX);
+  }
+
+  if (!/202[0-9]|india|free|guide|how to/i.test(compactTitle)) {
+    compactTitle = trimToWord(`Guide: ${compactTitle}`, META_TITLE_MAX);
+  }
+
+  return compactTitle;
 }
 
 function buildBlogMetaDescription(post: BlogPost): string {
@@ -95,10 +107,21 @@ function buildBlogMetaDescription(post: BlogPost): string {
   }
 
   if (!description.endsWith(".")) {
+    if (description.length >= META_DESCRIPTION_MAX) {
+      description = trimToWord(description, META_DESCRIPTION_MAX - 1);
+    }
     description = `${description}.`;
   }
 
+  if (description.length > META_DESCRIPTION_MAX) {
+    description = trimToWord(description, META_DESCRIPTION_MAX);
+  }
+
   return description;
+}
+
+function getArticleHeading(post: BlogPost): string {
+  return BLOG_H1_OVERRIDES[post.slug] ?? post.title;
 }
 
 function uniqueFaqItems(items: BlogFaq[]): BlogFaq[] {
@@ -281,9 +304,23 @@ function buildFallbackFaq(post: BlogPost): BlogFaq[] {
 }
 
 function getPostFaq(post: BlogPost): BlogFaq[] {
+  const keyword = post.targetKeywords[0] ?? "this workflow";
+  const primaryTool = post.toolAnchors[0]?.label ?? "the recommended tool";
   const customFaq = post.faq ?? [];
   const fallbackFaq = buildFallbackFaq(post);
-  const mergedFaq = uniqueFaqItems([...customFaq, ...fallbackFaq]);
+  const baselineFaq: BlogFaq[] = [
+    {
+      question: `Can I complete ${keyword} on Android and iPhone browsers?`,
+      answer:
+        "Yes. This workflow is browser-friendly on modern mobile devices, and the final output can be downloaded immediately.",
+    },
+    {
+      question: `What should I save after finishing ${keyword} with ${primaryTool}?`,
+      answer:
+        "Keep one approved backup copy along with key settings so retry uploads are fast and consistent.",
+    },
+  ];
+  const mergedFaq = uniqueFaqItems([...customFaq, ...fallbackFaq, ...baselineFaq]);
 
   if (mergedFaq.length <= DEFAULT_FAQ_COUNT) {
     return mergedFaq;
@@ -304,6 +341,43 @@ function formatReadableDate(dateValue: string): string {
     year: "numeric",
     timeZone: "UTC",
   });
+}
+
+function countWords(value: string): number {
+  const normalized = normalizeText(value);
+  if (!normalized) {
+    return 0;
+  }
+
+  return normalized.split(" ").length;
+}
+
+function getEstimatedWordCount(post: BlogPost, useCaseCopy: ClusterUseCaseCopy): number {
+  const chunks: string[] = [post.title, post.description, ...post.intro];
+
+  for (const section of post.sections) {
+    chunks.push(section.heading);
+    if (section.paragraphs) {
+      chunks.push(...section.paragraphs);
+    }
+    if (section.steps) {
+      chunks.push(...section.steps);
+    }
+    if (section.bullets) {
+      chunks.push(...section.bullets);
+    }
+  }
+
+  chunks.push(useCaseCopy.intro, useCaseCopy.closing);
+  chunks.push(...useCaseCopy.quickChecks);
+  chunks.push(...useCaseCopy.scenarios.flatMap((scenario) => [scenario.title, scenario.example, scenario.outcome]));
+
+  return chunks.reduce((total, chunk) => total + countWords(chunk), 0);
+}
+
+function getEstimatedReadMinutes(wordCount: number): number {
+  const WORDS_PER_MINUTE = 220;
+  return Math.max(1, Math.ceil(wordCount / WORDS_PER_MINUTE));
 }
 
 function getUseCaseCopy(post: BlogPost): ClusterUseCaseCopy {
@@ -614,6 +688,10 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const relatedPosts = getRelatedPosts(post);
   const formattedUpdatedAt = formatReadableDate(post.updatedAt);
   const useCaseCopy = getUseCaseCopy(post);
+  const estimatedWordCount = getEstimatedWordCount(post, useCaseCopy);
+  const estimatedReadMinutes = getEstimatedReadMinutes(estimatedWordCount);
+  const primaryKeyword = post.targetKeywords[0] ?? "image workflow";
+  const articleHeading = getArticleHeading(post);
   const sectionToc = post.sections.map((section, index) => ({
     id: `${slugifyHeading(section.heading) || "section"}-${index + 1}`,
     heading: section.heading,
@@ -622,7 +700,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
   const articleJsonLd = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
-    headline: post.title,
+    headline: articleHeading,
     description: metaDescription,
     datePublished: post.updatedAt,
     dateModified: post.updatedAt,
@@ -661,6 +739,8 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
     mainEntityOfPage: canonicalUrl,
     url: canonicalUrl,
     inLanguage: "en-IN",
+    articleSection: post.cluster,
+    wordCount: estimatedWordCount,
     keywords: post.targetKeywords,
   };
 
@@ -683,7 +763,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       {
         "@type": "ListItem",
         position: 3,
-        name: post.title,
+          name: articleHeading,
         item: canonicalUrl,
       },
     ],
@@ -704,7 +784,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 
   return (
     <>
-      <DeferredBlogReadingProgress targetId="blog-article-content" topOffset={62} />
+      <BlogReadingProgress targetId="blog-article-content" topOffset={62} />
 
       <article
         id="blog-article-content"
@@ -753,7 +833,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             </Link>
           </li>
           <li aria-hidden="true">/</li>
-          <li className="font-semibold text-[#1c1a14]">{post.title}</li>
+          <li className="font-semibold text-[#1c1a14]">{articleHeading}</li>
         </ol>
       </nav>
 
@@ -763,12 +843,12 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             {post.cluster}
           </span>
           <span className="rounded-full border border-[#b8ddc9] bg-[#e8f5ee] px-2.5 py-1 text-[11px] font-semibold text-[var(--forest-ink)]">
-            {post.readMinutes} min read
+            {estimatedReadMinutes} min read
           </span>
         </div>
 
         <h1 className="mt-4 text-balance text-3xl font-extrabold leading-tight tracking-[-0.03em] text-[#1c1a14] sm:text-4xl">
-          {post.title}
+          {articleHeading}
         </h1>
 
         <p className="mt-3 text-sm leading-7 text-[#6b6760] sm:text-base">{post.description}</p>
@@ -802,21 +882,6 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
           </p>
         </section>
 
-        <div className="mt-5 rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-          <p className="text-xs font-semibold uppercase tracking-[0.08em] text-[#6b6760]">
-            Target keywords
-          </p>
-          <div className="mt-2 flex flex-wrap gap-2">
-            {post.targetKeywords.map((keyword) => (
-              <span
-                key={keyword}
-                className="rounded-full border border-[#d4cfc4] bg-white px-2.5 py-1 text-[11px] font-semibold text-[#1c1a14]"
-              >
-                {keyword}
-              </span>
-            ))}
-          </div>
-        </div>
       </header>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
@@ -843,6 +908,11 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
             {paragraph}
           </p>
         ))}
+
+        <p className="mt-4 text-sm leading-7 text-[#6b6760] sm:text-base">
+          This guide is built for <span className="font-semibold text-[#1c1a14]">{primaryKeyword}</span>. If {primaryKeyword} is your immediate goal,
+          follow the section sequence below and validate output quality after each major change.
+        </p>
 
         <div className="mt-7 space-y-7">
           {post.sections.map((section, index) => (
@@ -877,8 +947,27 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
         </div>
       </section>
 
+      <section className="mt-6 rounded-3xl border border-[#edcfbe] bg-[#fff3ed] p-6 sm:p-7">
+        <h2 id={`${post.slug}-tools-while-reading`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Use these tools while you read</h2>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          Apply the exact steps from this guide in real time. Start with one of these recommended tools and verify output before submission.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2.5">
+          {post.toolAnchors.slice(0, 3).map((anchor, index) => (
+            <Link
+              key={`${anchor.href}-mid-cta-${index}`}
+              href={anchor.href}
+              prefetch
+              className="cta-link inline-flex items-center justify-center rounded-full border border-[#e8672a] bg-white px-4 py-2 text-sm font-semibold text-[#a34a24] transition hover:-translate-y-0.5 hover:bg-[#fff7f2]"
+            >
+              {anchor.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">
+        <h2 id={`${post.slug}-real-world-use-cases`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">
           Real-world examples and use-cases
         </h2>
 
@@ -914,7 +1003,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       </section>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Useful links for this topic</h2>
+        <h2 id={`${post.slug}-useful-links`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Useful links for this topic</h2>
         <p className="mt-3 text-sm leading-7 text-[#6b6760]">
           Use these relevant tools while following this guide.
         </p>
@@ -925,7 +1014,7 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
               <Link
                 href={anchor.href}
                 prefetch
-                className="inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#edcfbe] bg-[#fff7f2] px-3 py-1.5 text-sm font-semibold text-[#a34a24] transition hover:border-[#e8672a] hover:bg-[#fff0e8] hover:text-[#c75322]"
+                className="cta-link inline-flex items-center gap-1.5 whitespace-nowrap rounded-full border border-[#edcfbe] bg-[#fff7f2] px-3 py-1.5 text-sm font-semibold text-[#a34a24] transition hover:border-[#e8672a] hover:bg-[#fff0e8] hover:text-[#c75322]"
               >
                 <Link2 className="h-3.5 w-3.5 shrink-0 text-[var(--ember-ink)]" aria-hidden="true" />
                 <span>{anchor.label}</span>
@@ -936,7 +1025,42 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       </section>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Final submission checklist</h2>
+        <h2 id={`${post.slug}-quick-reference-table`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Quick reference table</h2>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          Use this snapshot before final upload so key checks are not missed.
+        </p>
+        <div className="mt-4 overflow-x-auto">
+          <table className="min-w-full border-collapse text-sm">
+            <thead>
+              <tr className="border-b border-[#d4cfc4] text-left text-[#6b6760]">
+                <th className="px-3 py-2 font-semibold">Check</th>
+                <th className="px-3 py-2 font-semibold">Recommended action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr className="border-b border-[#ece7dd] text-[#1c1a14]">
+                <td className="px-3 py-2 font-semibold">Primary topic</td>
+                <td className="px-3 py-2">{primaryKeyword}</td>
+              </tr>
+              <tr className="border-b border-[#ece7dd] text-[#1c1a14]">
+                <td className="px-3 py-2 font-semibold">Best workflow order</td>
+                <td className="px-3 py-2">Match dimensions and format first, then tune file size.</td>
+              </tr>
+              <tr className="border-b border-[#ece7dd] text-[#1c1a14]">
+                <td className="px-3 py-2 font-semibold">Quality validation</td>
+                <td className="px-3 py-2">Preview at full zoom and confirm text, face, and edge clarity.</td>
+              </tr>
+              <tr className="text-[#1c1a14]">
+                <td className="px-3 py-2 font-semibold">Fallback plan</td>
+                <td className="px-3 py-2">Keep one backup file slightly below portal limits for quick retry.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+        <h2 id={`${post.slug}-final-checklist`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Final submission checklist</h2>
         <p className="mt-3 text-sm leading-7 text-[#6b6760]">
           Before uploading, compare your final file against the portal rules one by one: format,
           dimensions, and file size. Most rejections happen because one of these values is slightly
@@ -956,49 +1080,80 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
       </section>
 
       <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-        <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Share this guide</h2>
+        <h2 id={`${post.slug}-troubleshooting`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Troubleshooting common upload failures</h2>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          If a file still fails after following the workflow, check the exact rejection reason and adjust only that one variable.
+        </p>
+        <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-7 text-[#6b6760]">
+          <li>Portal says file is too large: export again with a slightly lower quality setting and keep a 5–10% size buffer.</li>
+          <li>Portal says invalid dimensions: re-open the resize step and match exact width-height values from the notice.</li>
+          <li>Output looks blurred: revert to the original source and avoid repeated re-compression loops.</li>
+          <li>Format mismatch errors: verify extension and MIME expectations before final upload.</li>
+        </ul>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          For India-facing submissions, run one final check against the exact rules listed on portals such as Passport Seva, SSC, state recruitment systems, and other government upload forms.
+        </p>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-[#f0c7b0] bg-[#fff7f2] p-6 sm:p-7">
+        <h2 id={`${post.slug}-ready-cta`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Ready to finish this workflow now?</h2>
+        <p className="mt-3 text-sm leading-7 text-[#6b6760]">
+          Open the most relevant tool below, process your file once, and keep one backup copy for quick re-upload if needed.
+        </p>
+        <div className="mt-4 flex flex-wrap gap-2.5">
+          {post.toolAnchors.slice(0, 2).map((anchor, index) => (
+            <Link
+              key={`${anchor.href}-end-cta-${index}`}
+              href={anchor.href}
+              prefetch
+              className="cta-link inline-flex items-center justify-center rounded-full border border-[#d4cfc4] bg-white px-4 py-2 text-sm font-semibold text-[#1c1a14] transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:text-[#c75322]"
+            >
+              Open {anchor.label}
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+        <h2 id={`${post.slug}-share`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Share this guide</h2>
         <p className="mt-3 text-sm leading-7 text-[#6b6760]">
           Share this guide with teammates or friends who need the same workflow.
         </p>
-        <DeferredBlogShareButtons canonicalUrl={canonicalUrl} title={post.title} />
+        <BlogShareButtons canonicalUrl={canonicalUrl} title={post.title} />
       </section>
 
-      <DeferredOnVisible placeholderMinHeight={360}>
+      <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
+        <h2 id={`${post.slug}-faq`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs on {primaryKeyword} ({faqItems.length})</h2>
+        <div className="mt-4 space-y-4">
+          {faqItems.map((item, index) => (
+            <div key={item.question} className="faq-item rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
+              <span className="inline-flex rounded-full border border-[#d4cfc4] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#6b6760]">
+                Q{index + 1}
+              </span>
+              <h3 className="text-base font-bold text-[#1c1a14]">{item.question}</h3>
+              <p className="mt-2 text-sm leading-7 text-[#6b6760]">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {relatedPosts.length > 0 ? (
         <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-          <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">FAQs ({faqItems.length})</h2>
-          <div className="mt-4 space-y-4">
-            {faqItems.map((item, index) => (
-              <div key={item.question} className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4">
-                <span className="inline-flex rounded-full border border-[#d4cfc4] bg-white px-2 py-0.5 text-[11px] font-semibold text-[#6b6760]">
-                  Q{index + 1}
-                </span>
-                <h3 className="text-base font-bold text-[#1c1a14]">{item.question}</h3>
-                <p className="mt-2 text-sm leading-7 text-[#6b6760]">{item.answer}</p>
-              </div>
+          <h2 id={`${post.slug}-related-posts`} className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Related posts</h2>
+          <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
+            {relatedPosts.map((relatedPost) => (
+              <Link
+                key={relatedPost.slug}
+                href={`/blog/${relatedPost.slug}`}
+                prefetch
+                className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4 transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_24px_rgba(28,26,20,0.08)]"
+              >
+                <h3 className="text-sm font-bold leading-6 text-[#1c1a14]">{relatedPost.title}</h3>
+                <p className="mt-2 text-xs leading-6 text-[#6b6760]">{relatedPost.description}</p>
+              </Link>
             ))}
           </div>
         </section>
-      </DeferredOnVisible>
-
-      {relatedPosts.length > 0 ? (
-        <DeferredOnVisible placeholderMinHeight={240}>
-          <section className="mt-6 rounded-3xl border border-[#d4cfc4] bg-white p-6 sm:p-7">
-            <h2 className="text-2xl font-bold tracking-[-0.02em] text-[#1c1a14]">Related posts</h2>
-            <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2">
-              {relatedPosts.map((relatedPost) => (
-                <Link
-                  key={relatedPost.slug}
-                  href={`/blog/${relatedPost.slug}`}
-                  prefetch
-                  className="rounded-2xl border border-[#d4cfc4] bg-[#fffdf9] p-4 transition hover:-translate-y-0.5 hover:border-[#e8672a] hover:shadow-[0_8px_24px_rgba(28,26,20,0.08)]"
-                >
-                  <h3 className="text-sm font-bold leading-6 text-[#1c1a14]">{relatedPost.title}</h3>
-                  <p className="mt-2 text-xs leading-6 text-[#6b6760]">{relatedPost.description}</p>
-                </Link>
-              ))}
-            </div>
-          </section>
-        </DeferredOnVisible>
       ) : null}
       </article>
     </>

@@ -9,7 +9,7 @@ export const metadata: Metadata = generateToolMetadata(tool);
 
 export default function PdfToImagePage() {
   return (
-    <ToolPageShell tool={tool}>
+    <ToolPageShell tool={tool} showFaq>
       <PdfToImageClient />
     </ToolPageShell>
   );

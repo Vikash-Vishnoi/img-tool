@@ -1,0 +1,789 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blog Route SEO Report</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #111a33;
+      --text: #dbe7ff;
+      --muted: #9bb0d9;
+      --line: #283a6a;
+      --critical: #7f1d1d;
+      --warning: #78350f;
+      --ok: #14532d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Segoe UI, Tahoma, sans-serif;
+      background: radial-gradient(circle at top left, #172554, var(--bg));
+      color: var(--text);
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { margin: 0 0 6px; font-size: 30px; }
+    .subtitle { margin: 0 0 18px; color: var(--muted); }
+    .summary {
+      border: 1px solid var(--line);
+      background: rgba(17, 26, 51, 0.75);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .summary div { color: var(--muted); }
+    .summary strong { color: var(--text); display: block; font-size: 20px; margin-top: 2px; }
+    .route-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      background: var(--card);
+      overflow: hidden;
+    }
+    .route-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .route-head h3 { margin: 0; font-size: 18px; }
+    .route-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; word-break: break-all; }
+    .route-head a { color: #bfdbfe; text-decoration: none; }
+    .route-head a:hover { text-decoration: underline; }
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    details { padding: 8px 14px 14px; }
+    summary { cursor: pointer; color: #bfdbfe; }
+    .table-wrap { margin-top: 10px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; font-size: 12px; }
+    th { background: #0f1935; }
+    tr.critical td { background: color-mix(in srgb, var(--critical) 55%, transparent); }
+    tr.warning td { background: color-mix(in srgb, var(--warning) 45%, transparent); }
+    footer { margin-top: 20px; color: var(--muted); font-size: 12px; }
+    @media (max-width: 700px) {
+      body { padding: 14px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Blog Route SEO Report</h1>
+    <p class="subtitle">Checks executed with seo/blog.seo.js across all /blog/* routes from sitemap (base: http://localhost:3000)</p>
+    <section class="summary">
+      <div>Total Routes<strong>19</strong></div>
+      <div>Average Score<strong>100%</strong></div>
+      <div>Grade Spread<strong>A: 19 | B: 0 | C: 0 | D: 0 | F: 0</strong></div>
+      <div>Generated<strong>3/4/2026, 15:09:04</strong></div>
+    </section>
+    
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/aadhaar-photo-size-requirements" target="_blank" rel="noopener noreferrer">/blog/aadhaar-photo-size-requirements</a></h3>
+          <p>http://localhost:3000/blog/aadhaar-photo-size-requirements</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/avif-vs-webp-vs-jpg-comparison" target="_blank" rel="noopener noreferrer">/blog/avif-vs-webp-vs-jpg-comparison</a></h3>
+          <p>http://localhost:3000/blog/avif-vs-webp-vs-jpg-comparison</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/best-image-format-for-website" target="_blank" rel="noopener noreferrer">/blog/best-image-format-for-website</a></h3>
+          <p>http://localhost:3000/blog/best-image-format-for-website</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/compress-image-for-government-form" target="_blank" rel="noopener noreferrer">/blog/compress-image-for-government-form</a></h3>
+          <p>http://localhost:3000/blog/compress-image-for-government-form</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/compress-image-for-whatsapp" target="_blank" rel="noopener noreferrer">/blog/compress-image-for-whatsapp</a></h3>
+          <p>http://localhost:3000/blog/compress-image-for-whatsapp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/convert-multiple-images-to-pdf" target="_blank" rel="noopener noreferrer">/blog/convert-multiple-images-to-pdf</a></h3>
+          <p>http://localhost:3000/blog/convert-multiple-images-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/exam-form-photo-signature-size-guide-india" target="_blank" rel="noopener noreferrer">/blog/exam-form-photo-signature-size-guide-india</a></h3>
+          <p>http://localhost:3000/blog/exam-form-photo-signature-size-guide-india</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/heic-vs-jpg-difference" target="_blank" rel="noopener noreferrer">/blog/heic-vs-jpg-difference</a></h3>
+          <p>http://localhost:3000/blog/heic-vs-jpg-difference</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/how-to-compress-image-under-200kb" target="_blank" rel="noopener noreferrer">/blog/how-to-compress-image-under-200kb</a></h3>
+          <p>http://localhost:3000/blog/how-to-compress-image-under-200kb</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/how-to-convert-image-to-pdf" target="_blank" rel="noopener noreferrer">/blog/how-to-convert-image-to-pdf</a></h3>
+          <p>http://localhost:3000/blog/how-to-convert-image-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/how-to-convert-iphone-photos-to-jpg" target="_blank" rel="noopener noreferrer">/blog/how-to-convert-iphone-photos-to-jpg</a></h3>
+          <p>http://localhost:3000/blog/how-to-convert-iphone-photos-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/image-to-pdf-without-losing-quality" target="_blank" rel="noopener noreferrer">/blog/image-to-pdf-without-losing-quality</a></h3>
+          <p>http://localhost:3000/blog/image-to-pdf-without-losing-quality</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/jpg-vs-pdf-which-is-better" target="_blank" rel="noopener noreferrer">/blog/jpg-vs-pdf-which-is-better</a></h3>
+          <p>http://localhost:3000/blog/jpg-vs-pdf-which-is-better</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/jpg-vs-png-which-is-better" target="_blank" rel="noopener noreferrer">/blog/jpg-vs-png-which-is-better</a></h3>
+          <p>http://localhost:3000/blog/jpg-vs-png-which-is-better</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/passport-photo-size-requirements-india" target="_blank" rel="noopener noreferrer">/blog/passport-photo-size-requirements-india</a></h3>
+          <p>http://localhost:3000/blog/passport-photo-size-requirements-india</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/reduce-image-size-without-losing-quality" target="_blank" rel="noopener noreferrer">/blog/reduce-image-size-without-losing-quality</a></h3>
+          <p>http://localhost:3000/blog/reduce-image-size-without-losing-quality</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/resize-photo-for-online-application" target="_blank" rel="noopener noreferrer">/blog/resize-photo-for-online-application</a></h3>
+          <p>http://localhost:3000/blog/resize-photo-for-online-application</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/resize-signature-under-20kb-50kb-100kb" target="_blank" rel="noopener noreferrer">/blog/resize-signature-under-20kb-50kb-100kb</a></h3>
+          <p>http://localhost:3000/blog/resize-signature-under-20kb-50kb-100kb</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/blog/what-is-heic-file-how-to-open" target="_blank" rel="noopener noreferrer">/blog/what-is-heic-file-how-to-open</a></h3>
+          <p>http://localhost:3000/blog/what-is-heic-file-how-to-open</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 366/366</span>
+        <span>Checks: 88</span>
+        <span>Passed: 88</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+    <footer>Generated by seo/run-seo-batch-report.cjs</footer>
+  </div>
+</body>
+</html>

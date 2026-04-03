@@ -56,11 +56,11 @@ export default function BlogReadingProgress({
   return (
     <div
       aria-hidden
-      className="pointer-events-none fixed left-0 z-[59] h-[3px] w-full bg-[#d4cfc4]/50"
+      className="reading-progress pointer-events-none fixed left-0 z-[59] h-[3px] w-full bg-[#d4cfc4]/50"
       style={{ top: `${topOffset}px` }}
     >
       <div
-        className="h-full bg-[#e8672a] transition-[width] duration-100 ease-out"
+        className="reading-progress-fill h-full bg-[#e8672a] transition-[width] duration-100 ease-out"
         style={{ width: `${progress}%` }}
       />
     </div>

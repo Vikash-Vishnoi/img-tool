@@ -118,6 +118,15 @@ function toPercentReduction(beforeBytes: number, afterBytes: number): number {
   return Math.max(0, Math.min(100, Math.round(reduction)));
 }
 
+function getDisplayHeading(title: string): string {
+  const normalized = title.trim();
+  if (normalized.length >= 20) {
+    return normalized;
+  }
+
+  return `${normalized} Online Tool`;
+}
+
 export function CompressImageClient({
   title = "Compress Image",
   description = "Reduce image file size in your browser-no uploads.",
@@ -127,6 +136,7 @@ export function CompressImageClient({
 }: CompressImageClientProps = {}) {
   const conversion = useConversion();
   const hasInputFile = conversion.inputFiles.length > 0;
+  const headingTitle = useMemo(() => getDisplayHeading(title), [title]);
   const replaceInputRef = useRef<HTMLInputElement | null>(null);
   const [qualityPercent, setQualityPercent] = useState<number>(80);
   const [targetSizeKbInput, setTargetSizeKbInput] = useState<string>("");
@@ -330,7 +340,7 @@ export function CompressImageClient({
           Fast image compression · no upload
         </div>
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
-          {title}
+          {headingTitle}
         </h1>
         <p className="mx-auto hidden max-w-3xl text-pretty text-base leading-7 text-[#6b6760] sm:block">
           {description}

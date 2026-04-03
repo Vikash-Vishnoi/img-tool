@@ -16,6 +16,8 @@ import { post as post_jpg_vs_png_which_is_better } from "./jpg-vs-png-which-is-b
 import { post as post_best_image_format_for_website } from "./best-image-format-for-website";
 import { post as post_jpg_vs_pdf_which_is_better } from "./jpg-vs-pdf-which-is-better";
 import { post as post_avif_vs_webp_vs_jpg_comparison } from "./avif-vs-webp-vs-jpg-comparison";
+import { post as post_exam_form_photo_signature_size_guide_india } from "./exam-form-photo-signature-size-guide-india";
+import { post as post_resize_signature_under_20kb_50kb_100kb } from "./resize-signature-under-20kb-50kb-100kb";
 
 export type { BlogFaq, BlogLink, BlogPhase, BlogPost, BlogProfile, BlogSection } from "./types";
 
@@ -43,6 +45,8 @@ export const BLOG_POSTS: readonly BlogPost[] = [
   post_compress_image_for_whatsapp,
   post_heic_vs_jpg_difference,
   post_resize_photo_for_online_application,
+  post_exam_form_photo_signature_size_guide_india,
+  post_resize_signature_under_20kb_50kb_100kb,
   post_jpg_vs_png_which_is_better,
   post_best_image_format_for_website,
   post_jpg_vs_pdf_which_is_better,

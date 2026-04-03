@@ -1,7 +1,7 @@
 /* Deferred FAQ styles loaded when below-fold tool sections are about to render. */
 .faq-section {
   margin: 3rem 0 2rem;
-  max-width: 680px;
+  width: 100%;
 }
 
 .faq-heading {

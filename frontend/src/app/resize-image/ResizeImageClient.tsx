@@ -73,6 +73,15 @@ async function getImageDimensions(file: File): Promise<{ width: number; height: 
   });
 }
 
+function getDisplayHeading(title: string): string {
+  const normalized = title.trim();
+  if (normalized.length >= 20) {
+    return normalized;
+  }
+
+  return `${normalized} Online Tool`;
+}
+
 export type ResizeImageClientProps = {
   fixedTargetKb?: number;
   hideTargetSizeBox?: boolean;
@@ -88,7 +97,7 @@ export function ResizeImageClient({
   fixedTargetKb,
   hideTargetSizeBox = false,
   defaultPresetKey = "custom",
-  title = "Image Resizer",
+  title = "Image Resizer with Preset Dimensions",
   description =
     "Resize images by pixels or pick a preset size (passport photo, Aadhaar, WhatsApp DP, Instagram, Facebook cover). Optionally target a file size like 200KB.",
   inputLabel = "Upload images",
@@ -96,6 +105,7 @@ export function ResizeImageClient({
   uploadHelperText,
 }: ResizeImageClientProps = {}) {
   const conversion = useConversion();
+  const headingTitle = useMemo(() => getDisplayHeading(title), [title]);
   const addMoreInputRef = useRef<HTMLInputElement | null>(null);
   const probedFirstFileKeyRef = useRef<string>("");
   const { optionsRef, onUpload, resetUploadFlow } = useUploadFlowScroll();
@@ -319,7 +329,7 @@ export function ResizeImageClient({
           Resize presets for forms and social
         </div>
         <h1 className="text-balance text-3xl font-extrabold tracking-[-0.03em] sm:text-5xl">
-          {title}
+          {headingTitle}
         </h1>
         <p className="mx-auto hidden max-w-3xl text-pretty text-base leading-7 text-[#6b6760] sm:block">
           {description}

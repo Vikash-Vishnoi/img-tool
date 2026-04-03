@@ -21,7 +21,7 @@ export function RelatedTools({ currentSlug }: RelatedToolsProps) {
     .slice(0, 3);
 
   return (
-    <section className="mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
+    <section className="related-tools mt-8 rounded-2xl border border-[#d4cfc4] bg-white p-5 shadow-[0_4px_24px_rgba(28,26,20,0.06)] sm:p-6">
       <h2 className="text-base font-extrabold tracking-[-0.01em] text-[#1c1a14]">Related tools</h2>
       <ul className="mt-3 grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
         {related.map((tool) => (

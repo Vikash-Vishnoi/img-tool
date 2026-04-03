@@ -1,4 +1,4 @@
-import { getToolFaqs, type ToolDefinition } from "@/lib/seo";
+import { getToolFaqs, getToolFeatureList, getToolHowTo, type ToolDefinition } from "@/lib/seo";
 
 export type ToolSchemaProps = {
   tool: ToolDefinition;
@@ -11,6 +11,8 @@ function jsonLd(data: unknown): string {
 export function ToolSchema({ tool }: ToolSchemaProps) {
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://image-tools.tech";
   const absoluteUrl = `${siteUrl.replace(/\/$/, "")}${tool.path}`;
+  const howTo = getToolHowTo(tool);
+  const featureList = getToolFeatureList(tool);
 
   const webAppJsonLd = {
     "@context": "https://schema.org",
@@ -26,6 +28,7 @@ export function ToolSchema({ tool }: ToolSchemaProps) {
       price: "0",
       priceCurrency: "INR",
     },
+    featureList,
     isAccessibleForFree: true,
   };
 
@@ -43,6 +46,32 @@ export function ToolSchema({ tool }: ToolSchemaProps) {
     })),
   };
 
+  const howToJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: howTo.name,
+    description: howTo.description,
+    totalTime: "PT2M",
+    supply: [
+      {
+        "@type": "HowToSupply",
+        name: "Source file(s)",
+      },
+    ],
+    tool: [
+      {
+        "@type": "HowToTool",
+        name: "Web browser",
+      },
+    ],
+    step: howTo.steps.map((step) => ({
+      "@type": "HowToStep",
+      name: step.name,
+      text: step.text,
+      url: `${absoluteUrl}#${step.id}`,
+    })),
+  };
+
   return (
     <>
       <script
@@ -52,6 +81,10 @@ export function ToolSchema({ tool }: ToolSchemaProps) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd(faqPageJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd(howToJsonLd) }}
       />
     </>
   );

@@ -9,7 +9,7 @@ export const metadata: Metadata = generateToolMetadata(tool);
 
 export default function PdfToPngPage() {
   return (
-    <ToolPageShell tool={tool}>
+    <ToolPageShell tool={tool} showFaq>
       <PdfToImageClient
         title="PDF to PNG Converter"
         description="Convert each PDF page to PNG in your browser with no upload. Download page-by-page or all at once."

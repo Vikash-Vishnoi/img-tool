@@ -1,0 +1,1977 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tool Route SEO Report</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #111a33;
+      --text: #dbe7ff;
+      --muted: #9bb0d9;
+      --line: #283a6a;
+      --critical: #7f1d1d;
+      --warning: #78350f;
+      --ok: #14532d;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+      font-family: Segoe UI, Tahoma, sans-serif;
+      background: radial-gradient(circle at top left, #172554, var(--bg));
+      color: var(--text);
+    }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { margin: 0 0 6px; font-size: 30px; }
+    .subtitle { margin: 0 0 18px; color: var(--muted); }
+    .summary {
+      border: 1px solid var(--line);
+      background: rgba(17, 26, 51, 0.75);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .summary div { color: var(--muted); }
+    .summary strong { color: var(--text); display: block; font-size: 20px; margin-top: 2px; }
+    .route-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      background: var(--card);
+      overflow: hidden;
+    }
+    .route-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    .route-head h3 { margin: 0; font-size: 18px; }
+    .route-head p { margin: 4px 0 0; color: var(--muted); font-size: 12px; word-break: break-all; }
+    .route-head a { color: #bfdbfe; text-decoration: none; }
+    .route-head a:hover { text-decoration: underline; }
+    .badge {
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: white;
+      font-weight: 700;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 13px;
+    }
+    details { padding: 8px 14px 14px; }
+    summary { cursor: pointer; color: #bfdbfe; }
+    .table-wrap { margin-top: 10px; overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { border: 1px solid var(--line); padding: 8px; text-align: left; vertical-align: top; font-size: 12px; }
+    th { background: #0f1935; }
+    tr.critical td { background: color-mix(in srgb, var(--critical) 55%, transparent); }
+    tr.warning td { background: color-mix(in srgb, var(--warning) 45%, transparent); }
+    footer { margin-top: 20px; color: var(--muted); font-size: 12px; }
+    @media (max-width: 700px) {
+      body { padding: 14px; }
+      h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Tool Route SEO Report</h1>
+    <p class="subtitle">Checks executed with seo/tool.seo.js across tool routes (including /resize-image and similar) (base: http://localhost:3000)</p>
+    <section class="summary">
+      <div>Total Routes<strong>52</strong></div>
+      <div>Average Score<strong>100%</strong></div>
+      <div>Grade Spread<strong>A: 52 | B: 0 | C: 0 | D: 0 | F: 0</strong></div>
+      <div>Generated<strong>3/4/2026, 15:09:04</strong></div>
+    </section>
+    
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/avif-to-jpg" target="_blank" rel="noopener noreferrer">/avif-to-jpg</a></h3>
+          <p>http://localhost:3000/avif-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/avif-to-pdf" target="_blank" rel="noopener noreferrer">/avif-to-pdf</a></h3>
+          <p>http://localhost:3000/avif-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/avif-to-png" target="_blank" rel="noopener noreferrer">/avif-to-png</a></h3>
+          <p>http://localhost:3000/avif-to-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/avif-to-webp" target="_blank" rel="noopener noreferrer">/avif-to-webp</a></h3>
+          <p>http://localhost:3000/avif-to-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-avif" target="_blank" rel="noopener noreferrer">/compress-avif</a></h3>
+          <p>http://localhost:3000/compress-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-heic" target="_blank" rel="noopener noreferrer">/compress-heic</a></h3>
+          <p>http://localhost:3000/compress-heic</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-image" target="_blank" rel="noopener noreferrer">/compress-image</a></h3>
+          <p>http://localhost:3000/compress-image</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-jpg" target="_blank" rel="noopener noreferrer">/compress-jpg</a></h3>
+          <p>http://localhost:3000/compress-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-png" target="_blank" rel="noopener noreferrer">/compress-png</a></h3>
+          <p>http://localhost:3000/compress-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/compress-webp" target="_blank" rel="noopener noreferrer">/compress-webp</a></h3>
+          <p>http://localhost:3000/compress-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/heic-to-avif" target="_blank" rel="noopener noreferrer">/heic-to-avif</a></h3>
+          <p>http://localhost:3000/heic-to-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/heic-to-jpg" target="_blank" rel="noopener noreferrer">/heic-to-jpg</a></h3>
+          <p>http://localhost:3000/heic-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/heic-to-pdf" target="_blank" rel="noopener noreferrer">/heic-to-pdf</a></h3>
+          <p>http://localhost:3000/heic-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/heic-to-png" target="_blank" rel="noopener noreferrer">/heic-to-png</a></h3>
+          <p>http://localhost:3000/heic-to-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/heic-to-webp" target="_blank" rel="noopener noreferrer">/heic-to-webp</a></h3>
+          <p>http://localhost:3000/heic-to-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/image-converter" target="_blank" rel="noopener noreferrer">/image-converter</a></h3>
+          <p>http://localhost:3000/image-converter</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/image-to-pdf" target="_blank" rel="noopener noreferrer">/image-to-pdf</a></h3>
+          <p>http://localhost:3000/image-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/jpg-to-avif" target="_blank" rel="noopener noreferrer">/jpg-to-avif</a></h3>
+          <p>http://localhost:3000/jpg-to-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/jpg-to-pdf" target="_blank" rel="noopener noreferrer">/jpg-to-pdf</a></h3>
+          <p>http://localhost:3000/jpg-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/jpg-to-png" target="_blank" rel="noopener noreferrer">/jpg-to-png</a></h3>
+          <p>http://localhost:3000/jpg-to-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/jpg-to-webp" target="_blank" rel="noopener noreferrer">/jpg-to-webp</a></h3>
+          <p>http://localhost:3000/jpg-to-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/pdf-to-avif" target="_blank" rel="noopener noreferrer">/pdf-to-avif</a></h3>
+          <p>http://localhost:3000/pdf-to-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/pdf-to-image" target="_blank" rel="noopener noreferrer">/pdf-to-image</a></h3>
+          <p>http://localhost:3000/pdf-to-image</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/pdf-to-jpg" target="_blank" rel="noopener noreferrer">/pdf-to-jpg</a></h3>
+          <p>http://localhost:3000/pdf-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/pdf-to-png" target="_blank" rel="noopener noreferrer">/pdf-to-png</a></h3>
+          <p>http://localhost:3000/pdf-to-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/pdf-to-webp" target="_blank" rel="noopener noreferrer">/pdf-to-webp</a></h3>
+          <p>http://localhost:3000/pdf-to-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/png-to-avif" target="_blank" rel="noopener noreferrer">/png-to-avif</a></h3>
+          <p>http://localhost:3000/png-to-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/png-to-jpg" target="_blank" rel="noopener noreferrer">/png-to-jpg</a></h3>
+          <p>http://localhost:3000/png-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/png-to-pdf" target="_blank" rel="noopener noreferrer">/png-to-pdf</a></h3>
+          <p>http://localhost:3000/png-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/png-to-webp" target="_blank" rel="noopener noreferrer">/png-to-webp</a></h3>
+          <p>http://localhost:3000/png-to-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-2x2-photo" target="_blank" rel="noopener noreferrer">/resize-2x2-photo</a></h3>
+          <p>http://localhost:3000/resize-2x2-photo</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-aadhar-photo" target="_blank" rel="noopener noreferrer">/resize-aadhar-photo</a></h3>
+          <p>http://localhost:3000/resize-aadhar-photo</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-avif" target="_blank" rel="noopener noreferrer">/resize-avif</a></h3>
+          <p>http://localhost:3000/resize-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-facebook-cover" target="_blank" rel="noopener noreferrer">/resize-facebook-cover</a></h3>
+          <p>http://localhost:3000/resize-facebook-cover</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-facebook-post" target="_blank" rel="noopener noreferrer">/resize-facebook-post</a></h3>
+          <p>http://localhost:3000/resize-facebook-post</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-heic" target="_blank" rel="noopener noreferrer">/resize-heic</a></h3>
+          <p>http://localhost:3000/resize-heic</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-image" target="_blank" rel="noopener noreferrer">/resize-image</a></h3>
+          <p>http://localhost:3000/resize-image</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-image-to-200kb" target="_blank" rel="noopener noreferrer">/resize-image-to-200kb</a></h3>
+          <p>http://localhost:3000/resize-image-to-200kb</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-instagram-post" target="_blank" rel="noopener noreferrer">/resize-instagram-post</a></h3>
+          <p>http://localhost:3000/resize-instagram-post</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-instagram-story" target="_blank" rel="noopener noreferrer">/resize-instagram-story</a></h3>
+          <p>http://localhost:3000/resize-instagram-story</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-jpg" target="_blank" rel="noopener noreferrer">/resize-jpg</a></h3>
+          <p>http://localhost:3000/resize-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-passport-photo" target="_blank" rel="noopener noreferrer">/resize-passport-photo</a></h3>
+          <p>http://localhost:3000/resize-passport-photo</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-png" target="_blank" rel="noopener noreferrer">/resize-png</a></h3>
+          <p>http://localhost:3000/resize-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-product-square" target="_blank" rel="noopener noreferrer">/resize-product-square</a></h3>
+          <p>http://localhost:3000/resize-product-square</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-signature-upload" target="_blank" rel="noopener noreferrer">/resize-signature-upload</a></h3>
+          <p>http://localhost:3000/resize-signature-upload</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-webp" target="_blank" rel="noopener noreferrer">/resize-webp</a></h3>
+          <p>http://localhost:3000/resize-webp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-whatsapp-dp" target="_blank" rel="noopener noreferrer">/resize-whatsapp-dp</a></h3>
+          <p>http://localhost:3000/resize-whatsapp-dp</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/resize-youtube-thumbnail" target="_blank" rel="noopener noreferrer">/resize-youtube-thumbnail</a></h3>
+          <p>http://localhost:3000/resize-youtube-thumbnail</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/webp-to-avif" target="_blank" rel="noopener noreferrer">/webp-to-avif</a></h3>
+          <p>http://localhost:3000/webp-to-avif</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/webp-to-jpg" target="_blank" rel="noopener noreferrer">/webp-to-jpg</a></h3>
+          <p>http://localhost:3000/webp-to-jpg</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/webp-to-pdf" target="_blank" rel="noopener noreferrer">/webp-to-pdf</a></h3>
+          <p>http://localhost:3000/webp-to-pdf</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+
+    <section class="route-card">
+      <div class="route-head">
+        <div>
+          <h3><a href="http://localhost:3000/webp-to-png" target="_blank" rel="noopener noreferrer">/webp-to-png</a></h3>
+          <p>http://localhost:3000/webp-to-png</p>
+        </div>
+        <div class="badge" style="background:#15803d">A (100%)</div>
+      </div>
+      <div class="stats">
+        <span>Score: 293/293</span>
+        <span>Checks: 74</span>
+        <span>Passed: 74</span>
+        <span>Critical: 0</span>
+        <span>Warnings: 0</span>
+      </div>
+      <details>
+        <summary>Show failed checks (0)</summary>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Check</th>
+                <th>Weight</th>
+                <th>Details</th>
+                <th>Suggested Fix</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td colspan="4">No failed checks</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+    </section>
+  
+    <footer>Generated by seo/run-seo-batch-report.cjs</footer>
+  </div>
+</body>
+</html>
